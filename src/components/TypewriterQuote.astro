@@ -1,0 +1,82 @@
+---
+interface Props {
+  quote?: string;
+  author?: string;
+}
+
+const {
+  quote = "El amor no es algo que se encuentra, es algo que se construye (y a veces, se deconstruye para volver a empezar).",
+  author = "Amalia Andrade"
+} = Astro.props;
+---
+
+<div class="amalia-quote-section" id="amaliaQuoteSection">
+  <div class="quote-header-title">
+    <span class="word-frase">Frase de</span>
+    <span class="word-amalia">Amalia</span>
+  </div>
+
+  <blockquote class="typewriter-quote-box">
+    <p class="typewriter-text" id="typewriterText" data-text={quote}>
+      "{quote}"
+    </p>
+  </blockquote>
+</div>
+
+<style>
+  .amalia-quote-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 3.5rem auto 2.5rem auto;
+    max-width: 800px;
+    padding: 1rem 1.5rem;
+  }
+
+  .quote-header-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 0.95;
+    margin-bottom: 1.5rem;
+  }
+
+  .word-frase {
+    font-family: var(--font-marker);
+    font-size: 2.4rem;
+    color: #1E1A18;
+    transform: rotate(-1.5deg);
+    letter-spacing: -0.02em;
+  }
+
+  .word-amalia {
+    font-family: var(--font-marker);
+    font-size: 3.2rem;
+    color: #1E1A18;
+    transform: rotate(1deg);
+    letter-spacing: 0.02em;
+    margin-top: -0.2rem;
+  }
+
+  .typewriter-quote-box {
+    max-width: 650px;
+  }
+
+  .typewriter-text {
+    font-family: var(--font-typewriter);
+    font-size: clamp(1.2rem, 2.4vw, 1.45rem);
+    color: var(--color-ink-black);
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 768px) {
+    .word-frase {
+      font-size: 1.9rem;
+    }
+    .word-amalia {
+      font-size: 2.5rem;
+    }
+  }
+</style>

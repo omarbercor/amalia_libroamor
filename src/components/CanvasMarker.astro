@@ -1,0 +1,254 @@
+---
+// CanvasMarker.astro - Motor interactivo de trazos con plumón rojo sobre la libreta
+---
+
+<div class="canvas-marker-wrapper" id="canvasMarkerWrapper">
+  <canvas id="markerCanvas" class="marker-canvas"></canvas>
+
+  <!-- Puntero visual discreto de punta de fieltro -->
+  <div id="markerTipCursor" class="marker-tip-cursor" aria-hidden="true"></div>
+
+  <!-- Controles flotantes elegantes y discretos -->
+  <div class="marker-toolbar">
+    <button id="toggleMarkerBtn" class="toolbar-btn active" title="Activar/Desactivar plumón para rayar la libreta">
+      <span class="btn-icon">🖍️</span>
+      <span class="btn-text" id="markerStatusText">Modo Plumón</span>
+    </button>
+    <button id="clearCanvasBtn" class="toolbar-btn" title="Borrar trazos">
+      <span class="btn-icon">🧽</span>
+      <span class="btn-text">Borrar</span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .canvas-marker-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 30;
+    overflow: hidden;
+  }
+
+  .marker-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+    mix-blend-mode: multiply;
+    touch-action: none;
+    cursor: crosshair;
+  }
+
+  .marker-canvas.disabled {
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .marker-tip-cursor {
+    position: fixed;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: var(--color-marker-red);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.15s ease, transform 0.1s ease;
+    z-index: 100;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6);
+  }
+
+  .marker-tip-cursor.visible {
+    opacity: 0.85;
+  }
+
+  .marker-tip-cursor.drawing {
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+
+  .marker-toolbar {
+    position: fixed;
+    bottom: 4.8rem;
+    right: 2rem;
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(253, 251, 247, 0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(226, 39, 35, 0.4);
+    padding: 0.35rem 0.65rem;
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(60, 45, 30, 0.08);
+    pointer-events: auto;
+    z-index: 1000;
+  }
+
+  .toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 18px;
+    font-family: var(--font-notes);
+    font-size: 0.95rem;
+    color: var(--color-ink-black);
+    background: transparent;
+    transition: all 0.2s ease;
+  }
+
+  .toolbar-btn:hover {
+    background: rgba(226, 39, 35, 0.1);
+    color: var(--color-marker-red);
+  }
+
+  .toolbar-btn.active {
+    background: var(--color-marker-red);
+    color: #FFFFFF;
+  }
+
+  @media (max-width: 768px) {
+    .marker-toolbar {
+      bottom: 4.2rem;
+      right: 50%;
+      transform: translateX(50%);
+    }
+    .btn-text {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('markerCanvas') as HTMLCanvasElement;
+    const cursor = document.getElementById('markerTipCursor') as HTMLElement;
+    const toggleBtn = document.getElementById('toggleMarkerBtn') as HTMLButtonElement;
+    const statusText = document.getElementById('markerStatusText') as HTMLElement;
+    const clearBtn = document.getElementById('clearCanvasBtn') as HTMLButtonElement;
+
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let isDrawing = false;
+    let isMarkerEnabled = true;
+    let lastX = 0;
+    let lastY = 0;
+    let points: { x: number; y: number }[] = [];
+
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      ctx.scale(dpr, dpr);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const markerColor = 'rgba(226, 39, 35, 0.82)';
+
+    const getPos = (e: MouseEvent | TouchEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      if ('touches' in e && e.touches.length > 0) {
+        return {
+          x: e.touches[0].clientX - rect.left,
+          y: e.touches[0].clientY - rect.top
+        };
+      } else if (e instanceof MouseEvent) {
+        return {
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top
+        };
+      }
+      return { x: 0, y: 0 };
+    };
+
+    const start = (e: MouseEvent | TouchEvent) => {
+      if (!isMarkerEnabled) return;
+      const target = e.target as HTMLElement;
+      if (target.closest('a') || target.closest('button')) return;
+
+      isDrawing = true;
+      cursor?.classList.add('drawing');
+      const { x, y } = getPos(e);
+      lastX = x;
+      lastY = y;
+      points = [{ x, y }];
+
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = markerColor;
+      ctx.fill();
+    };
+
+    const move = (e: MouseEvent | TouchEvent) => {
+      const { x, y } = getPos(e);
+      if (cursor) {
+        cursor.style.left = `${x}px`;
+        cursor.style.top = `${y}px`;
+        if (isMarkerEnabled) cursor.classList.add('visible');
+      }
+
+      if (!isDrawing || !isMarkerEnabled) return;
+
+      points.push({ x, y });
+
+      if (points.length > 2) {
+        const xc = (points[points.length - 1].x + points[points.length - 2].x) / 2;
+        const yc = (points[points.length - 1].y + points[points.length - 2].y) / 2;
+
+        ctx.beginPath();
+        ctx.moveTo(points[points.length - 2].x, points[points.length - 2].y);
+        ctx.quadraticCurveTo(points[points.length - 2].x, points[points.length - 2].y, xc, yc);
+        ctx.strokeStyle = markerColor;
+        ctx.lineWidth = 7;
+        ctx.stroke();
+      }
+
+      lastX = x;
+      lastY = y;
+    };
+
+    const end = () => {
+      isDrawing = false;
+      cursor?.classList.remove('drawing');
+      points = [];
+    };
+
+    canvas.addEventListener('mousedown', start);
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', end);
+    canvas.addEventListener('mouseleave', () => cursor?.classList.remove('visible'));
+
+    canvas.addEventListener('touchstart', start, { passive: false });
+    window.addEventListener('touchmove', move, { passive: false });
+    window.addEventListener('touchend', end);
+
+    toggleBtn?.addEventListener('click', () => {
+      isMarkerEnabled = !isMarkerEnabled;
+      if (isMarkerEnabled) {
+        canvas.classList.remove('disabled');
+        toggleBtn.classList.add('active');
+        if (statusText) statusText.textContent = 'Modo Plumón';
+      } else {
+        canvas.classList.add('disabled');
+        toggleBtn.classList.remove('active');
+        cursor?.classList.remove('visible');
+        if (statusText) statusText.textContent = 'Plumón pausado';
+      }
+    });
+
+    clearBtn?.addEventListener('click', () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
+  });
+</script>

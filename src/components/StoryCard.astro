@@ -1,0 +1,68 @@
+---
+interface Props {
+  categoria: string;
+  texto: string;
+  firma: string;
+  index?: number;
+}
+
+const { categoria, texto, firma, index = 0 } = Astro.props;
+---
+
+<article class="story-note-card" data-category={categoria.toLowerCase()}>
+  <div class="card-content">
+    <span class="card-category">{categoria}</span>
+    <p class="card-body-text">{texto}</p>
+    <span class="card-signature">{firma}</span>
+  </div>
+</article>
+
+<style>
+  .story-note-card {
+    position: relative;
+    padding: 1.8rem 1.6rem;
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: transparent;
+    border: 2px solid var(--color-marker-red);
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .story-note-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(226, 39, 35, 0.12);
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    gap: 0.8rem;
+  }
+
+  .card-category {
+    font-family: var(--font-amalia);
+    font-size: 1.25rem;
+    color: var(--color-marker-red);
+    letter-spacing: 0.05em;
+  }
+
+  .card-body-text {
+    font-family: var(--font-notes);
+    font-size: 1.15rem;
+    line-height: 1.45;
+    color: var(--color-ink-black);
+    flex-grow: 1;
+  }
+
+  .card-signature {
+    font-family: var(--font-handwriting);
+    font-size: 1.2rem;
+    color: var(--color-marker-red);
+    font-weight: 700;
+  }
+</style>

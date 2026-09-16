@@ -1,0 +1,62 @@
+---
+// TopLeftScribbleAnimated.astro - Garabato superior izquierdo animado con GSAP DrawSVGPlugin
+interface Props {
+  class?: string;
+  width?: number | string;
+  height?: number | string;
+}
+
+const { class: className = '', width = '130', height = '115' } = Astro.props;
+---
+
+<div class={`top-left-scribble-container ${className}`}>
+  <svg 
+    id="topLeftScribbleSvg"
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 456 404"
+    width={width}
+    height={height}
+    class="top-left-scribble-svg"
+    aria-label="Garabato superior izquierdo dibujado a mano"
+  >
+    <!-- Trazo principal en zigzag vertical -->
+    <path 
+      id="top-left-stroke-1"
+      class="top-left-stroke"
+      d="M65.24,390.26S170.11,134.86,182.45,34.92c12.34-99.94-51.64,123.47-51.82,231.96,0,0,7.4,161.63,16.04,6.17,8.64-155.46,76.5-252.93,60.46-172.73-16.04,80.2-69.09,328.19-8.64,185.07,60.46-143.12,72.79-217.15,72.79-217.15,0,0,2.47-96.24-40.72,173.97,0,0-1.23,92.75,33.31-39.99,0,0,59.22-237.57,47.52-113.27,0,0-19.01,224.46,37.61,63.2,0,0,43.36-179.51,2.64,19.13,0,0-21.97,219.63,25.73-24.07"
+    />
+    <!-- Trazo transversal que cruza el garabato -->
+    <path 
+      id="top-left-stroke-2"
+      class="top-left-stroke"
+      d="M432.78,120.38s43.87-12.43-16.09,17.55-166.05-13.59-315.85,103.09l-68.73,67.27"
+    />
+  </svg>
+</div>
+
+<style>
+  .top-left-scribble-container {
+    display: inline-block;
+    line-height: 0;
+  }
+
+  .top-left-scribble-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .top-left-stroke {
+    fill: none;
+    stroke: var(--color-primary-red, #ee2a22);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 13px;
+    stroke-miterlimit: 10;
+  }
+</style>
+
+<script>
+  // El garabato superior izquierdo permanece visible desde el inicio
+</script>

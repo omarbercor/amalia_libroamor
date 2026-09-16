@@ -1,0 +1,55 @@
+---
+// SpiralDoodleAnimated.astro - Espiral vertical animada con GSAP DrawSVGPlugin
+interface Props {
+  class?: string;
+  width?: number | string;
+  height?: number | string;
+}
+
+const { class: className = '', width = '36', height = '290' } = Astro.props;
+---
+
+<div class={`spiral-doodle-container ${className}`}>
+  <svg 
+    id="spiralDoodleSvg"
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 40.52 290.96"
+    width={width}
+    height={height}
+    class="spiral-doodle-svg"
+    aria-label="Espiral vertical dibujada a mano"
+  >
+    <path 
+      id="spiral-path"
+      class="spiral-stroke"
+      d="M4.37,4.74s14.22,65.48,27.26,80.89,0,1.48,0,1.48c0,0-26.67-57.19-25.78-67.26s14.52,64.89,23.11,67.26S4.37,14.81,4.37,14.81c0,0,11.6,77.02,27.28,81.47,0,0-2.17-11.4-14.65-33.32-12.48-21.93,11.81,38.37,11.81,38.37,0,0,4.89,10.52-3.11,0,0,0-28-33.48-25.7-74.67,0,0-10.34-11.26,18.64,87.7,0,0,11.5,28.15-8.05-10.67,0,0-9.93-21.04-10.59-37.04,0,0-8.3,0,17,64.89,0,0,7.22,20.74-7.3-5.04L-3.33,94.52l13.33,35.94s7.11,15.31-12.15-17.87,10.96,36.15,10.96,36.15c0,0,14.52,33.48-4.15,6.52-18.67-26.96-.59,9.19-.59,9.19,0,0,18.07,37.04-.89,7.11-18.96-29.93,1.48,15.7,1.48,15.7l9.76,19.26s4.76,16-8.87-2.07-14.12-23.41-14.12-23.41l23,41.48s13.94,17.78-8.87-8.59c-22.81-26.37,13.04,27.26,13.04,27.26,0,0,26.37,37.33-21.33-27.26,0,0-9.7-25.48,19.74,40.89s-21.22-25.19-21.22-25.19c0,0-22.52-41.78,9.48,29.93s-13.63-17.48-13.63-17.48"
+    />
+  </svg>
+</div>
+
+<style>
+  .spiral-doodle-container {
+    display: inline-block;
+    line-height: 0;
+  }
+
+  .spiral-doodle-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .spiral-stroke {
+    fill: none;
+    stroke: var(--color-primary-red, #ee2a22);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 4px;
+    stroke-miterlimit: 10;
+  }
+</style>
+
+<script>
+  // La espiral izquierda permanece visible desde el inicio
+</script>

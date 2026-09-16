@@ -1,0 +1,138 @@
+[
+  {
+    "id": 1,
+    "date": "2026-02-14T03:15:00",
+    "slug": "en-la-sala-de-espera",
+    "status": "publish",
+    "title": { "rendered": "En la sala de espera" },
+    "content": {
+      "rendered": "Lo leí en la sala de espera del hospital donde estaba mi papá. No sé si me ayudó o si simplemente me acompañó, pero esas dos cosas se parecen bastante."
+    },
+    "acf": {
+      "categoria": "DUELO",
+      "autor": "Vale",
+      "edad": "34",
+      "ciudad": "Medellín",
+      "firma": "-Vale, 34, Medellín"
+    }
+  },
+  {
+    "id": 2,
+    "date": "2026-02-18T18:42:00",
+    "slug": "maleta-hacia-madrid",
+    "status": "publish",
+    "title": { "rendered": "Maleta hacia Madrid" },
+    "content": {
+      "rendered": "Me lo llevé a Madrid en una maleta donde no cabía nada más. Dejé zapatos por meterlo. No me arrepiento de los zapatos."
+    },
+    "acf": {
+      "categoria": "MUDANZAS",
+      "autor": "Juanito",
+      "edad": "27",
+      "ciudad": "Madrid",
+      "firma": "-Juanito, 27"
+    }
+  },
+  {
+    "id": 3,
+    "date": "2026-02-21T20:10:00",
+    "slug": "terapia-sin-licencia",
+    "status": "publish",
+    "title": { "rendered": "Terapia sin licencia" },
+    "content": {
+      "rendered": "Lo compramos cuatro amigas y armamos un club de lectura que en realidad era terapia grupal sin licencia."
+    },
+    "acf": {
+      "categoria": "AMISTAD",
+      "autor": "Las de los jueves",
+      "edad": "",
+      "ciudad": "Cali",
+      "firma": "-Las de los jueves, Cali"
+    }
+  },
+  {
+    "id": 4,
+    "date": "2026-02-25T01:30:00",
+    "slug": "sobrevivir-al-naufragio",
+    "status": "publish",
+    "title": { "rendered": "Sobrevivir al naufragio" },
+    "content": {
+      "rendered": "Creí que me iba a morir el día que se fue. Diez años después me río con ternura, pero ese libro fue mi chaleco salvavidas cuando el mundo se me vino encima."
+    },
+    "acf": {
+      "categoria": "DESAMOR",
+      "autor": "Camila",
+      "edad": "29",
+      "ciudad": "Bogotá",
+      "firma": "-Camila, 29, Bogotá"
+    }
+  },
+  {
+    "id": 5,
+    "date": "2026-03-01T23:45:00",
+    "slug": "el-amor-de-mi-vida-era-yo",
+    "status": "publish",
+    "title": { "rendered": "El amor de mi vida" },
+    "content": {
+      "rendered": "Pasé años buscando al amor de mi vida en otras miradas. Al cerrar la última página entendí que siempre fui yo, reconstruyéndome con paciencia y plumón en mano."
+    },
+    "acf": {
+      "categoria": "CRECIMIENTO",
+      "autor": "Sofía",
+      "edad": "31",
+      "ciudad": "Ciudad de México",
+      "firma": "-Sofía, 31, CDMX"
+    }
+  },
+  {
+    "id": 6,
+    "date": "2026-03-04T16:20:00",
+    "slug": "copias-subrayadas",
+    "status": "publish",
+    "title": { "rendered": "Copias subrayadas" },
+    "content": {
+      "rendered": "Nos separamos y cada uno conservó su copia subrayada en páginas distintas. Diez años después nos encontramos a tomar café y descubrimos que nos amábamos mejor desde otra vida."
+    },
+    "acf": {
+      "categoria": "MUDANZAS",
+      "autor": "Mateo",
+      "edad": "35",
+      "ciudad": "Buenos Aires",
+      "firma": "-Mateo, 35, Buenos Aires"
+    }
+  },
+  {
+    "id": 7,
+    "date": "2026-03-06T11:15:00",
+    "slug": "el-abrazo-en-silencio",
+    "status": "publish",
+    "title": { "rendered": "El abrazo en silencio" },
+    "content": {
+      "rendered": "Cuando perdí a mi abuela no quería que nadie me hablara. Abrir este libro fue el único abrazo silencioso que mi corazón aceptó sin sentirse invadido."
+    },
+    "acf": {
+      "categoria": "DUELO",
+      "autor": "Lucía",
+      "edad": "25",
+      "ciudad": "Santiago",
+      "firma": "-Lucía, 25, Santiago"
+    }
+  },
+  {
+    "id": 8,
+    "date": "2026-03-08T19:50:00",
+    "slug": "pacto-de-cuaderno",
+    "status": "publish",
+    "title": { "rendered": "Pacto de cuaderno" },
+    "content": {
+      "rendered": "Se lo regalé a mi mejor amiga cuando nos juramos que ninguna relación tóxica volvería a romper nuestras noches de vino y risas. Pacto sellado."
+    },
+    "acf": {
+      "categoria": "AMISTAD",
+      "autor": "Andrea & Caro",
+      "edad": "28",
+      "ciudad": "Lima",
+      "firma": "-Andrea & Caro, Lima"
+    }
+  }
+]

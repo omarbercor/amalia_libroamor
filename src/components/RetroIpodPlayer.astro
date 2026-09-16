@@ -1,0 +1,388 @@
+---
+// RetroIpodPlayer.astro - Reproductor interactivo estilo iPod Classic retro
+---
+
+<div class="ipod-container" id="ipodContainer">
+  <!-- Cable de auriculares saliendo del conector jack -->
+  <div class="earphone-cord" aria-hidden="true">
+    <svg viewBox="0 0 160 120" class="cord-svg">
+      <path d="M12 2C15 40 80 50 85 95C90 140 150 110 155 120" stroke="#F5F5F5" stroke-width="3" fill="none" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <div class="ipod-body">
+    <!-- Pantalla LCD retroiluminada -->
+    <div class="ipod-screen">
+      <div class="screen-top-bar">
+        <span class="status-play-icon" id="ipodStatusIcon">▶</span>
+        <span class="screen-title-small">Reproduciendo</span>
+        <div class="battery-icon">
+          <div class="battery-level"></div>
+        </div>
+      </div>
+
+      <div class="screen-track-info">
+        <!-- Boceto estilo dibujo de Amalia de Juan Gabriel -->
+        <div class="album-art-sketch">
+          <svg viewBox="0 0 80 80" class="album-sketch-svg">
+            <rect width="80" height="80" fill="#EAE6DF" />
+            <!-- Boceto a trazo de lápiz -->
+            <circle cx="40" cy="32" r="14" fill="none" stroke="#222" stroke-width="1.8" />
+            <path d="M30 24C32 20 48 20 50 24" stroke="#222" stroke-width="2.5" fill="none" />
+            <circle cx="35" cy="30" r="1.5" fill="#222" />
+            <circle cx="45" cy="30" r="1.5" fill="#222" />
+            <path d="M37 36C39 38 41 38 43 36" stroke="#222" stroke-width="1.5" fill="none" />
+            <path d="M34 46L26 68H54L46 46" stroke="#222" stroke-width="1.8" fill="none" />
+          </svg>
+        </div>
+
+        <div class="track-text">
+          <span class="song-title">No me vuelvo a enamorar</span>
+          <span class="artist-name">Juan Gabriel</span>
+          <span class="album-sub">Amalia's Mix 2015</span>
+        </div>
+      </div>
+
+      <!-- Barra de progreso -->
+      <div class="scrubber-bar-wrapper">
+        <div class="scrubber-track">
+          <div class="scrubber-progress" id="ipodProgressBar"></div>
+        </div>
+        <div class="scrubber-times">
+          <span id="ipodCurrentTime">1:24</span>
+          <span id="ipodTotalTime">3:21</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rueda de Clic Táctil (Click Wheel) -->
+    <div class="click-wheel" id="clickWheel">
+      <span class="wheel-btn wheel-menu">MENU</span>
+      <button type="button" class="wheel-btn wheel-prev" id="ipodPrevBtn" aria-label="Anterior">
+        ◀◀
+      </button>
+      <button type="button" class="wheel-btn wheel-next" id="ipodNextBtn" aria-label="Siguiente">
+        ▶▶
+      </button>
+      <button type="button" class="wheel-btn wheel-play" id="ipodPlayBtn" aria-label="Reproducir o pausar">
+        ▶❚❚
+      </button>
+
+      <!-- Botón Central -->
+      <button type="button" class="wheel-center-button" id="ipodCenterBtn" aria-label="Seleccionar o Play">
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ipod-container {
+    position: relative;
+    width: 220px;
+    margin: 0 auto;
+    filter: drop-shadow(0 15px 30px rgba(50, 35, 20, 0.22));
+    transform: rotate(-1.5deg);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .ipod-container:hover {
+    transform: rotate(0deg) scale(1.03);
+    z-index: 10;
+  }
+
+  .earphone-cord {
+    position: absolute;
+    top: -65px;
+    right: 25px;
+    width: 140px;
+    height: 90px;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .cord-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.15));
+  }
+
+  /* Cuerpo de metal plateado pulido del iPod */
+  .ipod-body {
+    background: linear-gradient(135deg, #7a7e85 0%, #52565c 50%, #686c73 100%);
+    border-radius: 18px;
+    padding: 16px 14px 20px 14px;
+    box-shadow: 
+      inset 0 1px 2px rgba(255, 255, 255, 0.4),
+      inset 0 -2px 3px rgba(0, 0, 0, 0.4),
+      0 10px 25px rgba(0, 0, 0, 0.25);
+    border: 1px solid #45484d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  /* Pantalla LCD retro */
+  .ipod-screen {
+    width: 100%;
+    background: linear-gradient(180deg, #F3EFE6 0%, #E3DDD0 100%);
+    border-radius: 6px;
+    border: 2px solid #282a2e;
+    padding: 8px 10px;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+    font-family: var(--font-sans);
+    color: #1a1a1a;
+  }
+
+  .screen-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+  }
+
+  .status-play-icon {
+    color: var(--color-marker-red);
+    font-size: 0.7rem;
+  }
+
+  .battery-icon {
+    width: 16px;
+    height: 8px;
+    border: 1.5px solid #222;
+    border-radius: 1.5px;
+    padding: 1px;
+    position: relative;
+  }
+
+  .battery-icon::after {
+    content: "";
+    position: absolute;
+    right: -3px;
+    top: 2px;
+    width: 2px;
+    height: 3px;
+    background: #222;
+    border-radius: 0 1px 1px 0;
+  }
+
+  .battery-level {
+    width: 80%;
+    height: 100%;
+    background: #2e7d32;
+    border-radius: 0.5px;
+  }
+
+  .screen-track-info {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .album-art-sketch {
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #999;
+    flex-shrink: 0;
+  }
+
+  .album-sketch-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .track-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    overflow: hidden;
+  }
+
+  .song-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .artist-name {
+    font-size: 0.68rem;
+    color: #444;
+  }
+
+  .album-sub {
+    font-size: 0.6rem;
+    color: #777;
+    margin-top: 2px;
+  }
+
+  .scrubber-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .scrubber-track {
+    width: 100%;
+    height: 4px;
+    background: #bbb;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .scrubber-progress {
+    width: 42%;
+    height: 100%;
+    background: linear-gradient(90deg, #1976d2, #42a5f5);
+    transition: width 0.3s ease;
+  }
+
+  .scrubber-times {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.58rem;
+    color: #555;
+  }
+
+  /* Click Wheel icónica */
+  .click-wheel {
+    width: 130px;
+    height: 130px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 
+      0 4px 10px rgba(0, 0, 0, 0.3),
+      inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4px 0 6px 0;
+    user-select: none;
+  }
+
+  .wheel-btn {
+    position: absolute;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #999;
+    letter-spacing: 0.05em;
+    transition: color 0.15s ease, transform 0.1s ease;
+  }
+
+  .wheel-btn:hover {
+    color: #333;
+  }
+
+  .wheel-btn:active {
+    transform: scale(0.92);
+  }
+
+  .wheel-menu {
+    top: 10px;
+  }
+
+  .wheel-prev {
+    left: 10px;
+    font-size: 0.65rem;
+  }
+
+  .wheel-next {
+    right: 10px;
+    font-size: 0.65rem;
+  }
+
+  .wheel-play {
+    bottom: 10px;
+    font-size: 0.65rem;
+  }
+
+  .wheel-center-button {
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(135deg, #70747a 0%, #5a5d63 100%);
+    border-radius: 50%;
+    border: 1px solid #484b50;
+    box-shadow: 
+      inset 0 1px 2px rgba(255, 255, 255, 0.25),
+      0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+
+  .wheel-center-button:active {
+    transform: scale(0.95);
+  }
+</style>
+
+<script>
+  // Control interactivo del iPod
+  document.addEventListener('DOMContentLoaded', () => {
+    const playBtn = document.getElementById('ipodPlayBtn');
+    const centerBtn = document.getElementById('ipodCenterBtn');
+    const statusIcon = document.getElementById('ipodStatusIcon');
+    const progressBar = document.getElementById('ipodProgressBar');
+    const currentTimeEl = document.getElementById('ipodCurrentTime');
+
+    let isPlaying = false;
+    let progress = 42;
+    let timer: number | undefined;
+
+    // Sintetizador sutil Web Audio API para simular la melodía retro al dar Play
+    let audioCtx: AudioContext | null = null;
+
+    const playChime = () => {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, audioCtx.currentTime); // La4
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.4);
+      } catch (e) {
+        // Fallback silencioso
+      }
+    };
+
+    const togglePlayback = () => {
+      isPlaying = !isPlaying;
+      if (isPlaying) {
+        if (statusIcon) statusIcon.textContent = '▶';
+        playChime();
+        timer = window.setInterval(() => {
+          progress = (progress + 1) % 100;
+          if (progressBar) progressBar.style.width = `${progress}%`;
+          const seconds = Math.floor((progress / 100) * 201);
+          const mins = Math.floor(seconds / 60);
+          const secs = seconds % 60;
+          if (currentTimeEl) {
+            currentTimeEl.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+          }
+        }, 800);
+      } else {
+        if (statusIcon) statusIcon.textContent = '❚❚';
+        clearInterval(timer);
+      }
+    };
+
+    playBtn?.addEventListener('click', togglePlayback);
+    centerBtn?.addEventListener('click', togglePlayback);
+  });
+</script>

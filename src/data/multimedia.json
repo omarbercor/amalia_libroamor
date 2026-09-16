@@ -1,0 +1,67 @@
+[
+  {
+    "id": 1,
+    "date": "2026-01-10T10:00:00",
+    "slug": "primeros-trazos-libreta-roja",
+    "status": "publish",
+    "title": { "rendered": "Los primeros trazos" },
+    "acf": {
+      "tipo_media": "polaroid",
+      "color_frame": "red",
+      "titulo": "Los primeros bocetos (2015)",
+      "descripcion": "El cuaderno donde nació la idea de que los corazones rotos también son obras de arte.",
+      "image_url": "/assets/photos/polaroid-red-boceto.webp",
+      "doodle_icon": "heart",
+      "rotation": -3
+    }
+  },
+  {
+    "id": 2,
+    "date": "2026-01-12T14:30:00",
+    "slug": "cosas-que-no-cupieron",
+    "status": "publish",
+    "title": { "rendered": "Lo que no cupo en las páginas" },
+    "acf": {
+      "tipo_media": "polaroid",
+      "color_frame": "white",
+      "titulo": "Páginas inéditas",
+      "descripcion": "Notas arrugadas de las 3:00 a.m. que no alcanzaron a entrar en la primera edición.",
+      "image_url": "/assets/photos/polaroid-white-notas.webp",
+      "doodle_icon": "bandaid",
+      "rotation": 2
+    }
+  },
+  {
+    "id": 3,
+    "date": "2026-01-15T18:00:00",
+    "slug": "ipod-classic-soundtrack",
+    "status": "publish",
+    "title": { "rendered": "iPod Classic Soundtrack" },
+    "acf": {
+      "tipo_media": "audio_ipod",
+      "cancion": "No me vuelvo a enamorar",
+      "artista": "Juan Gabriel",
+      "album": "Amalia's Heartbreak Mix",
+      "duracion": "3:21",
+      "audio_url": "/assets/audio/cancion-amalia-sample.mp3",
+      "cover_url": "/assets/photos/juan-gabriel-sketch.webp",
+      "rotation": -1
+    }
+  },
+  {
+    "id": 4,
+    "date": "2026-01-18T20:15:00",
+    "slug": "polaroid-con-plumon-corazones",
+    "status": "publish",
+    "title": { "rendered": "Tú y yo en servilleta" },
+    "acf": {
+      "tipo_media": "polaroid",
+      "color_frame": "white",
+      "titulo": "Tú y yo dibujados a mano",
+      "descripcion": "Dos corazones agarrados de la mano dibujados con el plumón rojo de la suerte.",
+      "image_url": "/assets/photos/polaroid-hearts-doodle.webp",
+      "doodle_icon": "marker",
+      "rotation": 4
+    }
+  }
+]

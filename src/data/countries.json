@@ -1,0 +1,13 @@
+[
+  { "id": "ar", "name": "ARGENTINA", "url": "https://www.planetadelibros.com.ar", "retailer": "Planeta de Libros Argentina" },
+  { "id": "br", "name": "BRASIL", "url": "https://www.planetadelivros.com.br", "retailer": "Planeta de Livros Brasil" },
+  { "id": "co", "name": "COLOMBIA", "url": "https://www.planetadelibros.com.co", "retailer": "Librería Nacional & Panamericana" },
+  { "id": "ec", "name": "ECUADOR", "url": "https://www.planetadelibros.com.ec", "retailer": "Mr. Books Ecuador" },
+  { "id": "es", "name": "ESPAÑA", "url": "https://www.casadellibro.com", "retailer": "Casa del Libro & Fnac" },
+  { "id": "mx", "name": "MÉXICO", "url": "https://www.gandhi.com.mx", "retailer": "Librerías Gandhi & El Péndulo" },
+  { "id": "pe", "name": "PERÚ", "url": "https://www.crisol.com.pe", "retailer": "Librerías Crisol" },
+  { "id": "pt", "name": "PORTUGAL", "url": "https://www.planetadelivros.pt", "retailer": "Bertrand Livreiras" },
+  { "id": "uy", "name": "URUGUAY", "url": "https://www.planetadelibros.com.uy", "retailer": "Planeta Uruguay" },
+  { "id": "us", "name": "USA", "url": "https://www.amazon.com", "retailer": "Amazon Books / Barnes & Noble" },
+  { "id": "ve", "name": "VENEZUELA", "url": "https://www.planetadelibros.com", "retailer": "Planeta Venezuela & TecniCiencia" }
+]

@@ -1,0 +1,184 @@
+---
+interface Props {
+  showBack?: boolean;
+  backUrl?: string;
+}
+
+const { 
+  showBack = false,
+  backUrl = "/"
+} = Astro.props;
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <!-- Columna 1: Izquierda (Flecha back condicional o espacio vacío en Home) -->
+    <div class="header-col header-col-left">
+      {showBack ? (
+        <a href={backUrl} class="back-link" title="Volver" aria-label="Volver">
+          <svg viewBox="0 0 40 28" fill="none" class="back-arrow-svg" aria-hidden="true">
+            <path d="M36 14H6M6 14L18 4M6 14L18 24" stroke="var(--color-primary-red)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      ) : (
+        <div class="header-col-empty" aria-hidden="true"></div>
+      )}
+    </div>
+
+    <!-- Columna 2: Centro (Logo 10 Años) -->
+    <div class="header-col header-col-center">
+      <a href="/" class="brand-center-link" aria-label="10 Años">
+        <img 
+          src="/assets/home/logo10_0001_Layer-3.png" 
+          alt="10 Años" 
+          class="logo-10-img"
+          width="110"
+          height="132"
+          loading="eager"
+        />
+      </a>
+    </div>
+
+    <!-- Columna 3: Derecha (AA-Logo.png) -->
+    <div class="header-col header-col-right">
+      <a href="/" class="brand-right-link" aria-label="Amalia Andrade">
+        <img 
+          src="/assets/home/AA-Logo.png" 
+          alt="Amalia Andrade" 
+          class="aa-logo-img"
+          width="140"
+          height="80"
+          loading="eager"
+        />
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    width: 100%;
+    position: relative;
+    z-index: 50;
+    padding: 1.5rem 3rem 0.5rem 3rem;
+  }
+
+  /* Tres columnas para Mobile y Desktop */
+  .header-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Columna 1 */
+  .header-col-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+
+  .back-link:hover {
+    transform: translateX(-4px);
+  }
+
+  .back-arrow-svg {
+    width: 36px;
+    height: 25px;
+    display: block;
+  }
+
+  .header-col-empty {
+    width: 36px;
+    height: 25px;
+  }
+
+  /* Columna 2 */
+  .header-col-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-center-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-10-img {
+    height: 90px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+  }
+
+  .logo-10-img:hover {
+    transform: scale(1.03);
+  }
+
+  /* Columna 3 */
+  .header-col-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .brand-right-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .aa-logo-img {
+    height: 65px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+  }
+
+  .aa-logo-img:hover {
+    transform: scale(1.03);
+  }
+
+  /* Mobile: 3 columnas adaptadas */
+  @media (max-width: 768px) {
+    .site-header {
+      padding: 1rem 1.2rem 0.5rem 1.2rem;
+    }
+
+    .logo-10-img {
+      height: 68px;
+    }
+
+    .aa-logo-img {
+      height: 48px;
+    }
+
+    .back-arrow-svg,
+    .header-col-empty {
+      width: 28px;
+      height: 20px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .logo-10-img {
+      height: 58px;
+    }
+
+    .aa-logo-img {
+      height: 40px;
+    }
+  }
+</style>

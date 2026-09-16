@@ -1,0 +1,138 @@
+---
+// HeartDoodleAnimated.astro - Corazón animado con GSAP DrawSVGPlugin
+interface Props {
+  class?: string;
+  width?: number | string;
+  height?: number | string;
+}
+
+const { class: className = '', width = '100', height = '137' } = Astro.props;
+---
+
+<div class={`heart-doodle-container ${className}`}>
+  <svg 
+    id="heartDoodleSvg"
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 239.3 329.52"
+    width={width}
+    height={height}
+    class="heart-svg"
+    aria-label="Corazón sonriente dibujado a mano"
+  >
+    <!-- Silueta del corazón trazada a mano (actualizado) -->
+    <path 
+      id="heart-contour" 
+      class="heart-stroke" 
+      d="M45.78,252.44s-36.29-63.9,23.97-167.25c0,0,27.22-39.93,55.6-11.44,28.38,28.5-9.03,73.69-9.03,73.69,0,0,34.85-68.3,96.88-39.44,0,0,42.51,18.49-31.25,72.98-70.02,51.73-143.84,74.87-143.84,74.87"
+    />
+    <!-- Sonrisa interior -->
+    <path 
+      id="heart-smile" 
+      class="heart-stroke" 
+      d="M64.31,173.02s9.29,49.05,46.53,20.52"
+    />
+    <!-- Ojo izquierdo -->
+    <circle id="heart-eye-left" class="heart-eye" cx="62.79" cy="141.55" r="3.72"/>
+    <!-- Ojo derecho -->
+    <circle id="heart-eye-right" class="heart-eye" cx="139.74" cy="181.82" r="3.72"/>
+  </svg>
+</div>
+
+<style>
+  .heart-doodle-container {
+    display: inline-block;
+    line-height: 0;
+  }
+
+  .heart-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .heart-stroke {
+    fill: none;
+    stroke: var(--color-primary-red, #ee2a22);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 11px;
+    stroke-miterlimit: 10;
+  }
+
+  .heart-eye {
+    fill: var(--color-primary-red, #ee2a22);
+    transform-origin: center;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
+
+  gsap.registerPlugin(DrawSVGPlugin);
+
+  function initHeartState() {
+    const contour = document.getElementById('heart-contour');
+    const smile = document.getElementById('heart-smile');
+    const eyeLeft = document.getElementById('heart-eye-left');
+    const eyeRight = document.getElementById('heart-eye-right');
+
+    if (!contour || !smile) return;
+
+    // Estado inicial de trazos y ojos (ocultos)
+    gsap.set([contour, smile], { drawSVG: '0%' });
+    gsap.set([eyeLeft, eyeRight], { scale: 0, transformOrigin: 'center' });
+  }
+
+  function startHeartDrawing(delay = 0) {
+    const contour = document.getElementById('heart-contour');
+    const smile = document.getElementById('heart-smile');
+    const eyeLeft = document.getElementById('heart-eye-left');
+    const eyeRight = document.getElementById('heart-eye-right');
+
+    if (!contour || !smile) return;
+
+    // Línea de tiempo que se pinta 2s después de que la frase y botones se muestren
+    const tlHeart = gsap.timeline({
+      delay: delay,
+      defaults: { ease: 'power2.out' }
+    });
+
+    // 1. Trazar el contorno del corazón
+    tlHeart.to(contour, {
+      drawSVG: '100%',
+      duration: 1.2,
+      ease: 'power1.inOut'
+    })
+    // 2. Trazar la sonrisa
+    .to(smile, {
+      drawSVG: '100%',
+      duration: 0.45,
+      ease: 'power2.out'
+    }, '-=0.1')
+    // 3. Pop de los ojos (puntos)
+    .to([eyeLeft, eyeRight], {
+      scale: 1,
+      duration: 0.35,
+      stagger: 0.1,
+      ease: 'back.out(2)'
+    }, '-=0.15');
+  }
+
+  function setupHeart() {
+    initHeartState();
+
+    // Escuchar el evento de finalización del título y los botones
+    const onIntroCompleted = () => {
+      window.removeEventListener('intro-animation-completed', onIntroCompleted);
+      startHeartDrawing(2.0); // Exactamente 2s después
+    };
+
+    window.addEventListener('intro-animation-completed', onIntroCompleted);
+  }
+
+  document.addEventListener('DOMContentLoaded', setupHeart);
+  document.addEventListener('astro:page-load', setupHeart);
+  document.addEventListener('astro:after-swap', setupHeart);
+</script>

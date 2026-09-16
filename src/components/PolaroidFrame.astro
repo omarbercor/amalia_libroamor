@@ -1,0 +1,228 @@
+---
+interface Props {
+  color?: 'white' | 'red';
+  rotation?: number;
+  hasTape?: boolean;
+  hasMarkerPen?: boolean;
+  hasStickHearts?: boolean;
+  hasScribble?: boolean;
+  title?: string;
+  caption?: string;
+  aspect?: string;
+  customClass?: string;
+}
+
+const {
+  color = 'white',
+  rotation = 0,
+  hasTape = false,
+  hasMarkerPen = false,
+  hasStickHearts = false,
+  hasScribble = false,
+  title = "",
+  caption = "",
+  aspect = "square",
+  customClass = ""
+} = Astro.props;
+---
+
+<div 
+  class={`polaroid-wrapper ${color === 'red' ? 'polaroid-red-style' : 'polaroid-white-style'} ${customClass}`}
+  style={`--polaroid-rot: ${rotation}deg;`}
+>
+  <!-- Cinta adhesiva roja brillante si se solicita -->
+  {hasTape && <div class="red-duct-tape" aria-hidden="true"></div>}
+
+  <div class="polaroid-inner">
+    <!-- Ventana de foto / lienzo -->
+    <div class="photo-window">
+      <slot>
+        <div class="photo-blank-canvas">
+          {title && <span class="blank-title">{title}</span>}
+        </div>
+      </slot>
+    </div>
+
+    <!-- Pie de foto manuscrito -->
+    <div class="polaroid-footer-notes">
+      {caption && <p class="polaroid-caption">{caption}</p>}
+      
+      <!-- Doodle de dos corazones tomados de la mano -->
+      {hasStickHearts && (
+        <div class="stick-hearts-doodle" aria-hidden="true">
+          <svg viewBox="0 0 100 55" class="stick-hearts-svg">
+            <!-- Corazón 1 -->
+            <path d="M22 35C12 25 5 18 5 10C5 4 9 1 14 1C18 1 20 4 22 7C24 4 26 1 30 1C35 1 39 4 39 10C39 18 32 25 22 35Z" stroke="#E02826" stroke-width="2.5" fill="none" />
+            <!-- Patitas / manos tomadas -->
+            <path d="M22 35L22 48M16 48L22 48L28 48" stroke="#E02826" stroke-width="2" stroke-linecap="round" />
+            <path d="M28 26C35 32 42 32 46 26" stroke="#E02826" stroke-width="2" stroke-linecap="round" fill="none" />
+            <!-- Corazón 2 -->
+            <path d="M56 35C46 25 39 18 39 10C39 4 43 1 48 1C52 1 54 4 56 7C58 4 60 1 64 1C69 1 73 4 73 10C73 18 66 25 56 35Z" stroke="#E02826" stroke-width="2.5" fill="none" />
+            <path d="M56 35L56 48M50 48L56 48L62 48" stroke="#E02826" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </div>
+      )}
+
+      <!-- Garabato en esquina inferior izquierda -->
+      {hasScribble && (
+        <div class="scribble-doodle" aria-hidden="true">
+          <svg viewBox="0 0 120 40" class="scribble-svg">
+            <path d="M5 25Q18 5 30 25T55 25T80 25T105 25" stroke="#E02826" stroke-width="3" fill="none" stroke-linecap="round" />
+          </svg>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Plumón apoyado sobre la Polaroid si se solicita -->
+  {hasMarkerPen && (
+    <div class="resting-marker-on-polaroid" aria-hidden="true">
+      <svg viewBox="0 0 240 70" class="marker-on-polaroid-svg">
+        <ellipse cx="120" cy="45" rx="100" ry="10" fill="rgba(40, 20, 10, 0.2)" filter="blur(4px)" />
+        <rect x="70" y="28" width="150" height="20" rx="3" fill="#B9C7D4" transform="rotate(5 70 28)" />
+        <polygon points="35,22 75,28 72,48 32,44" fill="#D32F2F" />
+        <polygon points="26,31 35,22 32,44 23,36" fill="#E2E7ED" />
+        <polygon points="10,32 26,31 23,36" fill="#B31A18" />
+      </svg>
+    </div>
+  )}
+</div>
+
+<style>
+  .polaroid-wrapper {
+    position: relative;
+    transform: rotate(var(--polaroid-rot));
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    filter: drop-shadow(0 14px 28px rgba(60, 45, 30, 0.16));
+    width: 290px;
+    margin: 0 auto;
+  }
+
+  .polaroid-wrapper:hover {
+    transform: rotate(0deg) scale(1.04);
+    z-index: 20;
+    filter: drop-shadow(0 22px 38px rgba(60, 45, 30, 0.24));
+  }
+
+  .polaroid-inner {
+    border-radius: 4px;
+    padding: 16px 16px 36px 16px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* Polaroid Blanca */
+  .polaroid-white-style .polaroid-inner {
+    background-color: #FFFFFF;
+    border: 1px solid rgba(220, 210, 200, 0.4);
+  }
+
+  /* Polaroid Roja (estilo pintado con plumón/óleo rojo) */
+  .polaroid-red-style .polaroid-inner {
+    background: linear-gradient(145deg, #d32f2f 0%, #b71c1c 100%);
+    border: 1px solid #9a1414;
+    padding: 18px 18px 45px 18px;
+  }
+
+  .photo-window {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #FAF8F5;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .polaroid-red-style .photo-window {
+    background-color: #FFFFFF;
+  }
+
+  .photo-blank-canvas {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .blank-title {
+    font-family: var(--font-handwriting);
+    font-size: 1.4rem;
+    color: var(--color-ink-muted);
+  }
+
+  .polaroid-footer-notes {
+    position: relative;
+    margin-top: 14px;
+    min-height: 38px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .polaroid-caption {
+    font-family: var(--font-notes);
+    font-size: 1.1rem;
+    color: var(--color-ink-black);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .polaroid-red-style .polaroid-caption {
+    color: #FFFFFF;
+  }
+
+  .stick-hearts-doodle {
+    position: absolute;
+    right: 4px;
+    bottom: -20px;
+    width: 75px;
+    height: 42px;
+  }
+
+  .stick-hearts-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .scribble-doodle {
+    position: absolute;
+    left: -4px;
+    bottom: -22px;
+    width: 90px;
+    height: 35px;
+  }
+
+  .scribble-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .resting-marker-on-polaroid {
+    position: absolute;
+    bottom: -15px;
+    left: -35px;
+    width: 250px;
+    height: 70px;
+    pointer-events: none;
+    z-index: 15;
+    transform: rotate(8deg);
+  }
+
+  .marker-on-polaroid-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 680px) {
+    .polaroid-wrapper {
+      width: 240px;
+    }
+  }
+</style>

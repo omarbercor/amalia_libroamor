@@ -1,0 +1,31 @@
+/* Tipografía Oficial Amaliafont_altas */
+@font-face {
+  font-family: 'Amaliafont_altas';
+  src: url('/fonts/amaliafont/Amaliafont_altas-Regular.woff2') format('woff2'),
+       url('/fonts/amaliafont/Amaliafont_altas-Regular.woff') format('woff'),
+       url('/fonts/amaliafont/Amaliafont_altas-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Color Principal Reutilizable en todo el sitio */
+  --color-primary-red: #EE2A22;
+  --color-marker-red: #EE2A22;
+  --color-marker-red-dark: #C91D17;
+
+  /* Fondo de Papel y Tonos Neutros */
+  --color-paper-base: #F7F1E5;
+  --color-text-main: #1E1A18;
+  --color-text-muted: #554E48;
+  --color-text-light: #8E847C;
+
+  /* Jerarquía Tipográfica Solicitada */
+  --font-primary-title: 'Amaliafont_altas', sans-serif;
+  --font-secondary-title: 'Mynerve', cursive, sans-serif;
+  --font-regular: 'Open Sans', sans-serif;
+
+  /* Transiciones */
+  --transition-smooth: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}

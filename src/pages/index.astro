@@ -1,0 +1,363 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import MainTitleAnimated from '../components/MainTitleAnimated.astro';
+import ActionButtonPorOtroAmor from '../components/ActionButtonPorOtroAmor.astro';
+import ActionButtonPorOtraVida from '../components/ActionButtonPorOtraVida.astro';
+import Footer from '../components/Footer.astro';
+import HeartDoodleAnimated from '../components/HeartDoodleAnimated.astro';
+import ScribbleDoodleAnimated from '../components/ScribbleDoodleAnimated.astro';
+import TopLeftScribbleAnimated from '../components/TopLeftScribbleAnimated.astro';
+import SpiralDoodleAnimated from '../components/SpiralDoodleAnimated.astro';
+---
+
+<Layout title="Uno siempre cambia al amor de su vida — 10 Años | Amalia Andrade">
+  <div class="home-container">
+    <!-- Header Consistente (3 columnas para Desktop y Mobile) -->
+    <Header showBack={false} />
+
+    <!-- Main Content Area -->
+    <main class="home-main">
+      <!-- Doodles Superiores -->
+      <div class="doodle-top-left" aria-hidden="true">
+        <TopLeftScribbleAnimated width="130" height="115" />
+      </div>
+
+      <div class="doodle-top-right" aria-hidden="true">
+        <HeartDoodleAnimated width="100" height="137" />
+      </div>
+
+      <!-- Tapa de plumón a la izquierda -->
+      <div class="marker-cap-wrapper" aria-hidden="true">
+        <img 
+          src="/assets/home/tapa.png" 
+          alt="Tapa del plumón" 
+          class="marker-cap-img"
+          width="155"
+          height="65"
+        />
+      </div>
+
+      <!-- Doodle espiral inferior izquierdo -->
+      <div class="doodle-spiral-left" aria-hidden="true">
+        <SpiralDoodleAnimated width="36" height="290" />
+      </div>
+
+      <!-- Centro: Título y Botones -->
+      <div class="center-content-block">
+        <h1 class="main-title-wrapper" aria-label="Uno siempre cambia al amor de su vida">
+          <MainTitleAnimated />
+        </h1>
+
+        <!-- Botones de Acción con efecto Wave al hacer hover -->
+        <div class="home-actions-group">
+          <ActionButtonPorOtroAmor />
+          <ActionButtonPorOtraVida />
+        </div>
+
+        <!-- Frase tachada (objeto separado del plumón, siempre debajo de los botones) -->
+        <div class="crossed-phrase-box" aria-hidden="true">
+          <img 
+            src="/assets/home/doodle-2.png" 
+            alt="El amor era una casa que se incendió - frase tachada" 
+            class="crossed-phrase-img"
+            width="400"
+            height="110"
+          />
+        </div>
+      </div>
+
+      <!-- Doodle garabato medio derecho -->
+      <div class="doodle-mid-right" aria-hidden="true">
+        <ScribbleDoodleAnimated width="180" height="58" />
+      </div>
+
+      <!-- Plumón reposando (Esquina inferior derecha) -->
+      <div class="marker-pen-box" aria-hidden="true">
+        <img 
+          src="/assets/home/plumon.png" 
+          alt="Plumón rojo" 
+          class="marker-pen-img"
+          width="550"
+          height="68"
+        />
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <Footer />
+  </div>
+</Layout>
+
+<style>
+  .home-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 1.5rem 3rem 1.8rem 3rem;
+  }
+
+  /* Main Area */
+  .home-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    margin: 3rem 0;
+  }
+
+  .center-content-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3.2rem;
+    z-index: 5;
+    width: 100%;
+    max-width: 820px;
+  }
+
+  .main-title-wrapper {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .main-title-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Botones de Acción */
+  .home-actions-group {
+    display: flex;
+    gap: 3.5rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .home-action-btn {
+    display: inline-block;
+    opacity: 0;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+  }
+
+  .home-action-btn:hover {
+    filter: drop-shadow(0 8px 16px rgba(238, 42, 34, 0.25));
+  }
+
+  .home-action-btn:active {
+    transform: scale(0.98);
+  }
+
+  .action-btn-svg {
+    width: 180px;
+    max-width: 180px;
+    height: auto;
+    display: block;
+  }
+
+  /* Doodles y Assets con Posicionamiento Absoluto Fiel a 001-home-desktop.jpg */
+  .doodle-top-left {
+    position: absolute;
+    top: 5%;
+    left: 8%;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .doodle-top-right {
+    position: absolute;
+    top: 7%;
+    right: 5%;
+    width: 70px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .doodle-top-right :global(.heart-doodle-container),
+  .doodle-top-right :global(svg) {
+    width: 70px;
+    height: auto;
+  }
+
+  .marker-cap-wrapper {
+    position: absolute;
+    top: 32%;
+    left: -20px;
+    pointer-events: none;
+    z-index: 3;
+    transform: rotate(-3deg);
+  }
+
+  .doodle-mid-right {
+    position: absolute;
+    top: 74%;
+    right: 5%;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .doodle-spiral-left {
+    position: absolute;
+    bottom: -9%;
+    left: -45px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Frase tachada: separada del plumón y siempre debajo de los botones de acción */
+  .crossed-phrase-box {
+    margin-top: 0;
+    display: flex;
+    justify-content: flex-end;
+    pointer-events: none;
+    z-index: 3;
+    width: 100%;
+  }
+
+  .crossed-phrase-img {
+    width: 320px;
+    height: auto;
+    display: block;
+  }
+
+  /* Plumón reposando (Esquina inferior derecha) */
+  .marker-pen-box {
+    position: absolute;
+    bottom: -1%;
+    right: -25px;
+    pointer-events: none;
+    z-index: 4;
+    transform: rotate(-8deg);
+  }
+
+  .marker-pen-img {
+    width: 440px;
+    height: auto;
+    display: block;
+    filter: drop-shadow(4px 8px 12px rgba(60, 40, 20, 0.18));
+  }
+
+  /* Responsive Mobile Fiel a 001-home-mobile.jpg */
+  @media (max-width: 860px) {
+    .home-container {
+      padding: 1.2rem 1.4rem;
+      min-height: 100vh;
+    }
+
+    .home-header {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+
+
+    .center-content-block {
+      gap: 4.4rem;
+      margin: 1.5rem 0;
+    }
+
+    .main-title-wrapper {
+      max-width: 90vw;
+    }
+
+    .home-actions-group {
+      flex-direction: column;
+      gap: 1.5rem;
+      width: 100%;
+    }
+
+    .action-btn-svg {
+      width: 260px;
+      max-width: 260px;
+    }
+
+    .doodle-top-left {
+      top: -5%;
+      left: -3%;
+      width: 75px;
+    }
+
+    .doodle-top-left :global(.top-left-scribble-container),
+    .doodle-top-left :global(svg) {
+      width: 75px;
+      height: auto;
+    }
+
+    .doodle-top-right {
+      top: -3%;
+      right: 0%;
+      width: 70px;
+    }
+
+    .doodle-top-right :global(.heart-doodle-container),
+    .doodle-top-right :global(svg) {
+      width: 70px;
+      height: auto;
+    }
+
+    .marker-cap-wrapper {
+      top: 24%;
+      left: -15px;
+      width: 95px;
+    }
+
+    .doodle-mid-right {
+      top: 27%;
+      right: 0%;
+      width: 120px;
+    }
+
+    .doodle-mid-right :global(.scribble-doodle-container),
+    .doodle-mid-right :global(svg) {
+      width: 120px;
+      height: auto;
+    }
+
+    .doodle-spiral-left {
+      bottom: -2%;
+      left: -22px;
+      width: 24px;
+    }
+
+    .doodle-spiral-left :global(.spiral-doodle-container),
+    .doodle-spiral-left :global(svg) {
+      width: 24px;
+      height: auto;
+    }
+
+    .crossed-phrase-box {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      justify-content: center;
+    }
+
+    .crossed-phrase-img {
+      width: 250px;
+    }
+
+    .marker-pen-box {
+      position: relative;
+      right: auto;
+      bottom: auto;
+      transform: rotate(-6deg);
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .marker-pen-img {
+      width: 320px;
+    }
+  }
+</style>

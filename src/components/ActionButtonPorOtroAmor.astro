@@ -1,0 +1,118 @@
+---
+// ActionButtonPorOtroAmor.astro - Botón con caja roja y textos vectoriales trazados
+interface Props {
+  href?: string;
+  class?: string;
+}
+
+const { href = "/por-otro-amor", class: className = "" } = Astro.props;
+---
+
+<a href={href} class={`home-action-btn btn-stretch-por-otro-amor ${className}`} aria-label="Por otro amor">
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 279.9 107"
+    class="action-btn-svg"
+    aria-hidden="true"
+  >
+    <defs>
+      <clipPath id="clippath-btn1">
+        <rect y="0" width="279.9" height="107" fill="none"/>
+      </clipPath>
+    </defs>
+    <!-- Capa 1: Fondo contenedor rojo -->
+    <g id="btn1_container" class="btn-box-group" clip-path="url(#clippath-btn1)">
+      <path 
+        id="btn1_bg" 
+        class="btn-bg-path" 
+        fill="#ee2a22" 
+        d="M1.1,12.6C1.4,6.3,6.7,1.5,13,1.8,57.8,3.7,208.7.8,271.3,0c2.6,0,5.6.1,7.3,2.1,1.3,1.6,1.3,3.9,1.3,6-.6,26.9-1.3,53.7-1.9,80.6,0,3.9-.3,8.1-2.5,11.4-3.8,5.6-11.7,6.1-18.5,6-79.1-1.1-242.2,4.6-249.8-3.6C-1.5,93.1-.5,41.8,1.1,12.6"
+      />
+    </g>
+
+    <!-- Capa 2: Trazos vectoriales de texto "POR OTRO AMOR" ordenados de izquierda a derecha -->
+    <g id="btn1_text_group" class="btn-text-strokes" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="5">
+      <!-- P -->
+      <path class="btn-text-stroke" d="M24.8,54.3s7,1.7,8.3-4.5c0,0,1.5-7.4-7.2-6.8l-2.9,22.8"/>
+      <!-- O -->
+      <path class="btn-text-stroke" d="M45.3,43.6s-5.4,2.2-5.7,11.4c-.3,8.6,5.3,8.6,5.3,8.6,0,0,5.6-.3,4.7-10.4s-3.6-9.2-5.1-9.2"/>
+      <!-- R (asta) -->
+      <path class="btn-text-stroke" d="M58.9,40.6s-.6,16.3-3.1,24.6"/>
+      <!-- R (bucle + pierna) -->
+      <path class="btn-text-stroke" d="M59.9,40.6s2.1-3.6,6.6-1.3c6.8,3.5.8,12.3-6,8.3l2.6,1,11.7,18.3"/>
+
+      <!-- O -->
+      <path class="btn-text-stroke" d="M102.7,44.3s-5.8.5-5.2,8.6c.6,8.3,6.8,7.6,6.8,7.6,0,0,5.5-1.8,4.9-8.7-.6-6.9-5.3-8.2-6.8-7.8"/>
+      <!-- T (barra horizontal) -->
+      <path class="btn-text-stroke" d="M117.6,44.1s5.8-1.9,14.2-2.4"/>
+      <!-- T (asta vertical) -->
+      <path class="btn-text-stroke" d="M124.2,64.5s-.4-16.4,0-20.3"/>
+      <!-- R (asta) -->
+      <path class="btn-text-stroke" d="M138.9,41.5s-.2,15.4-1.6,24.4"/>
+      <!-- R (bucle + pierna) -->
+      <path class="btn-text-stroke" d="M139.9,41.4s2.1-3.6,6.6-1.3c6.8,3.5.8,12.3-6,8.3l2.6,1,10.5,15"/>
+      <!-- O -->
+      <path class="btn-text-stroke" d="M162.7,42.2s-5.1.2-4.3,7.4,5.8,9,5.8,9c0,0,6.1.2,5.6-8s-6.5-8.8-8.2-8.7"/>
+
+      <!-- A (diagonal + pierna) -->
+      <path class="btn-text-stroke" d="M182.1,62.3l5.5-18.5s1.6-4,2.3,2.4,2.2,17,2.2,17"/>
+      <!-- A (travesaño) -->
+      <line class="btn-text-stroke" x1="184.5" y1="55.1" x2="190.5" y2="55.1"/>
+      <!-- M -->
+      <path class="btn-text-stroke" d="M198.5,64.4l2.4-16.7,1.1-3.5,4,15.9,1-.3s4.9-16.2,7.2-19c0,0,1.5,17.5.7,25.1"/>
+      <!-- O -->
+      <path class="btn-text-stroke" d="M227.2,42.9s-5.4,2.2-5.7,11.4c-.3,8.6,5.3,8.6,5.3,8.6,0,0,5.6-.3,4.7-10.4-.9-11.2-3.6-9.2-5.1-9.2"/>
+      <!-- R (asta) -->
+      <path class="btn-text-stroke" d="M241.6,40.8c-1.3,13.4-.5,16.7-3.3,26.3"/>
+      <!-- R (bucle + pierna) -->
+      <path class="btn-text-stroke" d="M242.9,41.7s2.1-3.6,6.6-1.3c6.8,3.5.8,12.3-6,8.3l2.6,1,10.3,16.1"/>
+    </g>
+  </svg>
+</a>
+
+<style>
+  .btn-stretch-por-otro-amor {
+    display: inline-block;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .btn-stretch-por-otro-amor:hover {
+    transform: scale(1.2);
+  }
+
+  .btn-stretch-por-otro-amor:hover .btn-bg-path {
+    fill: #000000;
+  }
+
+  .btn-stretch-por-otro-amor:active {
+    transform: scale(1.15);
+  }
+
+  .action-btn-svg {
+    width: 180px;
+    max-width: 180px;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .btn-box-group {
+    transform-origin: center;
+  }
+
+  .btn-bg-path {
+    transition: fill 0.25s ease;
+  }
+
+  .btn-text-stroke {
+    stroke: #ffffff;
+  }
+
+  @media (max-width: 860px) {
+    .action-btn-svg {
+      width: 260px;
+      max-width: 260px;
+    }
+  }
+</style>
