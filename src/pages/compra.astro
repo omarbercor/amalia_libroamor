@@ -132,6 +132,9 @@ const col3 = countries.filter(c => ['co', 'mx', 'uy'].includes(c.id));
     flex-direction: column;
     justify-content: space-between;
     position: relative;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 1.5rem 3rem 1.8rem 3rem;
     overflow-x: hidden;
   }
 
@@ -140,7 +143,7 @@ const col3 = countries.filter(c => ['co', 'mx', 'uy'].includes(c.id));
     max-width: 1300px;
     margin: 0 auto;
     width: 100%;
-    padding: 1rem 2.5rem 3rem 2.5rem;
+    padding: 1rem 0 3rem 0;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -250,6 +253,12 @@ const col3 = countries.filter(c => ['co', 'mx', 'uy'].includes(c.id));
   }
 
   @media (max-width: 860px) {
+    .compra-page {
+      padding: 1.2rem 1.4rem 1.4rem 1.4rem;
+    }
+    .compra-main {
+      padding: 1rem 0 2rem 0;
+    }
     .countries-grid {
       grid-template-columns: 1fr;
       gap: 2.2rem;

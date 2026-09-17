@@ -1,0 +1,88 @@
+---
+// SeparadorSmall.astro - Separador vectorial rojo con trazo imperfecto y soporte de animación DrawSVG
+interface Props {
+  class?: string;
+  width?: string;
+  animated?: boolean;
+  id?: string;
+}
+
+const { 
+  class: className = "", 
+  width = "175px", 
+  animated = false,
+  id = ""
+} = Astro.props;
+---
+
+<div class={`separador-small-wrapper ${className}`} aria-hidden="true">
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 174.1 10" 
+    class="separador-small-svg"
+  >
+    <line 
+      id={id || undefined}
+      class={`separador-line ${animated ? 'separador-animated' : ''}`}
+      x1="3.6" 
+      y1="5.9" 
+      x2="171" 
+      y2="5" 
+      fill="none" 
+      stroke="#EE2A22" 
+      stroke-linecap="round" 
+      stroke-linejoin="round" 
+      stroke-width="4"
+    />
+  </svg>
+</div>
+
+<style define:vars={{ width }}>
+  .separador-small-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .separador-small-svg {
+    width: var(--width);
+    max-width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .separador-line {
+    stroke: var(--color-marker-red, #EE2A22);
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
+
+  gsap.registerPlugin(DrawSVGPlugin);
+
+  const initSeparadorAnimations = () => {
+    const lines = document.querySelectorAll('.separador-animated') as NodeListOf<SVGLineElement>;
+    if (!lines.length) return;
+
+    lines.forEach((line, index) => {
+      gsap.set(line, { drawSVG: '0%' });
+      gsap.to(line, {
+        drawSVG: '100%',
+        duration: 0.9,
+        delay: 0.2 + (index * 0.25),
+        ease: 'power2.out'
+      });
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSeparadorAnimations);
+  } else {
+    initSeparadorAnimations();
+  }
+</script>

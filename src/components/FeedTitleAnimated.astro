@@ -1,0 +1,100 @@
+---
+// FeedTitleAnimated.astro - Título con tipografía Amaliafont_altas y subrayado animado con SVG Draw
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<div class={`feed-title-wrapper ${className}`}>
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 605.5 227.6" 
+    class="feed-title-svg" 
+    aria-label="lo que este libro me ha provocado"
+  >
+    <!-- Capa 1: Textos trazados/vectorizados con Amaliafont_altas (visibles estables) -->
+    <g id="Layer_1" class="feed-title-text-group">
+      <g class="feed-title-text-inner">
+        <text class="title-text-line" transform="translate(9.9 108.4) rotate(-5)">
+          <tspan x="0" y="0">lo que este libro </tspan>
+        </text>
+        <text class="title-text-line" transform="translate(34.1 182.6) rotate(-5)">
+          <tspan x="0" y="0">me ha provocado</tspan>
+        </text>
+      </g>
+    </g>
+
+    <!-- Capa 2: Subrayado rojo que se anima con SVG Draw -->
+    <g id="Layer_2" class="feed-title-underline-group">
+      <path 
+        id="feedTitleUnderline" 
+        class="feed-title-underline" 
+        d="M26.3,214.1s338.8-56.5,547.4-48.8c0,0,19.6-2.9-15.4-8.3"
+      />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .feed-title-wrapper {
+    width: 100%;
+    max-width: 580px;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .feed-title-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .title-text-line {
+    fill: var(--color-marker-red, #EE2A22);
+    font-family: 'Amaliafont_altas-Regular', 'Amaliafont_altas', sans-serif;
+    font-size: 60px;
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    user-select: none;
+  }
+
+  .feed-title-underline {
+    fill: none;
+    stroke: var(--color-marker-red, #EE2A22);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 8px;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
+
+  gsap.registerPlugin(DrawSVGPlugin);
+
+  const initUnderlineAnimation = () => {
+    const underline = document.getElementById('feedTitleUnderline');
+    if (!underline) return;
+
+    // Inicializar el subrayado oculto
+    gsap.set(underline, { drawSVG: '0%' });
+
+    // Animar el trazo del subrayado de izquierda a derecha
+    gsap.to(underline, {
+      drawSVG: '100%',
+      duration: 1.1,
+      delay: 0.35,
+      ease: 'power2.out'
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initUnderlineAnimation);
+  } else {
+    initUnderlineAnimation();
+  }
+</script>

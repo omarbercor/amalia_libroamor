@@ -99,25 +99,25 @@ const { class: className = '', width = '100', height = '137' } = Astro.props;
       defaults: { ease: 'power2.out' }
     });
 
-    // 1. Trazar el contorno del corazón
+    // 1. Trazar el contorno del corazón (reducido a la mitad)
     tlHeart.to(contour, {
       drawSVG: '100%',
-      duration: 1.2,
+      duration: 0.6,
       ease: 'power1.inOut'
     })
     // 2. Trazar la sonrisa
     .to(smile, {
       drawSVG: '100%',
-      duration: 0.45,
+      duration: 0.22,
       ease: 'power2.out'
-    }, '-=0.1')
+    }, '-=0.05')
     // 3. Pop de los ojos (puntos)
     .to([eyeLeft, eyeRight], {
       scale: 1,
-      duration: 0.35,
-      stagger: 0.1,
+      duration: 0.18,
+      stagger: 0.05,
       ease: 'back.out(2)'
-    }, '-=0.15');
+    }, '-=0.08');
   }
 
   function setupHeart() {
@@ -126,7 +126,7 @@ const { class: className = '', width = '100', height = '137' } = Astro.props;
     // Escuchar el evento de finalización del título y los botones
     const onIntroCompleted = () => {
       window.removeEventListener('intro-animation-completed', onIntroCompleted);
-      startHeartDrawing(2.0); // Exactamente 2s después
+      startHeartDrawing(1.0); // Reducido a la mitad (1s después)
     };
 
     window.addEventListener('intro-animation-completed', onIntroCompleted);

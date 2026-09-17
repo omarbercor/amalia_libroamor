@@ -9,6 +9,7 @@ import HeartDoodleAnimated from '../components/HeartDoodleAnimated.astro';
 import ScribbleDoodleAnimated from '../components/ScribbleDoodleAnimated.astro';
 import TopLeftScribbleAnimated from '../components/TopLeftScribbleAnimated.astro';
 import SpiralDoodleAnimated from '../components/SpiralDoodleAnimated.astro';
+import InteractiveSharpieCanvas from '../components/InteractiveSharpieCanvas.astro';
 ---
 
 <Layout title="Uno siempre cambia al amor de su vida — 10 Años | Amalia Andrade">
@@ -72,15 +73,9 @@ import SpiralDoodleAnimated from '../components/SpiralDoodleAnimated.astro';
         <ScribbleDoodleAnimated width="180" height="58" />
       </div>
 
-      <!-- Plumón reposando (Esquina inferior derecha) -->
-      <div class="marker-pen-box" aria-hidden="true">
-        <img 
-          src="/assets/home/plumon.png" 
-          alt="Plumón rojo" 
-          class="marker-pen-img"
-          width="550"
-          height="68"
-        />
+      <!-- Plumón Interactivo que toma el lugar exacto del plumón reposando -->
+      <div class="marker-pen-box">
+        <InteractiveSharpieCanvas />
       </div>
     </main>
 
@@ -143,6 +138,8 @@ import SpiralDoodleAnimated from '../components/SpiralDoodleAnimated.astro';
     justify-content: center;
     align-items: center;
     width: 100%;
+    position: relative;
+    z-index: 25;
   }
 
   .home-action-btn {
@@ -231,21 +228,13 @@ import SpiralDoodleAnimated from '../components/SpiralDoodleAnimated.astro';
     display: block;
   }
 
-  /* Plumón reposando (Esquina inferior derecha) */
+  /* Contenedor del plumón interactivo (Esquina inferior derecha) */
   .marker-pen-box {
     position: absolute;
     bottom: -1%;
     right: -25px;
-    pointer-events: none;
-    z-index: 4;
-    transform: rotate(-8deg);
-  }
-
-  .marker-pen-img {
-    width: 440px;
-    height: auto;
-    display: block;
-    filter: drop-shadow(4px 8px 12px rgba(60, 40, 20, 0.18));
+    z-index: 15;
+    pointer-events: auto;
   }
 
   /* Responsive Mobile Fiel a 001-home-mobile.jpg */
@@ -349,15 +338,10 @@ import SpiralDoodleAnimated from '../components/SpiralDoodleAnimated.astro';
       position: relative;
       right: auto;
       bottom: auto;
-      transform: rotate(-6deg);
       display: flex;
       justify-content: center;
       width: 100%;
       margin-bottom: 1rem;
-    }
-
-    .marker-pen-img {
-      width: 320px;
     }
   }
 </style>
