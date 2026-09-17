@@ -96,39 +96,30 @@ const { class: className = '', width = '140', height = '138', color = '#EE2A22' 
 
   gsap.registerPlugin(DrawSVGPlugin);
 
-  function playSillasDrawAnimation() {
-    const letters = document.querySelectorAll('#sillasDoodleSvg .letter-stroke');
-    const chairStrokes = document.querySelectorAll('#sillasDoodleSvg .chair-stroke');
-    if (!letters.length || !chairStrokes.length) return;
+  function initSillasAnimation() {
+    const strokes = document.querySelectorAll('#sillasDoodleSvg .sillas-draw-stroke');
+    if (!strokes || strokes.length === 0) return;
 
-    gsap.killTweensOf([letters, chairStrokes]);
-    gsap.set([letters, chairStrokes], { drawSVG: '0%' });
+    gsap.set(strokes, { drawSVG: '0%' });
 
     const tl = gsap.timeline({
+      delay: 0.3,
       defaults: { ease: 'power1.inOut' }
     });
 
+    const letters = document.querySelectorAll('#sillasDoodleSvg .letter-stroke');
+    const chairStrokes = document.querySelectorAll('#sillasDoodleSvg .chair-stroke');
+
     tl.to(letters, {
       drawSVG: '100%',
-      duration: 0.6,
-      stagger: 0.05,
+      duration: 0.8,
+      stagger: 0.08,
     })
     .to(chairStrokes, {
       drawSVG: '100%',
-      duration: 0.9,
-      stagger: 0.04,
-    }, '-=0.2');
-  }
-
-  function initSillasAnimation() {
-    const container = document.querySelector('.sillas-doodle-container');
-    if (!container) return;
-
-    setTimeout(playSillasDrawAnimation, 300);
-
-    container.addEventListener('mouseenter', () => {
-      playSillasDrawAnimation();
-    });
+      duration: 1.4,
+      stagger: 0.06,
+    }, '-=0.3');
   }
 
   document.addEventListener('DOMContentLoaded', initSillasAnimation);

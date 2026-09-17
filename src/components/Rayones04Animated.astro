@@ -59,29 +59,16 @@ const { class: className = '', width = '155', height = '67' } = Astro.props;
 
   gsap.registerPlugin(DrawSVGPlugin);
 
-  function playRayonesAnimation() {
+  function initRayones() {
     const path = document.querySelector('.rayones-compra-wrapper .rayones-path');
     if (!path) return;
 
-    gsap.killTweensOf(path);
     gsap.set(path, { drawSVG: '0%' });
     gsap.to(path, {
       drawSVG: '100%',
-      duration: 1.2,
+      duration: 1.5,
+      delay: 0.3,
       ease: 'power1.inOut'
-    });
-  }
-
-  function initRayones() {
-    const wrappers = document.querySelectorAll('.rayones-compra-wrapper');
-    if (!wrappers.length) return;
-
-    setTimeout(playRayonesAnimation, 300);
-
-    wrappers.forEach((wrapper) => {
-      wrapper.addEventListener('mouseenter', () => {
-        playRayonesAnimation();
-      });
     });
   }
 

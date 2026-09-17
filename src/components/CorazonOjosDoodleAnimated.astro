@@ -90,51 +90,40 @@ const { class: className = '', width = '110', height = '118' } = Astro.props;
 
   gsap.registerPlugin(DrawSVGPlugin);
 
-  function playCorazonDrawAnimation() {
+  function initCorazonOjosAnimation() {
     const contorno = document.getElementById('corazonOjosContorno');
     const boca = document.getElementById('corazonOjosBoca');
     const ojoIzq = document.getElementById('corazonOjoIzq');
     const ojoDer = document.getElementById('corazonOjoDer');
 
-    if (!contorno || !boca || !ojoIzq || !ojoDer) return;
+    if (!contorno) return;
 
-    gsap.killTweensOf([contorno, boca, ojoIzq, ojoDer]);
     gsap.set([contorno, boca, ojoIzq, ojoDer], { drawSVG: '0%' });
 
     const tl = gsap.timeline({
+      delay: 0.5,
       defaults: { ease: 'power2.inOut' }
     });
 
     // 1. Dibujar contorno del corazón
     tl.to(contorno, {
       drawSVG: '100%',
-      duration: 0.8,
+      duration: 1.1,
       ease: 'power1.inOut',
     })
     // 2. Dibujar ojos en simultáneo
     .to([ojoIzq, ojoDer], {
       drawSVG: '100%',
-      duration: 0.5,
-      stagger: 0.1,
+      duration: 0.7,
+      stagger: 0.15,
       ease: 'power2.out',
-    }, '-=0.15')
+    }, '-=0.2')
     // 3. Dibujar la sonrisa
     .to(boca, {
       drawSVG: '100%',
-      duration: 0.4,
+      duration: 0.5,
       ease: 'power2.out',
-    }, '-=0.15');
-  }
-
-  function initCorazonOjosAnimation() {
-    const container = document.querySelector('.corazon-ojos-container');
-    if (!container) return;
-
-    setTimeout(playCorazonDrawAnimation, 400);
-
-    container.addEventListener('mouseenter', () => {
-      playCorazonDrawAnimation();
-    });
+    }, '-=0.2');
   }
 
   document.addEventListener('DOMContentLoaded', initCorazonOjosAnimation);

@@ -71,16 +71,16 @@ const { class: className = '', width = '140', height = '74' } = Astro.props;
 
   gsap.registerPlugin(DrawSVGPlugin);
 
-  function playCorazonCuritaAnimation() {
+  function initCorazonCurita() {
     const strokes = document.querySelectorAll('#corazonCuritaSvg .curita-draw-stroke');
     const dots = document.querySelectorAll('#corazonCuritaSvg .curita-dot');
     if (!strokes.length) return;
 
-    gsap.killTweensOf([strokes, dots]);
     gsap.set(strokes, { drawSVG: '0%' });
     gsap.set(dots, { scale: 0, transformOrigin: 'center' });
 
     const tl = gsap.timeline({
+      delay: 0.3,
       defaults: { ease: 'power1.inOut' }
     });
 
@@ -95,17 +95,6 @@ const { class: className = '', width = '140', height = '74' } = Astro.props;
       stagger: 0.04,
       ease: 'back.out(2)'
     }, '-=0.3');
-  }
-
-  function initCorazonCurita() {
-    const container = document.querySelector('.corazon-curita-container');
-    if (!container) return;
-
-    setTimeout(playCorazonCuritaAnimation, 300);
-
-    container.addEventListener('mouseenter', () => {
-      playCorazonCuritaAnimation();
-    });
   }
 
   document.addEventListener('DOMContentLoaded', initCorazonCurita);
