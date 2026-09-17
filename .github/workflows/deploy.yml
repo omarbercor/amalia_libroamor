@@ -8,13 +8,31 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
+    defaults:
+      run:
+        shell: bash -l {0}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+        continue-on-error: true
+
       - name: Install dependencies
-        run: npm ci
+        run: |
+          # Si NVM o CloudPanel tiene Node en rutas de usuario, cargarlas en el PATH
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          export PATH="$HOME/.nvm/versions/node/$(ls $HOME/.nvm/versions/node 2>/dev/null | tail -n 1)/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:$PATH"
+
+          echo "Usando Node: $(which node || echo 'no encontrado')"
+          echo "Usando NPM: $(which npm || echo 'no encontrado')"
+
+          npm ci
 
       - name: Build Astro static site
         run: npm run build
