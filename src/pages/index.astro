@@ -145,15 +145,6 @@ import InteractiveSharpieCanvas from '../components/InteractiveSharpieCanvas.ast
   .home-action-btn {
     display: inline-block;
     opacity: 0;
-    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
-  }
-
-  .home-action-btn:hover {
-    filter: drop-shadow(0 8px 16px rgba(238, 42, 34, 0.25));
-  }
-
-  .home-action-btn:active {
-    transform: scale(0.98);
   }
 
   .action-btn-svg {
@@ -168,7 +159,7 @@ import InteractiveSharpieCanvas from '../components/InteractiveSharpieCanvas.ast
     position: absolute;
     top: 5%;
     left: 8%;
-    pointer-events: none;
+    pointer-events: auto;
     z-index: 2;
   }
 
@@ -177,7 +168,7 @@ import InteractiveSharpieCanvas from '../components/InteractiveSharpieCanvas.ast
     top: 7%;
     right: 5%;
     width: 70px;
-    pointer-events: none;
+    pointer-events: auto;
     z-index: 2;
   }
 
@@ -200,7 +191,7 @@ import InteractiveSharpieCanvas from '../components/InteractiveSharpieCanvas.ast
     position: absolute;
     top: 74%;
     right: 5%;
-    pointer-events: none;
+    pointer-events: auto;
     z-index: 2;
   }
 
@@ -208,7 +199,7 @@ import InteractiveSharpieCanvas from '../components/InteractiveSharpieCanvas.ast
     position: absolute;
     bottom: -9%;
     left: -45px;
-    pointer-events: none;
+    pointer-events: auto;
     z-index: 2;
   }
 

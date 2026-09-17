@@ -31,6 +31,7 @@ const { class: className = '', width = '36', height = '290' } = Astro.props;
   .spiral-doodle-container {
     display: inline-block;
     line-height: 0;
+    cursor: default;
   }
 
   .spiral-doodle-svg {
@@ -51,5 +52,35 @@ const { class: className = '', width = '36', height = '290' } = Astro.props;
 </style>
 
 <script>
-  // La espiral izquierda permanece visible desde el inicio
+  import { gsap } from 'gsap';
+  import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
+
+  gsap.registerPlugin(DrawSVGPlugin);
+
+  function playSpiralAnimation() {
+    const spiral = document.getElementById('spiral-path');
+    if (!spiral) return;
+
+    gsap.killTweensOf(spiral);
+    gsap.set(spiral, { drawSVG: '0%' });
+    gsap.to(spiral, {
+      drawSVG: '100%',
+      duration: 1.2,
+      ease: 'power1.inOut'
+    });
+  }
+
+  function initSpiralAnimation() {
+    const container = document.querySelector('.spiral-doodle-container');
+    if (!container) return;
+
+    setTimeout(playSpiralAnimation, 200);
+
+    container.addEventListener('mouseenter', () => {
+      playSpiralAnimation();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initSpiralAnimation);
+  document.addEventListener('astro:page-load', initSpiralAnimation);
 </script>

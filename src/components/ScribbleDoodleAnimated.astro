@@ -31,6 +31,7 @@ const { class: className = '', width = '180', height = '55' } = Astro.props;
   .scribble-doodle-container {
     display: inline-block;
     line-height: 0;
+    cursor: default;
   }
 
   .scribble-svg {
@@ -51,5 +52,33 @@ const { class: className = '', width = '180', height = '55' } = Astro.props;
 </style>
 
 <script>
-  // El garabato derecho permanece visible desde el inicio
+  import { gsap } from 'gsap';
+  import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
+
+  gsap.registerPlugin(DrawSVGPlugin);
+
+  function playScribbleAnimation() {
+    const scribble = document.getElementById('scribble-path');
+    if (!scribble) return;
+
+    gsap.killTweensOf(scribble);
+    gsap.set(scribble, { drawSVG: '0%' });
+    gsap.to(scribble, {
+      drawSVG: '100%',
+      duration: 1.1,
+      ease: 'power1.inOut'
+    });
+  }
+
+  function initScribble() {
+    const container = document.querySelector('.scribble-doodle-container');
+    if (!container) return;
+
+    container.addEventListener('mouseenter', () => {
+      playScribbleAnimation();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initScribble);
+  document.addEventListener('astro:page-load', initScribble);
 </script>

@@ -5,7 +5,7 @@ interface Props {
   class?: string;
 }
 
-const { href = "/por-otro-amor", class: className = "" } = Astro.props;
+const { href = "/me-ha-provocado#otro-amor", class: className = "" } = Astro.props;
 ---
 
 <a href={href} class={`home-action-btn btn-stretch-por-otro-amor ${className}`} aria-label="Por otro amor">
@@ -74,19 +74,10 @@ const { href = "/por-otro-amor", class: className = "" } = Astro.props;
   .btn-stretch-por-otro-amor {
     display: inline-block;
     cursor: pointer;
-    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .btn-stretch-por-otro-amor:hover {
-    transform: scale(1.2);
   }
 
   .btn-stretch-por-otro-amor:hover .btn-bg-path {
     fill: #000000;
-  }
-
-  .btn-stretch-por-otro-amor:active {
-    transform: scale(1.15);
   }
 
   .action-btn-svg {

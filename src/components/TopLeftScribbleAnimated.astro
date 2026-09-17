@@ -38,6 +38,7 @@ const { class: className = '', width = '130', height = '115' } = Astro.props;
   .top-left-scribble-container {
     display: inline-block;
     line-height: 0;
+    cursor: default;
   }
 
   .top-left-scribble-svg {
@@ -58,5 +59,34 @@ const { class: className = '', width = '130', height = '115' } = Astro.props;
 </style>
 
 <script>
-  // El garabato superior izquierdo permanece visible desde el inicio
+  import { gsap } from 'gsap';
+  import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
+
+  gsap.registerPlugin(DrawSVGPlugin);
+
+  function playTopLeftAnimation() {
+    const strokes = document.querySelectorAll('#topLeftScribbleSvg .top-left-stroke');
+    if (!strokes.length) return;
+
+    gsap.killTweensOf(strokes);
+    gsap.set(strokes, { drawSVG: '0%' });
+    gsap.to(strokes, {
+      drawSVG: '100%',
+      duration: 0.9,
+      stagger: 0.15,
+      ease: 'power1.inOut'
+    });
+  }
+
+  function initTopLeftScribble() {
+    const container = document.querySelector('.top-left-scribble-container');
+    if (!container) return;
+
+    container.addEventListener('mouseenter', () => {
+      playTopLeftAnimation();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initTopLeftScribble);
+  document.addEventListener('astro:page-load', initTopLeftScribble);
 </script>

@@ -80,6 +80,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    cursor: default;
   }
 
   .animated-title-svg {
@@ -225,6 +226,45 @@
       // Notificar que el título y los botones ya terminaron de mostrarse
       tl.call(() => {
         window.dispatchEvent(new CustomEvent('intro-animation-completed'));
+      });
+    }
+
+    // Redibujo en hover sobre el título principal
+    const titleContainer = document.getElementById('titleSvgContainer');
+    if (titleContainer) {
+      titleContainer.addEventListener('mouseenter', () => {
+        gsap.killTweensOf(allStrokes);
+        gsap.set(allStrokes, { drawSVG: '0%' });
+
+        const hoverTl = gsap.timeline({
+          defaults: { ease: 'power1.inOut' }
+        });
+
+        hoverTl.to(l1Strokes, {
+          drawSVG: '100%',
+          duration: 0.35,
+          stagger: 0.04
+        })
+        .to(l2Strokes, {
+          drawSVG: '100%',
+          duration: 0.32,
+          stagger: 0.035
+        }, '-=0.08')
+        .to(sub1, {
+          drawSVG: '100%',
+          duration: 0.45,
+          ease: 'power2.out'
+        }, '-=0.05')
+        .to(l3Strokes, {
+          drawSVG: '100%',
+          duration: 0.32,
+          stagger: 0.04
+        }, '-=0.1')
+        .to(sub2, {
+          drawSVG: '100%',
+          duration: 0.4,
+          ease: 'power2.out'
+        }, '-=0.05');
       });
     }
   }

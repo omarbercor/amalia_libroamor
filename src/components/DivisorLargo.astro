@@ -1,0 +1,76 @@
+---
+// DivisorLargo.astro - Divisor largo oficial rojo con animación DrawSVG
+interface Props {
+  class?: string;
+  width?: string;
+  color?: string;
+  strokeWidth?: string | number;
+}
+
+const { 
+  class: className = "", 
+  width = "100%", 
+  color = "#EE2A22",
+  strokeWidth = "8px"
+} = Astro.props;
+---
+
+<div class={`divisor-largo-wrapper ${className}`} aria-hidden="true">
+  <svg 
+    id="divisorLargoSvg"
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 1168.89 19.04"
+    class="divisor-largo-svg"
+  >
+    <path 
+      class="divisor-largo-path" 
+      d="M5.78,11.93s1095.72-10.83,1139.25-.42c0,0,14.58,1.26,17.44-6.28"
+      fill="none"
+      stroke={color}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width={strokeWidth}
+    />
+  </svg>
+</div>
+
+<style define:vars={{ width }}>
+  .divisor-largo-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--width);
+    max-width: 100%;
+    margin: 1rem auto;
+  }
+
+  .divisor-largo-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
+
+  gsap.registerPlugin(DrawSVGPlugin);
+
+  function initDivisorLargo() {
+    const paths = document.querySelectorAll('#divisorLargoSvg .divisor-largo-path');
+    if (!paths.length) return;
+
+    gsap.set(paths, { drawSVG: '0%' });
+    gsap.to(paths, {
+      drawSVG: '100%',
+      duration: 1.4,
+      delay: 0.3,
+      ease: 'power2.out'
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initDivisorLargo);
+  document.addEventListener('astro:page-load', initDivisorLargo);
+</script>

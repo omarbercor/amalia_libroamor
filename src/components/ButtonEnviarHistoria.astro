@@ -73,18 +73,16 @@ const { id = "btnEnviarHistoria", class: className = "", type = "button" } = Ast
     border: none;
     padding: 0;
     cursor: pointer;
-    transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
     width: 100%;
     max-width: 380px;
   }
 
-  .btn-svg-action:hover {
-    transform: scale(1.03);
-    filter: drop-shadow(0 6px 14px rgba(238, 42, 34, 0.3));
+  .btn-pill-bg {
+    transition: fill 0.22s ease;
   }
 
-  .btn-svg-action:active {
-    transform: scale(0.98);
+  .btn-svg-action:hover .btn-pill-bg {
+    fill: #000000;
   }
 
   .enviar-historia-svg {

@@ -1,0 +1,142 @@
+---
+// CorazonOjosDoodleAnimated.astro - Corazón con ojos y sonrisa vectorizado con animación GSAP DrawSVG
+interface Props {
+  class?: string;
+  width?: number | string;
+  height?: number | string;
+}
+
+const { class: className = '', width = '110', height = '118' } = Astro.props;
+---
+
+<div class={`corazon-ojos-container ${className}`}>
+  <svg 
+    id="corazonOjosSvg"
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 113 122"
+    width={width}
+    height={height}
+    class="corazon-ojos-svg"
+    aria-label="Doodle de corazón con ojos y sonrisa de Amalia"
+  >
+    <!-- Contorno del corazón en trazo grueso rojo -->
+    <path 
+      id="corazonOjosContorno"
+      class="corazon-contour-stroke"
+      d="M28.29,105.13s-14.81-29.93-10.07-74.96,34.67-6.22,34.67-6.22c0,0,5.63,9.19,3.85,17.48,0,0,16-22.52,32.89-15.41,0,0,26.37,1.34,3.56,30.75,0,0-54.81,47.48-68.74,51.92"
+      fill="none" 
+      stroke="#EE2A22" 
+      stroke-width="9px" 
+      stroke-linecap="round" 
+      stroke-linejoin="round"
+    />
+    
+    <!-- Sonrisa / boca -->
+    <path 
+      id="corazonOjosBoca"
+      class="corazon-inner-stroke"
+      d="M32.29,62.61s.15,13.93,8.44,14.37,15.85,0,18.07-5.33"
+      fill="none" 
+      stroke="#EE2A22" 
+      stroke-width="5px" 
+      stroke-linecap="round" 
+      stroke-linejoin="round"
+    />
+    
+    <!-- Ojo izquierdo -->
+    <path 
+      id="corazonOjoIzq"
+      class="corazon-inner-stroke"
+      d="M36.29,39.21s-.3-10.07-6.22-5.93-.89,8.89-1.04,17.63c0,0,13.63-3.7,15.85-7.85,0,0,2.41-9.6-8.7-5.15"
+      fill="none" 
+      stroke="#EE2A22" 
+      stroke-width="4.5px" 
+      stroke-linecap="round" 
+      stroke-linejoin="round"
+    />
+    
+    <!-- Ojo derecho -->
+    <path 
+      id="corazonOjoDer"
+      class="corazon-inner-stroke"
+      d="M69.1,51.37s1.93-9.82-4-5.67-1.48,10.41-1.63,19.15c0,0,9.63-1.81,16.74-11,0,0,6.22-13.78-11.23-3.78"
+      fill="none" 
+      stroke="#EE2A22" 
+      stroke-width="4.5px" 
+      stroke-linecap="round" 
+      stroke-linejoin="round"
+    />
+  </svg>
+</div>
+
+<style>
+  .corazon-ojos-container {
+    display: inline-block;
+    line-height: 0;
+    cursor: default;
+  }
+
+  .corazon-ojos-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
+
+  gsap.registerPlugin(DrawSVGPlugin);
+
+  function playCorazonDrawAnimation() {
+    const contorno = document.getElementById('corazonOjosContorno');
+    const boca = document.getElementById('corazonOjosBoca');
+    const ojoIzq = document.getElementById('corazonOjoIzq');
+    const ojoDer = document.getElementById('corazonOjoDer');
+
+    if (!contorno || !boca || !ojoIzq || !ojoDer) return;
+
+    gsap.killTweensOf([contorno, boca, ojoIzq, ojoDer]);
+    gsap.set([contorno, boca, ojoIzq, ojoDer], { drawSVG: '0%' });
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power2.inOut' }
+    });
+
+    // 1. Dibujar contorno del corazón
+    tl.to(contorno, {
+      drawSVG: '100%',
+      duration: 0.8,
+      ease: 'power1.inOut',
+    })
+    // 2. Dibujar ojos en simultáneo
+    .to([ojoIzq, ojoDer], {
+      drawSVG: '100%',
+      duration: 0.5,
+      stagger: 0.1,
+      ease: 'power2.out',
+    }, '-=0.15')
+    // 3. Dibujar la sonrisa
+    .to(boca, {
+      drawSVG: '100%',
+      duration: 0.4,
+      ease: 'power2.out',
+    }, '-=0.15');
+  }
+
+  function initCorazonOjosAnimation() {
+    const container = document.querySelector('.corazon-ojos-container');
+    if (!container) return;
+
+    setTimeout(playCorazonDrawAnimation, 400);
+
+    container.addEventListener('mouseenter', () => {
+      playCorazonDrawAnimation();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initCorazonOjosAnimation);
+  document.addEventListener('astro:page-load', initCorazonOjosAnimation);
+</script>

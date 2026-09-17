@@ -1,0 +1,1115 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StoryCard from '../components/StoryCard.astro';
+import FeedTitleAnimated from '../components/FeedTitleAnimated.astro';
+import ButtonEnviarHistoria from '../components/ButtonEnviarHistoria.astro';
+import ButtonOpcionesCompra from '../components/ButtonOpcionesCompra.astro';
+import SeparadorSmall from '../components/SeparadorSmall.astro';
+import stories from '../data/stories.json';
+import cities from '../data/cities.json';
+
+// Categorías por tipo de testimonio
+const categoriesPorOtroAmor = ["TODAS", "DUELO", "MUDANZAS", "AMISTAD", "DESAMOR", "CRECIMIENTO"];
+const categoriesPorOtraVida = ["TODAS", "BOCETOS", "ARCHIVOS", "INÉDITO", "RECUERDOS", "CRECIMIENTO"];
+
+// Mapeo inicial de categorías de historias enriquecidas con su tipo
+const enrichedStories = stories.map((item, idx) => {
+  // Asignar alternancia o según id para tener historias en ambos tipos
+  const itemType = (item.acf as any).tipo || (idx % 2 === 0 ? "otro-amor" : "otra-vida");
+  return {
+    ...item,
+    tipo: itemType,
+  };
+});
+---
+
+<Layout 
+  title="Lo que este libro me ha provocado — Historias | Amalia Andrade"
+  description="Historias, anécdotas y pedazos de vida compartidos por lectores de 'Uno siempre cambia al amor de su vida'."
+>
+  <div class="stories-page">
+    <!-- Header idéntico al home, con la flecha roja en la columna izquierda -->
+    <Header showBack={true} backUrl="/" />
+
+    <main class="stories-main">
+      <!-- Sección Superior: Título Vectorial con subrayado animado SVG Draw + Hoja de Libreta -->
+      <section class="hero-submission-section">
+        <div class="hero-text-block">
+          <h1 class="hero-title-h1">
+            <FeedTitleAnimated />
+          </h1>
+
+          <!-- Bloque de textos centrado entre sí con separador_small animado -->
+          <div class="hero-subtitles-centered">
+            <p class="subtitle-handwritten-mynerve" id="heroDynamicSubtitle">
+              Cuéntanos cómo ha tocado tu vida este libro
+            </p>
+
+            <!-- Separador small animado -->
+            <SeparadorSmall width="140px" animated={true} id="heroSeparadorSmall" />
+
+            <p class="subtitle-story-desc">
+              Diez años de gente escribiéndome a las 3 a.m.<br />
+              <span class="highlight-red">Ahora hay un lugar para eso.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="hero-form-wrapper">
+          <!-- Hoja Rasgada de fondo con Formulario Interactivo encima -->
+          <div class="torn-paper-form-card">
+            <!-- Imagen de fondo de hoja rasgada -->
+            <img 
+              src="/assets/por-otro-amor/sube-tu-historia.png" 
+              alt="Sube tu historia - Hoja de libreta" 
+              class="torn-sheet-bg-img"
+              width="460"
+              height="530"
+            />
+            
+            <!-- Formulario montado dentro de la hoja -->
+            <form id="heroStoryForm" class="sheet-form-content">
+              <!-- 1. Textarea arriba -->
+              <div class="sheet-field textarea-field">
+                <textarea 
+                  id="sheetStoryContent" 
+                  name="historia" 
+                  rows="3" 
+                  required 
+                  placeholder="Escribe aquí tu pedacito de historia..."
+                  class="sheet-textarea"
+                  maxlength="500"
+                ></textarea>
+              </div>
+
+              <!-- 2. Abajo: TIPO (select entre 'POR OTRO AMOR' y 'O POR OTRA VIDA') -->
+              <div class="sheet-inline-row type-row">
+                <label for="sheetStoryType" class="sheet-label-inline">Tipo:</label>
+                <div class="sheet-select-wrapper">
+                  <select id="sheetStoryType" name="tipo" required class="sheet-select">
+                    <option value="otro-amor" selected>Por otro amor</option>
+                    <option value="otra-vida">O por otra vida</option>
+                  </select>
+                  <span class="sheet-select-arrow" aria-hidden="true">▾</span>
+                </div>
+              </div>
+
+              <!-- 3. Abajo: Categoría dinámica dependiente del tipo -->
+              <div class="sheet-inline-row category-row">
+                <label for="sheetStoryCategory" class="sheet-label-inline">Categoría:</label>
+                <div class="sheet-select-wrapper">
+                  <select id="sheetStoryCategory" name="categoria" required class="sheet-select">
+                    <!-- Se poblará dinámicamente con JS según el tipo seleccionado -->
+                    <option value="DUELO">Duelo</option>
+                    <option value="MUDANZAS">Mudanzas</option>
+                    <option value="AMISTAD">Amistad</option>
+                    <option value="DESAMOR">Desamor</option>
+                    <option value="CRECIMIENTO">Crecimiento</option>
+                  </select>
+                  <span class="sheet-select-arrow" aria-hidden="true">▾</span>
+                </div>
+              </div>
+
+              <!-- 4. Abajo: Nombre y Edad en la misma fila -->
+              <div class="sheet-row-two-col">
+                <div class="sheet-inline-row author-inline-group">
+                  <label for="sheetStoryAuthor" class="sheet-label-inline">Nombre:</label>
+                  <input 
+                    type="text" 
+                    id="sheetStoryAuthor" 
+                    name="autor" 
+                    required 
+                    placeholder="Ej. Vale" 
+                    class="sheet-input" 
+                  />
+                </div>
+                <div class="sheet-inline-row age-inline-group">
+                  <label for="sheetStoryAge" class="sheet-label-inline">Edad:</label>
+                  <input 
+                    type="text" 
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    maxlength="3"
+                    id="sheetStoryAge" 
+                    name="edad" 
+                    placeholder="Ej. 34" 
+                    class="sheet-input sheet-input-age" 
+                  />
+                </div>
+              </div>
+
+              <!-- 5. Más abajo: Ciudad con Autocomplete / datalist -->
+              <div class="sheet-inline-row city-row">
+                <label for="sheetStoryCity" class="sheet-label-inline">Ciudad:</label>
+                <div class="autocomplete-city-wrapper">
+                  <input 
+                    type="text" 
+                    id="sheetStoryCity" 
+                    name="ciudad" 
+                    required 
+                    list="citiesList"
+                    placeholder="Busca o escribe tu ciudad..." 
+                    class="sheet-input" 
+                    autocomplete="off"
+                  />
+                  <datalist id="citiesList">
+                    {cities.map((city) => (
+                      <option value={city} />
+                    ))}
+                  </datalist>
+                </div>
+              </div>
+
+              <!-- Mensaje de estado -->
+              <div class="sheet-form-status" id="sheetFormStatusMsg" aria-live="polite"></div>
+            </form>
+          </div>
+
+          <!-- Botón Enviar Historia SVG FUERA de la nota de papel -->
+          <div class="external-submit-container">
+            <ButtonEnviarHistoria id="sheetSubmitBtn" type="submit" />
+          </div>
+
+          <!-- Rayones 04 a la derecha con animación DrawSVG -->
+          <div class="rayones-side-decoration" aria-hidden="true">
+            <svg id="rayonesDrawSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 155.37 67.32" class="rayones-svg">
+              <path class="rayones-draw-path" d="M138.37,64.98s-23.7-3.56-11.56-16.89,37.93,2.96,20.44,6.81-43.79-1.29-35.26-13.93,31.11-14.52,23.11,5.04-38.52,8.45-44.44,4.37-6.81-20.96,28.74-17.11-12.74,24.03-38.52,15.57-22.52-18.83,4.74-23.27,24.47,6.07,13.93,13.33-55.41,17.78-48.59-6.81,56.3-.89,31.11,5.63-57.19,6.52-53.93-6.52,48.89-15.7,26.37-.89S-3.26,35.64,14.23,23.79s56.59-10.96,24.59,1.78S-10.37,21.94,13.34,8.38s43.26-.89,34.37,2.96" fill="none" stroke="#EE2A22" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección del Muro de Historias ("El chismecito") -->
+      <section class="stories-wall-section" id="chismecitoSection">
+        <!-- Separador small previo a "Aquí puedes leer el chismecito de lxs demás" -->
+        <SeparadorSmall width="150px" animated={true} id="chismecitoSeparadorSmall" />
+
+        <!-- Encabezado de chismecito -->
+        <div class="chismecito-header-col">
+          <h2 class="chismecito-title-mynerve">
+            Aquí puedes leer el chismecito de lxs demás
+          </h2>
+        </div>
+
+        <!-- 1. Tabs de Tipo Principal: POR OTRO AMOR / O POR OTRA VIDA -->
+        <div class="type-filter-tabs" role="tablist" aria-label="Filtro por tipo de testimonio">
+          <button 
+            type="button" 
+            class="type-tab-btn active" 
+            id="tabOtroAmor" 
+            data-type="otro-amor"
+            role="tab"
+            aria-selected="true"
+          >
+            POR OTRO AMOR
+          </button>
+          <button 
+            type="button" 
+            class="type-tab-btn" 
+            id="tabOtraVida" 
+            data-type="otra-vida"
+            role="tab"
+            aria-selected="false"
+          >
+            O POR OTRA VIDA
+          </button>
+        </div>
+
+        <!-- 2. Píldoras de Categorías según el Tipo Activo -->
+        <div class="categories-pills-bar" id="categoriesPillsBar" role="tablist" aria-label="Filtro de categorías">
+          <!-- Renderizado dinámico de categorías vía JS según el tipo activo -->
+        </div>
+
+        <!-- Cuadrícula de Tarjetas de Historias -->
+        <div class="stories-grid" id="storiesGrid">
+          {enrichedStories.map((item, index) => (
+            <StoryCard 
+              categoria={item.acf.categoria}
+              texto={item.content.rendered}
+              firma={item.acf.firma}
+              index={index}
+              tipo={item.tipo}
+            />
+          ))}
+        </div>
+
+        <!-- Mensaje de no resultados si una categoría está vacía -->
+        <div class="no-stories-msg" id="noStoriesMsg" style="display: none;">
+          <p class="no-stories-text">Aún no hay historias en esta categoría. ¡Sé el primero en compartir la tuya arriba!</p>
+        </div>
+
+        <!-- Paginación con Flechas Rojas (< >) con círculos rojos idénticos a las maquetas -->
+        <div class="pagination-controls" id="paginationControls">
+          <button type="button" class="nav-arrow-circle" id="prevPageBtn" aria-label="Anterior">
+            <svg viewBox="0 0 24 24" class="arrow-icon" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button type="button" class="nav-arrow-circle" id="nextPageBtn" aria-label="Siguiente">
+            <svg viewBox="0 0 24 24" class="arrow-icon" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Separador pequeño rojo debajo de la paginación -->
+        <SeparadorSmall width="180px" />
+      </section>
+
+      <!-- Sección Frase de Amalia -->
+      <section class="amalia-quote-section">
+        <div class="quote-rotulo-wrapper">
+          <img 
+            src="/assets/por-otro-amor/frase-amalia-rotulo.png" 
+            alt="Frase de Amalia" 
+            class="quote-rotulo-img"
+            width="290"
+            height="100"
+          />
+        </div>
+      </section>
+
+      <!-- Botón Ver Opciones de Compra (centrado, debajo de la frase de Amalia tanto en desktop como en mobile) -->
+      <div class="purchase-cta-block">
+        <ButtonOpcionesCompra />
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
+
+<style>
+  .stories-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 1.5rem 3rem 1.8rem 3rem;
+    overflow-x: hidden;
+  }
+
+  .stories-main {
+    flex: 1;
+    max-width: 1180px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 1.5rem 0 3rem 0;
+  }
+
+  /* Sección Superior: Título y Hoja */
+  .hero-submission-section {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    gap: 3.5rem;
+    margin-top: 1rem;
+    margin-bottom: 3.5rem;
+    position: relative;
+  }
+
+  .hero-text-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-width: 580px;
+  }
+
+  .hero-title-h1 {
+    margin: 0;
+    padding: 0;
+  }
+
+  .hero-subtitles-centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  /* Tipografía Mynerve estricta solicitada por el usuario: 2rem en desktop */
+  .subtitle-handwritten-mynerve {
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 2rem;
+    color: var(--color-text-main, #1E1A18);
+    font-weight: 400;
+    line-height: 1.25;
+    text-align: center;
+    max-width: 75%;
+    margin: 0 auto;
+  }
+
+  .subtitle-story-desc {
+    font-family: var(--font-regular, 'Open Sans', sans-serif);
+    font-size: 1.12rem;
+    color: var(--color-text-muted, #554E48);
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .highlight-red {
+    color: var(--color-marker-red, #EE2A22);
+    font-weight: 600;
+  }
+
+  /* Hoja Rasgada y Formulario Integrado */
+  .hero-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 5;
+    width: 100%;
+  }
+
+  .torn-paper-form-card {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(0 14px 28px rgba(30, 26, 24, 0.08));
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .torn-paper-form-card:hover {
+    transform: translateY(-3px);
+  }
+
+  /* Imagen de fondo de la hoja */
+  .torn-sheet-bg-img {
+    width: 100%;
+    height: 100%;
+    min-height: 525px;
+    object-fit: fill;
+    display: block;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Formulario que se ubica exactamente dentro del área blanca de la hoja */
+  .sheet-form-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    /* Padding duplicado en top y aumentado a los lados */
+    padding: 7.6rem 3.8rem 2.6rem 3.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.55rem;
+    z-index: 2;
+  }
+
+  .sheet-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    position: relative;
+  }
+
+  /* Filas donde label e input/select van en el mismo renglón */
+  .sheet-inline-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    width: 100%;
+  }
+
+  .sheet-label-inline {
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 1.15rem;
+    color: var(--color-text-main, #1E1A18);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  /* Textarea estilo libreta manuscrita */
+  .textarea-field {
+    flex: none;
+    height: 72px;
+    margin-bottom: 0.1rem;
+  }
+
+  .sheet-textarea {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1.5px dashed rgba(212, 200, 182, 0.9);
+    border-radius: 8px;
+    padding: 0.45rem 0.65rem;
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 1.05rem;
+    line-height: 1.25;
+    color: var(--color-text-main, #1E1A18);
+    outline: none;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .sheet-textarea::placeholder {
+    color: rgba(110, 102, 95, 0.65);
+    font-size: 1.02rem;
+  }
+
+  .sheet-textarea:focus {
+    background: #FFFFFF;
+    border: 1.5px solid var(--color-marker-red, #EE2A22);
+    box-shadow: 0 0 0 2px rgba(238, 42, 34, 0.12);
+  }
+
+  /* Fila de 2 columnas para Nombre y Edad en el mismo renglón */
+  .sheet-row-two-col {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 0.8rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .author-inline-group,
+  .age-inline-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .sheet-input-age {
+    max-width: 65px;
+    text-align: center;
+  }
+
+  /* Select con wrapper ocupando el ancho restante */
+  .sheet-select-wrapper {
+    position: relative;
+    flex: 1;
+    width: 100%;
+  }
+
+  .sheet-select {
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.65);
+    border: 1.5px solid #D5C8B4;
+    border-radius: 6px;
+    padding: 0.3rem 1.8rem 0.3rem 0.65rem;
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 1.05rem;
+    color: var(--color-text-main, #1E1A18);
+    font-weight: 500;
+    outline: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .sheet-select:focus {
+    background: #FFFFFF;
+    border-color: var(--color-marker-red, #EE2A22);
+    box-shadow: 0 0 0 2px rgba(238, 42, 34, 0.12);
+  }
+
+  .sheet-select-arrow {
+    position: absolute;
+    right: 0.7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--color-marker-red, #EE2A22);
+    font-size: 0.9rem;
+  }
+
+  /* Inputs de texto estilo libro con tipografía manuscrita */
+  .sheet-input {
+    flex: 1;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.65);
+    border: 1.5px solid #D5C8B4;
+    border-radius: 6px;
+    padding: 0.3rem 0.65rem;
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 1.05rem;
+    color: var(--color-text-main, #1E1A18);
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .sheet-input::placeholder {
+    color: rgba(120, 110, 100, 0.6);
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 0.98rem;
+  }
+
+  .sheet-input:focus {
+    background: #FFFFFF;
+    border-color: var(--color-marker-red, #EE2A22);
+    box-shadow: 0 0 0 2px rgba(238, 42, 34, 0.12);
+  }
+
+  .autocomplete-city-wrapper {
+    position: relative;
+    flex: 1;
+    width: 100%;
+  }
+
+  /* Estado de envío */
+  .sheet-form-status {
+    min-height: 1.2rem;
+    text-align: center;
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 1rem;
+    color: var(--color-marker-red, #EE2A22);
+    margin: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Botón Enviar Historia FUERA de la nota de papel */
+  .external-submit-container {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    justify-content: center;
+    margin-top: 1.2rem;
+    position: relative;
+    z-index: 6;
+  }
+
+  /* Rayones 04 a la derecha a la altura del centro de la nota */
+  .rayones-side-decoration {
+    position: absolute;
+    right: -135px;
+    top: calc(50% - 35px);
+    transform: translateY(-50%);
+    width: 140px;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .rayones-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .rayones-draw-path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: rayonesDrawAnim 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation-delay: 0.3s;
+  }
+
+  @keyframes rayonesDrawAnim {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Muro de Historias ("El chismecito") */
+  .stories-wall-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2.5rem 0 2rem 0;
+    width: 100%;
+  }
+
+  .chismecito-header-col {
+    width: 100%;
+    max-width: 480px;
+    margin: 0.5rem auto 1.5rem auto;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .chismecito-title-mynerve {
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 2rem;
+    color: var(--color-text-main, #1E1A18);
+    text-align: center;
+    font-weight: 400;
+    line-height: 1.25;
+    margin: 0;
+    width: 100%;
+  }
+
+  /* Tabs de Tipo: POR OTRO AMOR vs O POR OTRA VIDA */
+  .type-filter-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 1.4rem;
+    width: 100%;
+  }
+
+  .type-tab-btn {
+    background: transparent;
+    border: 2px solid #D4C8B6;
+    border-radius: 30px;
+    padding: 0.55rem 1.4rem;
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+    color: #554E48;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .type-tab-btn:hover {
+    border-color: #000000;
+    color: #000000;
+  }
+
+  .type-tab-btn.active {
+    background: var(--color-marker-red, #EE2A22);
+    border-color: var(--color-marker-red, #EE2A22);
+    color: #FFFFFF;
+  }
+
+  /* Barra de Píldoras de Categorías según el Tipo */
+  .categories-pills-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
+    width: 100%;
+    max-width: 820px;
+  }
+
+  .category-pill-btn {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1.5px solid #D5C8B4;
+    border-radius: 20px;
+    padding: 0.35rem 0.95rem;
+    font-family: var(--font-regular, 'Open Sans', sans-serif);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-text-muted, #554E48);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    transition: all 0.2s ease;
+  }
+
+  .category-pill-btn:hover {
+    border-color: var(--color-marker-red, #EE2A22);
+    color: var(--color-marker-red, #EE2A22);
+    background: #FFFFFF;
+  }
+
+  .category-pill-btn.active {
+    background: var(--color-text-main, #1E1A18);
+    border-color: var(--color-text-main, #1E1A18);
+    color: #FFFFFF;
+  }
+
+  /* Grilla 3 columnas desktop */
+  .stories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.2rem 2rem;
+    width: 100%;
+    margin-bottom: 2.8rem;
+  }
+
+  .no-stories-msg {
+    padding: 3rem 1rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  .no-stories-text {
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 1.4rem;
+    color: var(--color-text-muted, #554E48);
+  }
+
+  /* Controles de Paginación (< >) */
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-arrow-circle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 2.5px solid var(--color-marker-red, #EE2A22);
+    background: transparent;
+    color: var(--color-marker-red, #EE2A22);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .nav-arrow-circle:hover {
+    background-color: #000000;
+    border-color: #000000;
+    color: #FFFFFF;
+  }
+
+  .arrow-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Frase de Amalia */
+  .amalia-quote-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 3.5rem 0 2rem 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  .quote-rotulo-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .quote-rotulo-img {
+    height: 85px;
+    width: auto;
+    display: block;
+    mix-blend-mode: multiply;
+  }
+
+  /* Botón de compra */
+  .purchase-cta-block {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  /* Responsive / Mobile */
+  @media (max-width: 960px) {
+    .stories-page {
+      padding: 1.2rem 1.4rem 1.4rem 1.4rem;
+    }
+
+    .stories-main {
+      padding: 1rem 0 2rem 0;
+    }
+
+    .hero-submission-section {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 2.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-text-block {
+      align-items: center;
+      max-width: 100%;
+    }
+
+    .rayones-side-decoration {
+      display: none;
+    }
+
+    .stories-grid {
+      grid-template-columns: 1fr;
+      gap: 1.8rem;
+    }
+
+    .sheet-form-content {
+      padding: 6.4rem 2rem 1.8rem 2rem;
+    }
+
+    .sheet-row-two-col {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .type-filter-tabs {
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Definición de categorías según el tipo
+    const typeCategoriesMap: Record<string, string[]> = {
+      'otro-amor': ["TODAS", "DUELO", "MUDANZAS", "AMISTAD", "DESAMOR", "CRECIMIENTO"],
+      'otra-vida': ["TODAS", "BOCETOS", "ARCHIVOS", "INÉDITO", "RECUERDOS", "CRECIMIENTO"],
+    };
+
+    const formCategoriesMap: Record<string, string[]> = {
+      'otro-amor': ["DUELO", "MUDANZAS", "AMISTAD", "DESAMOR", "CRECIMIENTO"],
+      'otra-vida': ["BOCETOS", "ARCHIVOS", "INÉDITO", "RECUERDOS", "CRECIMIENTO"],
+    };
+
+    const heroForm = document.getElementById('heroStoryForm') as HTMLFormElement;
+    const heroSubmitBtn = document.getElementById('sheetSubmitBtn');
+    const typeSelect = document.getElementById('sheetStoryType') as HTMLSelectElement;
+    const categorySelect = document.getElementById('sheetStoryCategory') as HTMLSelectElement;
+    const ageInput = document.getElementById('sheetStoryAge') as HTMLInputElement;
+    const heroStatusMsg = document.getElementById('sheetFormStatusMsg');
+    
+    const tabOtroAmor = document.getElementById('tabOtroAmor');
+    const tabOtraVida = document.getElementById('tabOtraVida');
+    const pillsBar = document.getElementById('categoriesPillsBar');
+    const storiesGrid = document.getElementById('storiesGrid');
+    const noStoriesMsg = document.getElementById('noStoriesMsg');
+    const paginationControls = document.getElementById('paginationControls');
+    const cards = Array.from(document.querySelectorAll('.story-note-card')) as HTMLElement[];
+    const prevBtn = document.getElementById('prevPageBtn');
+    const nextBtn = document.getElementById('nextPageBtn');
+
+    // Estado activo
+    let activeType = 'otro-amor'; // 'otro-amor' | 'otra-vida'
+    let activeCategory = 'todas';
+    let currentPage = 1;
+    const itemsPerPage = 9;
+
+    // Detectar ancla o parámetro de URL al cargar
+    const checkInitialRoute = () => {
+      const hash = window.location.hash.toLowerCase().replace('#', '');
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryTipo = (urlParams.get('tipo') || '').toLowerCase();
+      const queryCat = (urlParams.get('categoria') || urlParams.get('filtro') || '').toLowerCase();
+
+      if (hash === 'otra-vida' || queryTipo === 'otra-vida') {
+        activeType = 'otra-vida';
+      } else {
+        activeType = 'otro-amor';
+      }
+
+      if (queryCat) {
+        activeCategory = queryCat;
+      }
+    };
+
+    checkInitialRoute();
+
+    // Actualizar el select de categorías del formulario cuando cambia el select de tipo
+    const updateFormCategories = (tipo: string) => {
+      if (!categorySelect) return;
+      const cats = formCategoriesMap[tipo] || formCategoriesMap['otro-amor'];
+      categorySelect.innerHTML = '';
+      cats.forEach((cat) => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat.charAt(0) + cat.slice(1).toLowerCase();
+        categorySelect.appendChild(opt);
+      });
+    };
+
+    // Sincronizar select del formulario
+    if (typeSelect) {
+      typeSelect.value = activeType;
+      updateFormCategories(activeType);
+      typeSelect.addEventListener('change', () => {
+        updateFormCategories(typeSelect.value);
+      });
+    }
+
+    // Renderizar píldoras de categorías para el tipo activo
+    const renderCategoryPills = () => {
+      if (!pillsBar) return;
+      pillsBar.innerHTML = '';
+      const list = typeCategoriesMap[activeType] || typeCategoriesMap['otro-amor'];
+
+      list.forEach((cat) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `category-pill-btn ${activeCategory === cat.toLowerCase() ? 'active' : ''}`;
+        btn.textContent = cat;
+        btn.dataset.category = cat.toLowerCase();
+        btn.addEventListener('click', () => {
+          activeCategory = cat.toLowerCase();
+          currentPage = 1;
+          renderCategoryPills();
+          applyFilterAndPagination();
+        });
+        pillsBar.appendChild(btn);
+      });
+    };
+
+    // Filtrar tarjetas y paginar
+    const applyFilterAndPagination = () => {
+      // Filtrar por tipo y categoría
+      const filteredCards = cards.filter((card) => {
+        const cardType = (card.getAttribute('data-type') || '').toLowerCase();
+        const cardCat = (card.getAttribute('data-category') || '').toLowerCase();
+
+        const matchType = (cardType === activeType);
+        const matchCat = (activeCategory === 'todas' || cardCat === activeCategory);
+
+        return matchType && matchCat;
+      });
+
+      // Ocultar todas primero
+      cards.forEach((card) => (card.style.display = 'none'));
+
+      if (filteredCards.length === 0) {
+        if (noStoriesMsg) noStoriesMsg.style.display = 'block';
+        if (paginationControls) paginationControls.style.display = 'none';
+        return;
+      }
+
+      if (noStoriesMsg) noStoriesMsg.style.display = 'none';
+      if (paginationControls) paginationControls.style.display = 'flex';
+
+      // Paginación
+      const totalPages = Math.ceil(filteredCards.length / itemsPerPage) || 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+
+      filteredCards.forEach((card, idx) => {
+        if (idx >= startIndex && idx < endIndex) {
+          card.style.display = 'flex';
+        }
+      });
+    };
+
+    // Cambiar de pestaña (tipo)
+    const switchType = (newType: string, updateHash = true) => {
+      activeType = newType;
+      activeCategory = 'todas';
+      currentPage = 1;
+
+      if (updateHash) {
+        history.replaceState(null, '', `#${newType}`);
+      }
+
+      // Sincronizar select en formulario si el usuario quiere subir una historia de ese tipo
+      if (typeSelect) {
+        typeSelect.value = newType;
+        updateFormCategories(newType);
+      }
+
+      // Actualizar UI de tabs
+      if (newType === 'otra-vida') {
+        tabOtraVida?.classList.add('active');
+        tabOtraVida?.setAttribute('aria-selected', 'true');
+        tabOtroAmor?.classList.remove('active');
+        tabOtroAmor?.setAttribute('aria-selected', 'false');
+      } else {
+        tabOtroAmor?.classList.add('active');
+        tabOtroAmor?.setAttribute('aria-selected', 'true');
+        tabOtraVida?.classList.remove('active');
+        tabOtraVida?.setAttribute('aria-selected', 'false');
+      }
+
+      renderCategoryPills();
+      applyFilterAndPagination();
+    };
+
+    tabOtroAmor?.addEventListener('click', () => switchType('otro-amor'));
+    tabOtraVida?.addEventListener('click', () => switchType('otra-vida'));
+
+    // Escuchar cambios de ancla en el navegador (ej. botón Atrás / Adelante)
+    window.addEventListener('hashchange', () => {
+      const h = window.location.hash.toLowerCase().replace('#', '');
+      if (h === 'otra-vida' || h === 'otro-amor') {
+        switchType(h, false);
+      }
+    });
+
+    // Inicializar UI
+    switchType(activeType, false);
+
+    // Controles de Paginación
+    prevBtn?.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        applyFilterAndPagination();
+        storiesGrid?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      const filteredCount = cards.filter((card) => {
+        const cardType = (card.getAttribute('data-type') || '').toLowerCase();
+        const cardCat = (card.getAttribute('data-category') || '').toLowerCase();
+        return cardType === activeType && (activeCategory === 'todas' || cardCat === activeCategory);
+      }).length;
+      const totalPages = Math.ceil(filteredCount / itemsPerPage) || 1;
+
+      if (currentPage < totalPages) {
+        currentPage++;
+        applyFilterAndPagination();
+        storiesGrid?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    // Validación estricta para el campo Edad: solo caracteres numéricos
+    ageInput?.addEventListener('input', () => {
+      ageInput.value = ageInput.value.replace(/\D/g, '');
+    });
+
+    // Conectar botón exterior con el submit del formulario
+    heroSubmitBtn?.addEventListener('click', (e) => {
+      if (!heroForm) return;
+      if (!heroForm.contains(heroSubmitBtn)) {
+        e.preventDefault();
+        if (heroForm.reportValidity()) {
+          heroForm.requestSubmit();
+        }
+      }
+    });
+
+    // Envío del formulario dentro de la hoja de libreta
+    heroForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!heroStatusMsg) return;
+      heroStatusMsg.textContent = 'Guardando tu historia... ✨';
+      
+      const formData = new FormData(heroForm);
+      const nuevaHistoria = {
+        historia: formData.get('historia'),
+        tipo: formData.get('tipo'),
+        categoria: formData.get('categoria'),
+        autor: formData.get('autor'),
+        edad: formData.get('edad'),
+        ciudad: formData.get('ciudad'),
+      };
+
+      console.log('Historia subida:', nuevaHistoria);
+
+      setTimeout(() => {
+        heroStatusMsg.textContent = '¡Historia enviada con éxito! Pasará a moderación ❤️';
+        heroForm.reset();
+        // Restaurar opciones de categoría
+        updateFormCategories(typeSelect ? typeSelect.value : 'otro-amor');
+        setTimeout(() => {
+          heroStatusMsg.textContent = '';
+        }, 3500);
+      }, 700);
+    });
+  });
+</script>

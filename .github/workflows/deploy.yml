@@ -1,0 +1,35 @@
+name: Deploy to CloudPanel (Static Site)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Astro static site
+        run: npm run build
+
+      - name: Deploy dist to htdocs
+        run: |
+          # Detecta automáticamente la raíz htdocs de este sitio en CloudPanel
+          # o sincroniza directamente al htdocs del usuario actual
+          if [ -d "$HOME/htdocs" ]; then
+            # Si el runner está en $HOME/actions-runner, htdocs está en $HOME/htdocs/dominio
+            SITE_DIR=$(find "$HOME/htdocs" -maxdepth 1 -mindepth 1 -type d | head -n 1)
+          else
+            # Si se colocó dentro de la carpeta del propio dominio:
+            SITE_DIR="$HOME"
+          fi
+
+          echo "Carpeta destino detectada: $SITE_DIR"
+          rsync -av --delete dist/ "$SITE_DIR/"

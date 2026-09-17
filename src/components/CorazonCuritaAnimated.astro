@@ -1,0 +1,113 @@
+---
+// CorazonCuritaAnimated.astro - Corazón + Curita vectorial animado con GSAP DrawSVG
+interface Props {
+  class?: string;
+  width?: number | string;
+  height?: number | string;
+}
+
+const { class: className = '', width = '140', height = '74' } = Astro.props;
+---
+
+<div class={`corazon-curita-container ${className}`}>
+  <svg 
+    id="corazonCuritaSvg" 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 466.67 245.33"
+    width={width}
+    height={height}
+    class="corazon-curita-svg"
+    aria-label="Doodle de corazón y curita"
+  >
+    <!-- Sonrisa -->
+    <path class="curita-draw-stroke" d="M42.8,133.98s26.53,42.29,50.81,2.15" fill="none" stroke="#EE2A22" stroke-linecap="round" stroke-linejoin="round" stroke-width="12px" stroke-miterlimit="10" />
+    
+    <!-- Contorno corazón -->
+    <path class="curita-draw-stroke" d="M54.49,214.69S-2.59,168.42,15.85,50.21c0,0,10.79-47.1,47.61-30.92,36.82,16.2,18.45,71.91,18.45,71.91,0,0,7.56-76.3,75.84-72.04,0,0,46.33,1.72-2.5,79.35-46.35,73.69-106.66,122.15-106.66,122.15" fill="none" stroke="#EE2A22" stroke-linecap="round" stroke-linejoin="round" stroke-width="12px" />
+    
+    <!-- Ojos del corazón -->
+    <circle class="curita-dot" cx="29.91" cy="105.23" r="6" fill="#EE2A22" />
+    <circle class="curita-dot" cx="116.25" cy="114.69" r="6" fill="#EE2A22" />
+    
+    <!-- Signo más (+) -->
+    <line class="curita-draw-stroke" x1="192.03" y1="124.19" x2="269.81" y2="126.86" fill="none" stroke="#EE2A22" stroke-linecap="round" stroke-linejoin="round" stroke-width="12px" />
+    <line class="curita-draw-stroke" x1="228.03" y1="84.86" x2="228.03" y2="163.52" fill="none" stroke="#EE2A22" stroke-linecap="round" stroke-linejoin="round" stroke-width="12px" />
+    
+    <!-- Contorno curita -->
+    <path class="curita-draw-stroke" d="M403.52,69.1s-58.21,28.19-96.42,81.05c-6.2,8.58-11.88,17.8-16.69,27.66-34.49,70.63,28.75,56.79,59.32,31.32,33.11-27.59,169.67-196.6,53.8-140.03Z" fill="none" stroke="#EE2A22" stroke-linecap="round" stroke-linejoin="round" stroke-width="12px" />
+    
+    <!-- Rayas interiores de la curita -->
+    <line class="curita-draw-stroke" x1="356.03" y1="199.3" x2="312.83" y2="150.16" fill="none" stroke="#EE2A22" stroke-linecap="round" stroke-linejoin="round" stroke-width="12px" />
+    <line class="curita-draw-stroke" x1="364.85" y1="95.33" x2="402.44" y2="150.16" fill="none" stroke="#EE2A22" stroke-linecap="round" stroke-linejoin="round" stroke-width="12px" />
+
+    <!-- Puntos de la almohadilla de la curita -->
+    <circle class="curita-dot" cx="362.77" cy="122.75" r="5" fill="#EE2A22" />
+    <circle class="curita-dot" cx="383.65" cy="147.64" r="5" fill="#EE2A22" />
+    <circle class="curita-dot" cx="345.01" cy="130.58" r="5" fill="#EE2A22" />
+    <circle class="curita-dot" cx="356.03" cy="169.08" r="5" fill="#EE2A22" />
+    <circle class="curita-dot" cx="366.49" cy="155.08" r="5" fill="#EE2A22" />
+    <circle class="curita-dot" cx="332.98" cy="145.98" r="4" fill="#EE2A22" />
+  </svg>
+</div>
+
+<style>
+  .corazon-curita-container {
+    display: inline-block;
+    line-height: 0;
+    cursor: default;
+  }
+
+  .corazon-curita-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
+
+  gsap.registerPlugin(DrawSVGPlugin);
+
+  function playCorazonCuritaAnimation() {
+    const strokes = document.querySelectorAll('#corazonCuritaSvg .curita-draw-stroke');
+    const dots = document.querySelectorAll('#corazonCuritaSvg .curita-dot');
+    if (!strokes.length) return;
+
+    gsap.killTweensOf([strokes, dots]);
+    gsap.set(strokes, { drawSVG: '0%' });
+    gsap.set(dots, { scale: 0, transformOrigin: 'center' });
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power1.inOut' }
+    });
+
+    tl.to(strokes, {
+      drawSVG: '100%',
+      duration: 1.1,
+      stagger: 0.1,
+    })
+    .to(dots, {
+      scale: 1,
+      duration: 0.22,
+      stagger: 0.04,
+      ease: 'back.out(2)'
+    }, '-=0.3');
+  }
+
+  function initCorazonCurita() {
+    const container = document.querySelector('.corazon-curita-container');
+    if (!container) return;
+
+    setTimeout(playCorazonCuritaAnimation, 300);
+
+    container.addEventListener('mouseenter', () => {
+      playCorazonCuritaAnimation();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initCorazonCurita);
+  document.addEventListener('astro:page-load', initCorazonCurita);
+</script>

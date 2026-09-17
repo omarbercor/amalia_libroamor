@@ -5,7 +5,7 @@ interface Props {
   class?: string;
 }
 
-const { href = "/compra", class: className = "" } = Astro.props;
+const { href = "/comprar-libro", class: className = "" } = Astro.props;
 ---
 
 <a href={href} class={`btn-svg-compra ${className}`} aria-label="Ver opciones de compra">
@@ -72,18 +72,16 @@ const { href = "/compra", class: className = "" } = Astro.props;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
     width: 100%;
     max-width: 340px;
   }
 
-  .btn-svg-compra:hover {
-    transform: scale(1.04);
-    filter: drop-shadow(0 6px 14px rgba(238, 42, 34, 0.3));
+  .btn-pill-bg {
+    transition: fill 0.22s ease;
   }
 
-  .btn-svg-compra:active {
-    transform: scale(0.98);
+  .btn-svg-compra:hover .btn-pill-bg {
+    fill: #000000;
   }
 
   .opciones-compra-svg {

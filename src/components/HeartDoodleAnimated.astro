@@ -130,6 +130,15 @@ const { class: className = '', width = '100', height = '137' } = Astro.props;
     };
 
     window.addEventListener('intro-animation-completed', onIntroCompleted);
+
+    // Redibujado en hover
+    const container = document.querySelector('.heart-doodle-container');
+    if (container) {
+      container.addEventListener('mouseenter', () => {
+        initHeartState();
+        startHeartDrawing(0);
+      });
+    }
   }
 
   document.addEventListener('DOMContentLoaded', setupHeart);
