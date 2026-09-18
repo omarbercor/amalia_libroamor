@@ -1,5 +1,5 @@
 ---
-// StoryCard.astro - Tarjeta de testimonio con marco imperfecto y tipografías consistentes
+// StoryCard.astro - Tarjeta de testimonio con marcos irregulares auténticos dibujados a mano
 interface Props {
   categoria: string;
   texto: string;
@@ -10,7 +10,22 @@ interface Props {
 
 const { categoria, texto, firma, index = 0, tipo = "otro-amor" } = Astro.props;
 
-// Leves variaciones orgánicas de rotación y border-radius según el index
+// Colección de SVGs de marcos irregulares creados para los testimonios
+const frameSvgs = [
+  "/assets/feed_page/frames 130.svg",
+  "/assets/feed_page/frames 131.svg",
+  "/assets/feed_page/frames 132.svg",
+  "/assets/feed_page/frames 133.svg",
+  "/assets/feed_page/frames 134.svg",
+  "/assets/feed_page/frames 135.svg",
+  "/assets/feed_page/frames 165.svg",
+  "/assets/feed_page/frames 166.svg",
+  "/assets/feed_page/frames 167.svg",
+];
+
+const currentFrame = frameSvgs[index % frameSvgs.length];
+
+// Leves variaciones orgánicas de rotación según el index
 const rotations = [-0.6, 0.4, -0.3, 0.5, -0.5, 0.3];
 const currentRotation = rotations[index % rotations.length];
 ---
@@ -21,17 +36,14 @@ const currentRotation = rotations[index % rotations.length];
   data-type={tipo.toLowerCase()}
   style={`--card-rot: ${currentRotation}deg;`}
 >
-  <!-- Borde dibujado a mano con SVG para efecto auténtico de libreta de Amalia -->
-  <svg class="card-border-svg" viewBox="0 0 320 220" preserveAspectRatio="none" aria-hidden="true">
-    <path 
-      d="M8,12 C80,7 240,6 312,10 C315,60 316,160 311,210 C240,214 80,213 9,209 C6,160 5,60 8,12 Z" 
-      fill="none" 
-      stroke="#EE2A22" 
-      stroke-width="2.5" 
-      stroke-linecap="round" 
-      stroke-linejoin="round"
-    />
-  </svg>
+  <!-- Marco irregular dibujado a mano original de Amalia -->
+  <img 
+    src={currentFrame} 
+    alt="" 
+    class="card-frame-svg-bg" 
+    aria-hidden="true" 
+    loading="lazy"
+  />
 
   <div class="card-content">
     <span class="card-category">{categoria}</span>
@@ -43,8 +55,8 @@ const currentRotation = rotations[index % rotations.length];
 <style>
   .story-note-card {
     position: relative;
-    padding: 1.8rem 1.6rem;
-    min-height: 200px;
+    padding: 2.2rem 2rem 2rem 2rem;
+    min-height: 220px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -53,7 +65,7 @@ const currentRotation = rotations[index % rotations.length];
     transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
   }
 
-  .card-border-svg {
+  .card-frame-svg-bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -61,6 +73,7 @@ const currentRotation = rotations[index % rotations.length];
     height: 100%;
     pointer-events: none;
     z-index: 1;
+    object-fit: fill;
   }
 
   .story-note-card:hover {
