@@ -1383,7 +1383,7 @@ const enrichedStories = stories.map((item, idx) => {
     const noStoriesMsg = document.getElementById('noStoriesMsg');
     const paginationControls = document.getElementById('paginationControls');
     const paginationPagesList = document.getElementById('paginationPagesList');
-    const cards = Array.from(document.querySelectorAll('.story-note-card')) as HTMLElement[];
+    let cards = Array.from(document.querySelectorAll('.story-note-card')) as HTMLElement[];
     const prevBtn = document.getElementById('prevPageBtn') as HTMLButtonElement | null;
     const nextBtn = document.getElementById('nextPageBtn') as HTMLButtonElement | null;
 
@@ -1774,7 +1774,7 @@ const enrichedStories = stories.map((item, idx) => {
       }
     });
 
-    cards.forEach((card) => {
+    const attachCardClick = (card: HTMLElement) => {
       card.addEventListener('click', () => openStoryDetail(card));
       card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -1782,7 +1782,111 @@ const enrichedStories = stories.map((item, idx) => {
           openStoryDetail(card);
         }
       });
-    });
+    };
+
+    cards.forEach((card) => attachCardClick(card));
+
+    // Marcos irregulares auténticos dibujados a mano de Amalia para tarjetas dinámicas
+    const frameSvgs = [
+      "/assets/feed_page/frames 130.svg",
+      "/assets/feed_page/frames 131.svg",
+      "/assets/feed_page/frames 132.svg",
+      "/assets/feed_page/frames 133.svg",
+      "/assets/feed_page/frames 134.svg",
+      "/assets/feed_page/frames 135.svg",
+      "/assets/feed_page/frames 165.svg",
+      "/assets/feed_page/frames 166.svg",
+      "/assets/feed_page/frames 167.svg",
+    ];
+    const rotations = [-0.6, 0.4, -0.3, 0.5, -0.5, 0.3];
+
+    // =========================================================================
+    // CARGA EN VIVO DESDE CLIENTE (API REST WordPress en tiempo real)
+    // Permite que las historias aprobadas en WP aparezcan sin requerir re-deploy
+    // =========================================================================
+    const fetchLiveStoriesFromWordPress = async () => {
+      if (!storiesGrid) return;
+      const endpoint = window.location.hostname === 'localhost'
+        ? '/api-cms/?rest_route=/amalia/v1/historias&per_page=100'
+        : 'https://cmsamalia.stagings.website/?rest_route=/amalia/v1/historias&per_page=100';
+
+      try {
+        const res = await fetch(endpoint, {
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!res.ok) return;
+
+        const liveStories: any[] = await res.json();
+        if (!Array.isArray(liveStories) || liveStories.length === 0) return;
+
+        let hasNewStories = false;
+        const existingIds = new Set(cards.map((c) => (c.getAttribute('data-story-id') || '').toLowerCase()));
+
+        // Insertar al inicio del grid cada historia de WP que no esté ya renderizada
+        liveStories.reverse().forEach((item: any, idx: number) => {
+          const sId = String(item.id || '');
+          if (sId && existingIds.has(sId.toLowerCase())) {
+            return;
+          }
+
+          const rawContent = item.content?.rendered || '';
+          const plainContent = rawContent.replace(/<[^>]*>?/gm, '').trim();
+          const acf = item.acf || {};
+          const storyType = (item.tipo || acf.tipo || 'otro-amor').toLowerCase();
+          const storyCat = (acf.categoria || 'DESAMOR').toUpperCase();
+          const storyFirma = acf.firma || (acf.autor ? `-${acf.autor}` : '— Anónimo');
+          const storySlug = item.slug || '';
+
+          const frameIdx = (cards.length + idx) % frameSvgs.length;
+          const rotVal = rotations[(cards.length + idx) % rotations.length];
+
+          const cardElem = document.createElement('article');
+          cardElem.className = 'story-note-card';
+          cardElem.setAttribute('data-category', storyCat.toLowerCase());
+          cardElem.setAttribute('data-type', storyType);
+          cardElem.setAttribute('data-story-id', sId);
+          cardElem.setAttribute('data-story-slug', storySlug);
+          cardElem.setAttribute('data-full-text', plainContent || item.title?.rendered || '');
+          cardElem.setAttribute('data-full-category', storyCat);
+          cardElem.setAttribute('data-full-signature', storyFirma);
+          cardElem.setAttribute('tabindex', '0');
+          cardElem.setAttribute('role', 'button');
+          cardElem.setAttribute('aria-label', `Historia de ${storyCat}: ${storyFirma}. Haz clic para leer completa`);
+          cardElem.style.setProperty('--card-rot', `${rotVal}deg`);
+
+          cardElem.innerHTML = `
+            <img src="${frameSvgs[frameIdx]}" alt="" class="card-frame-svg-bg" aria-hidden="true" loading="lazy" />
+            <div class="card-content">
+              <div class="card-header-row">
+                <span class="card-category">${storyCat}</span>
+              </div>
+              <p class="card-body-text">${plainContent || item.title?.rendered || ''}</p>
+              <div class="card-footer-row">
+                <span class="card-signature">${storyFirma}</span>
+                <span class="card-expand-hint" aria-hidden="true">leer +</span>
+              </div>
+            </div>
+          `;
+
+          attachCardClick(cardElem);
+          storiesGrid.prepend(cardElem);
+          existingIds.add(sId.toLowerCase());
+          hasNewStories = true;
+        });
+
+        if (hasNewStories) {
+          cards = Array.from(document.querySelectorAll('.story-note-card')) as HTMLElement[];
+          applyFilterAndPagination();
+          checkAndOpenStoryFromUrl();
+        }
+      } catch (err) {
+        // En caso de corte de red, se mantiene el contenido estático existente
+        console.warn('No se pudieron consultar historias en vivo:', err);
+      }
+    };
+
+    // Ejecutar consulta en segundo plano al cargar el cliente
+    fetchLiveStoriesFromWordPress();
 
     closeDetailModalBtn?.addEventListener('click', () => closeStoryDetail(true));
     detailModal?.addEventListener('click', (e) => {
