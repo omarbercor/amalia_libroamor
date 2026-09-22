@@ -1,5 +1,58 @@
 ---
-// StoryFormModal.astro - Formulario de envío de historias con estética de hoja de libreta rasgada
+// StoryFormModal.astro - Formulario de envío de historias con categorías dinámicas de WordPress
+interface CategoryTerm {
+  id: number;
+  name: string;
+  slug: string;
+  parent: number;
+}
+
+let allTerms: CategoryTerm[] = [];
+try {
+  const catRes = await fetch('https://cmsamalia.stagings.website/?rest_route=/wp/v2/categoria_historia&per_page=100', {
+    headers: { 'Accept': 'application/json' }
+  });
+  if (catRes.ok) {
+    const data = await catRes.json();
+    if (Array.isArray(data)) {
+      allTerms = data;
+    }
+  }
+} catch (e) {
+  // Silencioso
+}
+
+const parentTerms = allTerms.filter(t => t.parent === 0);
+const finalParents = parentTerms.length > 0 ? parentTerms : [
+  { id: 2, name: 'Por otro amor', slug: 'por-otro-amor', parent: 0 },
+  { id: 8, name: 'Por otra vida', slug: 'por-otra-vida', parent: 0 }
+];
+
+const dynamicOptGroups = finalParents.map((parent) => {
+  const children = allTerms.filter(t => t.parent === parent.id);
+  const items = children.length > 0
+    ? children.map(c => ({ value: c.name.toUpperCase(), label: c.name }))
+    : (parent.slug.includes('vida')
+        ? [
+            { value: 'MUDANZA', label: 'Mudanza' },
+            { value: 'DIVORCIO', label: 'Divorcio' },
+            { value: 'DUELO', label: 'Duelo' },
+            { value: 'SUPERACIÓN', label: 'Superación' },
+            { value: 'APRENDIZAJE', label: 'Aprendizaje' },
+          ]
+        : [
+            { value: 'INFIDELIDAD', label: 'Infidelidad' },
+            { value: 'TRAICIÓN', label: 'Traición' },
+            { value: 'DESAMOR', label: 'Desamor' },
+            { value: 'VENGANZA', label: 'Venganza' },
+            { value: 'REENCUENTRO', label: 'Reencuentro' },
+          ]);
+
+  return {
+    label: parent.name,
+    items
+  };
+});
 ---
 
 <div class="torn-paper-card" id="tornPaperCard">
@@ -42,11 +95,13 @@
       <div class="form-group">
         <label for="storyCategory">¿De qué trata tu historia?</label>
         <select id="storyCategory" name="categoria" required class="notebook-select">
-          <option value="DUELO">Duelo</option>
-          <option value="MUDANZAS">Mudanzas</option>
-          <option value="AMISTAD">Amistad</option>
-          <option value="DESAMOR">Desamor</option>
-          <option value="CRECIMIENTO">Crecimiento personal</option>
+          {dynamicOptGroups.map((group) => (
+            <optgroup label={group.label}>
+              {group.items.map((item) => (
+                <option value={item.value}>{item.label}</option>
+              ))}
+            </optgroup>
+          ))}
         </select>
       </div>
 
@@ -59,9 +114,9 @@
           required 
           placeholder="Escribe con libertad, como si fuera una página arrancada de tu diario..."
           class="notebook-textarea"
-          maxlength="450"
+          maxlength="500"
         ></textarea>
-        <span class="char-count" id="charCount">0 / 450</span>
+        <span class="char-count" id="charCount">0 / 500</span>
       </div>
 
       <div class="form-row">
@@ -355,25 +410,65 @@
 
     textarea?.addEventListener('input', () => {
       if (charCount) {
-        charCount.textContent = `${textarea.value.length} / 450`;
+        charCount.textContent = `${textarea.value.length} / 500`;
       }
     });
 
-    form?.addEventListener('submit', (e) => {
+    form?.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!statusMsg) return;
 
-      statusMsg.textContent = 'Guardando tu pedacito de historia... ✨';
-      
-      setTimeout(() => {
-        statusMsg.textContent = '¡Historia recibida con amor! Pasará al muro una vez moderada.';
+      statusMsg.textContent = 'Guardando tu pedacito de historia con amor... ✨';
+
+      const formData = new FormData(form);
+      const payload = {
+        historia: (formData.get('historia') || '').toString().trim(),
+        categoria: (formData.get('categoria') || '').toString(),
+        autor: (formData.get('autor') || '').toString().trim(),
+        edad: (formData.get('edad') || '').toString().trim(),
+        ciudad: (formData.get('ciudad') || '').toString().trim(),
+      };
+
+      const endpoint = window.location.hostname === 'localhost'
+        ? '/api-cms/?rest_route=/amalia/v1/enviar-historia'
+        : 'https://cmsamalia.stagings.website/?rest_route=/amalia/v1/enviar-historia';
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        // Éxito: limpiar formulario y mensaje inline, notificar exclusivamente con el Toast limpio
         form.reset();
         if (charCount) charCount.textContent = '0 / 450';
-        setTimeout(() => {
-          closeModal();
-          statusMsg.textContent = '';
-        }, 2500);
-      }, 800);
+        closeModal();
+        statusMsg.textContent = '';
+
+        if (typeof (window as any).showToast === 'function') {
+          (window as any).showToast({
+            title: 'Historia recibida',
+            message: 'Tu historia fue enviada. Pasara al muro una vez moderada.',
+            type: 'success',
+            duration: 5000
+          });
+        }
+      } catch (err: any) {
+        console.error('Error al enviar historia:', err);
+        statusMsg.textContent = '';
+
+        if (typeof (window as any).showToast === 'function') {
+          (window as any).showToast({
+            title: 'No se pudo enviar',
+            message: err.message || 'Ocurrio un problema al comunicarse con el servidor.',
+            type: 'error',
+            duration: 5000
+          });
+        }
+      }
     });
   });
 </script>

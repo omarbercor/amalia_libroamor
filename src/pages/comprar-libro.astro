@@ -8,10 +8,13 @@ import Rayones04Animated from '../components/Rayones04Animated.astro';
 import SpiralDoodleAnimated from '../components/SpiralDoodleAnimated.astro';
 import countries from '../data/countries.json';
 
-// Distribución de países en 3 columnas
-const col1 = countries.filter(c => ['ar', 'ec', 'pe', 'us'].includes(c.id));
-const col2 = countries.filter(c => ['br', 'es', 'pt', 've'].includes(c.id));
-const col3 = countries.filter(c => ['co', 'mx', 'uy'].includes(c.id));
+// Filtrar únicamente los países activos
+const activeCountries = countries.filter(c => c.activo && c.url);
+
+// Asignación explícita y balanceada a las 3 columnas de la maqueta
+const col1 = activeCountries.filter(c => ['mx', 'ar'].includes(c.id));
+const col2 = activeCountries.filter(c => ['co', 'cl'].includes(c.id));
+const col3 = activeCountries.filter(c => ['pe'].includes(c.id));
 ---
 
 <Layout 
@@ -32,9 +35,9 @@ const col3 = countries.filter(c => ['co', 'mx', 'uy'].includes(c.id));
       </div>
 
       <!-- Doodles vectoriales SVG y animados -->
-      <!-- 1. Sillas TU + YO animadas (arriba a la izquierda) -->
+      <!-- 1. Sillas TU + YO estáticas (arriba a la izquierda) -->
       <div class="doodle-chairs-wrapper" aria-hidden="true">
-        <SillasDoodleAnimated width="135" height="130" color="#EE2A22" />
+        <SillasDoodleAnimated width="135" height="130" color="#EE2A22" animated={false} />
       </div>
 
       <!-- 2. Corazón con ojos animado (arriba a la derecha) -->
@@ -42,7 +45,7 @@ const col3 = countries.filter(c => ['co', 'mx', 'uy'].includes(c.id));
         <CorazonOjosDoodleAnimated width="115" height="122" />
       </div>
 
-      <!-- 3. Rayones 04 decorativos (a la izquierda) -->
+      <!-- 3. Rayones 04 decorativos animados (a la izquierda) -->
       <div class="doodle-rayones-wrapper" aria-hidden="true">
         <Rayones04Animated width="145" height="63" />
       </div>
@@ -58,12 +61,12 @@ const col3 = countries.filter(c => ['co', 'mx', 'uy'].includes(c.id));
         />
       </div>
 
-      <!-- 5. Doodle espiral SVG animado (a la derecha) -->
+      <!-- 5. Doodle espiral SVG estático (a la derecha) -->
       <div class="doodle-spiral-wrapper" aria-hidden="true">
-        <SpiralDoodleAnimated width="42" height="270" />
+        <SpiralDoodleAnimated width="42" height="270" animated={false} />
       </div>
 
-      <!-- 3 Columnas de Países en Tipografía Oficial Amalia Altas con subrayado interactivo -->
+      <!-- 3 Columnas de Países en Tipografía Oficial Amalia Altas -->
       <div class="countries-grid">
         <!-- Columna 1 -->
         <div class="country-col">
@@ -73,7 +76,7 @@ const col3 = countries.filter(c => ['co', 'mx', 'uy'].includes(c.id));
               target="_blank" 
               rel="noopener noreferrer" 
               class="country-item"
-              title={`Comprar en ${item.name} — ${item.retailer}`}
+              title={`Comprar en ${item.name}`}
             >
               <span class="country-name">{item.name}</span>
             </a>
@@ -88,7 +91,7 @@ const col3 = countries.filter(c => ['co', 'mx', 'uy'].includes(c.id));
               target="_blank" 
               rel="noopener noreferrer" 
               class="country-item"
-              title={`Comprar en ${item.name} — ${item.retailer}`}
+              title={`Comprar en ${item.name}`}
             >
               <span class="country-name">{item.name}</span>
             </a>
@@ -103,7 +106,7 @@ const col3 = countries.filter(c => ['co', 'mx', 'uy'].includes(c.id));
               target="_blank" 
               rel="noopener noreferrer" 
               class="country-item"
-              title={`Comprar en ${item.name} — ${item.retailer}`}
+              title={`Comprar en ${item.name}`}
             >
               <span class="country-name">{item.name}</span>
             </a>

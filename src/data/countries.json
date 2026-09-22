@@ -1,13 +1,14 @@
 [
-  { "id": "ar", "name": "ARGENTINA", "url": "https://www.planetadelibros.com.ar", "retailer": "Planeta de Libros Argentina" },
-  { "id": "br", "name": "BRASIL", "url": "https://www.planetadelivros.com.br", "retailer": "Planeta de Livros Brasil" },
-  { "id": "co", "name": "COLOMBIA", "url": "https://www.planetadelibros.com.co", "retailer": "Librería Nacional & Panamericana" },
-  { "id": "ec", "name": "ECUADOR", "url": "https://www.planetadelibros.com.ec", "retailer": "Mr. Books Ecuador" },
-  { "id": "es", "name": "ESPAÑA", "url": "https://www.casadellibro.com", "retailer": "Casa del Libro & Fnac" },
-  { "id": "mx", "name": "MÉXICO", "url": "https://www.gandhi.com.mx", "retailer": "Librerías Gandhi & El Péndulo" },
-  { "id": "pe", "name": "PERÚ", "url": "https://www.crisol.com.pe", "retailer": "Librerías Crisol" },
-  { "id": "pt", "name": "PORTUGAL", "url": "https://www.planetadelivros.pt", "retailer": "Bertrand Livreiras" },
-  { "id": "uy", "name": "URUGUAY", "url": "https://www.planetadelibros.com.uy", "retailer": "Planeta Uruguay" },
-  { "id": "us", "name": "USA", "url": "https://www.amazon.com", "retailer": "Amazon Books / Barnes & Noble" },
-  { "id": "ve", "name": "VENEZUELA", "url": "https://www.planetadelibros.com", "retailer": "Planeta Venezuela & TecniCiencia" }
+  { "id": "mx", "name": "MÉXICO", "url": "https://www.amazon.com.mx/dp/B0DJ2WWY2Z", "retailer": "Amazon", "activo": true },
+  { "id": "co", "name": "COLOMBIA", "url": "https://www.buscalibre.com.co", "retailer": "Buscalibre", "activo": true },
+  { "id": "pe", "name": "PERÚ", "url": "https://www.buscalibre.pe", "retailer": "Buscalibre", "activo": true },
+  { "id": "cl", "name": "CHILE", "url": "https://www.buscalibre.cl", "retailer": "Buscalibre", "activo": true },
+  { "id": "ar", "name": "ARGENTINA", "url": "https://www.planetadelibros.com.ar", "retailer": "Tienda Planeta", "activo": true },
+  { "id": "us", "name": "USA", "url": "https://www.amazon.com", "retailer": "Amazon", "activo": false },
+  { "id": "pa", "name": "PANAMÁ", "url": "https://elhombredelamancha.com", "retailer": "Hombre de la Mancha", "activo": false },
+  { "id": "gt", "name": "GUATEMALA", "url": "https://sophosenlinea.com", "retailer": "Sophos", "activo": false },
+  { "id": "cr", "name": "COSTA RICA", "url": "https://libreriadcc.com", "retailer": "DCC", "activo": false },
+  { "id": "ec", "name": "ECUADOR", "url": "https://www.mrbooks.com", "retailer": "Mr. Books", "activo": false },
+  { "id": "uy", "name": "URUGUAY", "url": "", "retailer": "Próximamente", "activo": false },
+  { "id": "es", "name": "ESPAÑA", "url": "https://www.casadellibro.com", "retailer": "Casa del Libro", "activo": false }
 ]

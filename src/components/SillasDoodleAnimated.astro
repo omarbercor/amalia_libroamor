@@ -4,12 +4,19 @@ interface Props {
   width?: number | string;
   height?: number | string;
   color?: string;
+  animated?: boolean;
 }
 
-const { class: className = '', width = '140', height = '138', color = '#EE2A22' } = Astro.props;
+const { 
+  class: className = '', 
+  width = '140', 
+  height = '138', 
+  color = '#EE2A22',
+  animated = true 
+} = Astro.props;
 ---
 
-<div class={`sillas-doodle-container ${className}`}>
+<div class={`sillas-doodle-container ${className}`} data-animated={animated ? "true" : "false"}>
   <svg 
     id="sillasDoodleSvg"
     xmlns="http://www.w3.org/2000/svg" 
@@ -97,29 +104,34 @@ const { class: className = '', width = '140', height = '138', color = '#EE2A22' 
   gsap.registerPlugin(DrawSVGPlugin);
 
   function initSillasAnimation() {
-    const strokes = document.querySelectorAll('#sillasDoodleSvg .sillas-draw-stroke');
-    if (!strokes || strokes.length === 0) return;
+    const containers = document.querySelectorAll('.sillas-doodle-container[data-animated="true"]');
+    if (!containers || containers.length === 0) return;
 
-    gsap.set(strokes, { drawSVG: '0%' });
+    containers.forEach((container) => {
+      const strokes = container.querySelectorAll('.sillas-draw-stroke');
+      if (!strokes || strokes.length === 0) return;
 
-    const tl = gsap.timeline({
-      delay: 0.3,
-      defaults: { ease: 'power1.inOut' }
+      gsap.set(strokes, { drawSVG: '0%' });
+
+      const tl = gsap.timeline({
+        delay: 0.3,
+        defaults: { ease: 'power1.inOut' }
+      });
+
+      const letters = container.querySelectorAll('.letter-stroke');
+      const chairStrokes = container.querySelectorAll('.chair-stroke');
+
+      tl.to(letters, {
+        drawSVG: '100%',
+        duration: 0.8,
+        stagger: 0.08,
+      })
+      .to(chairStrokes, {
+        drawSVG: '100%',
+        duration: 1.4,
+        stagger: 0.06,
+      }, '-=0.3');
     });
-
-    const letters = document.querySelectorAll('#sillasDoodleSvg .letter-stroke');
-    const chairStrokes = document.querySelectorAll('#sillasDoodleSvg .chair-stroke');
-
-    tl.to(letters, {
-      drawSVG: '100%',
-      duration: 0.8,
-      stagger: 0.08,
-    })
-    .to(chairStrokes, {
-      drawSVG: '100%',
-      duration: 1.4,
-      stagger: 0.06,
-    }, '-=0.3');
   }
 
   document.addEventListener('DOMContentLoaded', initSillasAnimation);

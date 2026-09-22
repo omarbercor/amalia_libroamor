@@ -6,9 +6,12 @@ interface Props {
   firma: string;
   index?: number;
   tipo?: string;
+  id?: number | string;
+  slug?: string;
 }
 
-const { categoria, texto, firma, index = 0, tipo = "otro-amor" } = Astro.props;
+const { categoria, texto, firma, index = 0, tipo = "otro-amor", id, slug } = Astro.props;
+const storyId = id || `post${index + 1}`;
 
 // Colección de SVGs de marcos irregulares creados para los testimonios
 const frameSvgs = [
@@ -34,6 +37,14 @@ const currentRotation = rotations[index % rotations.length];
   class="story-note-card" 
   data-category={categoria.toLowerCase()}
   data-type={tipo.toLowerCase()}
+  data-story-id={String(storyId)}
+  data-story-slug={slug || ''}
+  data-full-text={texto}
+  data-full-category={categoria}
+  data-full-signature={firma}
+  tabindex="0"
+  role="button"
+  aria-label={`Historia de ${categoria}: ${firma}. Haz clic para leer completa`}
   style={`--card-rot: ${currentRotation}deg;`}
 >
   <!-- Marco irregular dibujado a mano original de Amalia -->
@@ -46,9 +57,14 @@ const currentRotation = rotations[index % rotations.length];
   />
 
   <div class="card-content">
-    <span class="card-category">{categoria}</span>
+    <div class="card-header-row">
+      <span class="card-category">{categoria}</span>
+    </div>
     <p class="card-body-text">{texto}</p>
-    <span class="card-signature">{firma}</span>
+    <div class="card-footer-row">
+      <span class="card-signature">{firma}</span>
+      <span class="card-expand-hint" aria-hidden="true">leer +</span>
+    </div>
   </div>
 </article>
 
@@ -61,8 +77,10 @@ const currentRotation = rotations[index % rotations.length];
     flex-direction: column;
     justify-content: space-between;
     background: transparent;
+    cursor: pointer;
     transform: rotate(var(--card-rot, 0deg));
     transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+    user-select: none;
   }
 
   .card-frame-svg-bg {
@@ -91,12 +109,13 @@ const currentRotation = rotations[index % rotations.length];
   }
 
   .card-category {
-    font-family: var(--font-regular, 'Open Sans', sans-serif);
-    font-size: 1.05rem;
-    font-weight: 700;
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 1.25rem;
+    font-weight: 600;
     color: var(--color-text-main, #1E1A18);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
+    line-height: 1.2;
   }
 
   .card-body-text {
@@ -105,6 +124,18 @@ const currentRotation = rotations[index % rotations.length];
     line-height: 1.55;
     color: var(--color-text-main, #1E1A18);
     flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.2rem;
   }
 
   .card-signature {
@@ -112,5 +143,18 @@ const currentRotation = rotations[index % rotations.length];
     font-size: 1.15rem;
     color: var(--color-marker-red, #EE2A22);
     font-weight: 400;
+  }
+
+  .card-expand-hint {
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 0.95rem;
+    color: #9E948C;
+    letter-spacing: 0.02em;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .story-note-card:hover .card-expand-hint {
+    color: var(--color-marker-red, #EE2A22);
+    transform: translateX(2px);
   }
 </style>

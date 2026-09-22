@@ -1,0 +1,155 @@
+---
+// ToastNotification.astro - Sistema de notificaciones estilo libreta/sello de Amalia
+---
+
+<div id="amalia-toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<style>
+  .toast-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    pointer-events: none;
+    max-width: 380px;
+    width: calc(100vw - 3rem);
+  }
+
+  :global(.amalia-toast) {
+    pointer-events: auto;
+    background: #FAF6ED;
+    border: 2px solid #1E1A18;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    box-shadow: 4px 6px 0px rgba(30, 26, 24, 0.9), 0 8px 20px rgba(0, 0, 0, 0.12);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    position: relative;
+    transform: translateY(20px) rotate(0.8deg);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-family: var(--font-regular);
+  }
+
+  :global(.amalia-toast.show) {
+    transform: translateY(0) rotate(-0.5deg);
+    opacity: 1;
+  }
+
+  :global(.amalia-toast.hide) {
+    transform: translateY(15px) scale(0.95);
+    opacity: 0;
+  }
+
+  /* Variantes */
+  :global(.amalia-toast.toast-success) {
+    border-left: 6px solid var(--color-primary-red, #EE2A22);
+  }
+
+  :global(.amalia-toast.toast-error) {
+    border-left: 6px solid #1E1A18;
+    background: #FFF0F0;
+  }
+
+  :global(.amalia-toast.toast-info) {
+    border-left: 6px solid #4A709C;
+  }
+
+  :global(.toast-content) {
+    flex: 1;
+  }
+
+  :global(.toast-title) {
+    font-family: var(--font-secondary-title, 'Mynerve');
+    font-size: 1.15rem;
+    color: var(--color-primary-red, #EE2A22);
+    margin-bottom: 0.2rem;
+    line-height: 1.2;
+  }
+
+  :global(.toast-message) {
+    font-size: 0.9rem;
+    color: var(--color-text-main, #1E1A18);
+    line-height: 1.4;
+  }
+
+  :global(.toast-close-btn) {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #8E847C;
+    padding: 0 4px;
+    line-height: 1;
+    transition: color 0.2s ease;
+  }
+
+  :global(.toast-close-btn:hover) {
+    color: var(--color-primary-red, #EE2A22);
+  }
+
+  @media (max-width: 600px) {
+    .toast-container {
+      bottom: 1.5rem;
+      right: 1.5rem;
+      left: 1.5rem;
+      width: auto;
+      max-width: none;
+    }
+  }
+</style>
+
+<script>
+  // Toast Utility Global
+  interface ToastOptions {
+    title?: string;
+    message: string;
+    type?: 'success' | 'error' | 'info';
+    duration?: number;
+  }
+
+  function showToast({ title, message, type = 'success', duration = 4000 }: ToastOptions) {
+    const container = document.getElementById('amalia-toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = `amalia-toast toast-${type}`;
+
+    toast.innerHTML = `
+      <div class="toast-content">
+        ${title ? `<div class="toast-title">${title}</div>` : ''}
+        <div class="toast-message">${message}</div>
+      </div>
+      <button class="toast-close-btn" aria-label="Cerrar">✕</button>
+    `;
+
+    const closeBtn = toast.querySelector('.toast-close-btn');
+    const dismiss = () => {
+      toast.classList.remove('show');
+      toast.classList.add('hide');
+      setTimeout(() => {
+        toast.remove();
+      }, 350);
+    };
+
+    closeBtn?.addEventListener('click', dismiss);
+
+    container.appendChild(toast);
+
+    // Trigger reflow for transition
+    requestAnimationFrame(() => {
+      toast.classList.add('show');
+    });
+
+    if (duration > 0) {
+      setTimeout(dismiss, duration);
+    }
+  }
+
+  // Exportar a window para uso fácil desde cualquier componente
+  (window as any).showToast = showToast;
+</script>

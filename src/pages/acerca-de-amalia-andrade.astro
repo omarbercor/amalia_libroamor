@@ -2,117 +2,73 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import CorazonCuritaAnimated from '../components/CorazonCuritaAnimated.astro';
-import AcercaTitleAnimated from '../components/AcercaTitleAnimated.astro';
-import DivisorLargo from '../components/DivisorLargo.astro';
 import ButtonOpcionesCompra from '../components/ButtonOpcionesCompra.astro';
 ---
 
 <Layout 
   title="Acerca de Amalia Andrade — 10 Años | Uno siempre cambia al amor de su vida"
-  description="Cosas que no están en el libro pero deberían. Bocetos, archivos inéditos, recuerdos y biografía de Amalia Andrade."
+  description="Biografía, obra y trayectoria de Amalia Andrade con motivo de los 10 años de 'Uno siempre cambia al amor de su vida'."
 >
   <div class="acerca-page">
     <!-- Header oficial con flecha de regreso al Home -->
     <Header showBack={true} backUrl="/" />
 
     <main class="acerca-main">
-      <!-- 1. SECCIÓN SUPERIOR: Título + Doodles + Carrusel Polaroid -->
-      <section class="acerca-hero-section">
-        <!-- Doodle Corazón + Curita animado a la izquierda -->
-        <div class="doodle-corazon-curita-wrapper" aria-hidden="true">
-          <CorazonCuritaAnimated width="140" height="74" />
-        </div>
-
-        <!-- Bloque de Título -->
-        <div class="acerca-header-block">
-          <h1 class="acerca-main-title">
-            <AcercaTitleAnimated />
-          </h1>
-
-          <p class="acerca-subtitle-mynerve">
-            Cuéntanos cómo ha tocado tu vida este libro
-          </p>
-        </div>
-
-        <!-- PRIMER CARRUSEL: Las fotos polaroid son una composición (fotocarrusel.png) -->
-        <div class="carousel-composition-outer">
-          <div class="carousel-composition-track" id="acercaCarouselTrack">
-            <div class="carousel-slide">
-              <img 
-                src="/assets/acerca/fotocarrusel.png" 
-                alt="Composición fotográfica de recuerdos de Amalia Andrade: polaroid roja, iPod Classic con Juan Gabriel y polaroid con plumón" 
-                class="carousel-composition-img"
-                width="1114"
-                height="688"
-                loading="eager"
-              />
-            </div>
-            <!-- Duplicado/segunda imagen para permitir navegación de carrusel -->
-            <div class="carousel-slide">
-              <img 
-                src="/assets/acerca/fotocarrusel.png" 
-                alt="Composición fotográfica de recuerdos de Amalia Andrade - Álbum 2" 
-                class="carousel-composition-img"
-                width="1114"
-                height="688"
-                loading="lazy"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Controles de navegación del Carrusel (< >) -->
-        <div class="carousel-nav-arrows">
-          <button type="button" class="nav-arrow-circle" id="prevSlideBtn" aria-label="Anterior foto">
-            <svg viewBox="0 0 24 24" class="arrow-icon" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-          <button type="button" class="nav-arrow-circle" id="nextSlideBtn" aria-label="Siguiente foto">
-            <svg viewBox="0 0 24 24" class="arrow-icon" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </button>
-        </div>
-
-        <!-- Separador trazo rojo largo oficial (divisor_largo.svg) -->
-        <div class="acerca-section-divider">
-          <DivisorLargo width="100%" color="#EE2A22" />
-        </div>
-      </section>
-
-      <!-- 2. SECCIÓN SOBRE AMALIA -->
+      <!-- SECCIÓN SOBRE AMALIA -->
       <section class="sobre-amalia-section" id="sobre-amalia">
-        <!-- Título SOBRE AMALIA -->
+        <!-- Título SOBRE AMALIA animado en rojo con subrayado dinámico DrawSVG -->
         <div class="sobre-amalia-header">
-          <h2 class="sobre-amalia-title">
-            <span class="title-line">SOBRE</span>
-            <span class="title-line">AMALIA</span>
-          </h2>
+          <div class="sobre-amalia-title-wrapper">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 460 210" 
+              class="sobre-amalia-title-svg" 
+              aria-label="Sobre Amalia"
+            >
+              <!-- Texto con Amaliafont_altas en color rojo -->
+              <g class="sobre-amalia-title-texts">
+                <text class="sobre-amalia-title-line" x="230" y="75" text-anchor="middle">
+                  SOBRE
+                </text>
+                <text class="sobre-amalia-title-line" x="230" y="155" text-anchor="middle">
+                  AMALIA
+                </text>
+              </g>
+
+              <!-- Trazo de subrayado rojo con efecto plumón irregular -->
+              <g class="sobre-amalia-underline-group">
+                <path 
+                  id="sobreAmaliaUnderline" 
+                  class="sobre-amalia-underline-path" 
+                  d="M 65,178 Q 230,168 395,182" 
+                  fill="none" 
+                  stroke="#EE2A22" 
+                  stroke-width="7.5" 
+                  stroke-linecap="round" 
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+          </div>
         </div>
 
         <div class="sobre-amalia-grid">
           <!-- Columna Izquierda: Polaroid de Amalia con cinta roja adhesiva (polaroid.png) -->
           <div class="polaroid-amalia-wrapper">
             <img 
-              src="/assets/acerca/polaroid.png" 
+              src="/assets/acerca/polaroid.png?v=3" 
               alt="Polaroid de Amalia Andrade fijada con cinta adhesiva roja y doodle" 
               class="polaroid-amalia-img"
               width="390"
               height="500"
-              loading="lazy"
+              loading="eager"
             />
           </div>
 
-          <!-- Columna Derecha: Biografía + Texto de Amalia -->
+          <!-- Columna Derecha: Biografía oficial de Amalia -->
           <div class="sobre-amalia-text-wrapper">
             <p class="amalia-bio-text">
-              Amalia Andrade nació en Cali, Colombia. Es periodista, ilustradora y fenómeno viral en las redes sociales. Ha vendido más de 1 millón de ejemplares de sus libros y expuesto en varias galerías colombianas.
-            </p>
-
-            <p class="amalia-handwritten-signature">
-              Texto de Amalia
+              Nació en Cali, Colombia, en 1985. Es acuario. Estudió literatura en la Pontificia Universidad Javeriana de Bogotá. Dibuja y escribe desde que pudo hacerlo. Periodista, ilustradora, adivina, actriz a ratos. Su obra y sus libros son un fenómeno viral en redes sociales, ha vendido más de un millón de ejemplares, además de que se han traducido a seis idiomas. Ama correr. Dice chistes porque está convencida de que el humor es terapéutico. Su libro favorito de todos los tiempos es Mujercitas, de Louisa May Alcott. Vive en Bogotá con Río y Carmen, sus dos gatos.
             </p>
           </div>
         </div>
@@ -147,173 +103,64 @@ import ButtonOpcionesCompra from '../components/ButtonOpcionesCompra.astro';
     max-width: 1180px;
     margin: 0 auto;
     width: 100%;
-    padding: 0.5rem 0 3.5rem 0;
+    padding: 1.5rem 0 3.5rem 0;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-  /* 1. Hero Section */
-  .acerca-hero-section {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    margin-bottom: 2rem;
-  }
-
-  /* Doodle Corazón + Curita */
-  .doodle-corazon-curita-wrapper {
-    position: absolute;
-    top: 2.2rem;
-    left: 1.5rem;
-    width: 135px;
-    z-index: 5;
-  }
-
-  /* Bloque de Título */
-  .acerca-header-block {
-    text-align: center;
-    margin-top: 0.5rem;
-    margin-bottom: 2.8rem;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .acerca-main-title {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    display: flex;
     justify-content: center;
   }
 
-  .acerca-subtitle-mynerve {
-    font-family: var(--font-secondary-title, 'Mynerve', cursive);
-    font-size: 1.75rem;
-    color: var(--color-ink-black, #1E1A18);
-    margin-top: 1.6rem;
-    font-weight: 400;
-  }
-
-  /* Carrusel Composición */
-  .carousel-composition-outer {
-    width: 100%;
-    max-width: 1060px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 1rem 0;
-    display: flex;
-    justify-content: flex-start;
-  }
-
-  .carousel-composition-outer::-webkit-scrollbar {
-    display: none;
-  }
-
-  .carousel-composition-track {
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    width: max-content;
-    margin: 0 auto;
-  }
-
-  .carousel-slide {
-    flex-shrink: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 980px;
-  }
-
-  .carousel-composition-img {
-    width: 100%;
-    max-width: 980px;
-    height: auto;
-    display: block;
-    transition: transform 0.3s ease;
-  }
-
-  /* Controles de Navegación (< >) */
-  .carousel-nav-arrows {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1.6rem;
-    margin-top: 1.2rem;
-    margin-bottom: 3.5rem;
-  }
-
-  .nav-arrow-circle {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    border: 2.5px solid var(--color-marker-red, #EE2A22);
-    background: transparent;
-    color: var(--color-marker-red, #EE2A22);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-  }
-
-  .nav-arrow-circle:hover {
-    background-color: #000000;
-    border-color: #000000;
-    color: #FFFFFF;
-  }
-
-  .arrow-icon {
-    width: 22px;
-    height: 22px;
-  }
-
-  .acerca-section-divider {
-    width: 100%;
-    max-width: 1020px;
-    margin: 0.5rem 0 3rem 0;
-  }
-
-  /* 2. Sección Sobre Amalia */
+  /* Sección Sobre Amalia */
   .sobre-amalia-section {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 1rem;
   }
 
   .sobre-amalia-header {
     text-align: center;
-    margin-bottom: 2.8rem;
+    margin-bottom: 2.2rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
-  .sobre-amalia-title {
-    font-family: 'Amaliafont_altas-Regular', 'Amaliafont_altas', sans-serif;
-    color: #000000;
-    font-size: clamp(2.4rem, 4vw, 3.2rem);
-    line-height: 1.15;
-    font-weight: normal;
-    letter-spacing: 0.02em;
+  .sobre-amalia-title-wrapper {
+    width: 100%;
+    max-width: 420px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
+  }
+
+  .sobre-amalia-title-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .sobre-amalia-title-line {
+    fill: var(--color-marker-red, #EE2A22);
+    font-family: 'Amaliafont_altas-Regular', 'Amaliafont_altas', sans-serif;
+    font-size: 68px;
+    font-weight: normal;
+    letter-spacing: 0.03em;
+  }
+
+  .sobre-amalia-underline-path {
+    stroke: var(--color-marker-red, #EE2A22);
   }
 
   .sobre-amalia-grid {
     display: grid;
-    grid-template-columns: 1.1fr 1.3fr;
-    gap: 4rem;
+    grid-template-columns: 1.05fr 1.35fr;
+    gap: 4.5rem;
     align-items: center;
     width: 100%;
-    max-width: 900px;
+    max-width: 950px;
     margin-bottom: 3.8rem;
   }
 
@@ -327,26 +174,25 @@ import ButtonOpcionesCompra from '../components/ButtonOpcionesCompra.astro';
     width: 100%;
     height: auto;
     display: block;
+    filter: drop-shadow(0 12px 24px rgba(60, 45, 30, 0.12));
+    transition: transform 0.3s ease;
+  }
+
+  .polaroid-amalia-img:hover {
+    transform: rotate(-1deg) scale(1.02);
   }
 
   .sobre-amalia-text-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 2rem;
+    gap: 1.8rem;
   }
 
   .amalia-bio-text {
     font-family: var(--font-regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-    font-size: 1.05rem;
-    line-height: 1.65;
-    color: var(--color-ink-black, #1E1A18);
-    margin: 0;
-  }
-
-  .amalia-handwritten-signature {
-    font-family: var(--font-secondary-title, 'Mynerve', cursive);
-    font-size: 1.7rem;
+    font-size: 1.15rem;
+    line-height: 1.75;
     color: var(--color-ink-black, #1E1A18);
     margin: 0;
   }
@@ -365,35 +211,12 @@ import ButtonOpcionesCompra from '../components/ButtonOpcionesCompra.astro';
     }
 
     .acerca-main {
-      padding: 0.5rem 0 2rem 0;
-    }
-
-    .doodle-corazon-curita-wrapper {
-      position: static;
-      margin-bottom: 1rem;
-      width: 110px;
-    }
-
-    .acerca-subtitle-mynerve {
-      font-size: 1.35rem;
-      margin-top: 1.2rem;
-    }
-
-    .carousel-composition-outer {
-      padding: 0.5rem 0;
-    }
-
-    .carousel-slide {
-      max-width: 86vw;
-    }
-
-    .carousel-composition-img {
-      max-width: 100%;
+      padding: 1rem 0 2rem 0;
     }
 
     .sobre-amalia-grid {
       grid-template-columns: 1fr;
-      gap: 2.2rem;
+      gap: 2.5rem;
       text-align: center;
     }
 
@@ -402,34 +225,44 @@ import ButtonOpcionesCompra from '../components/ButtonOpcionesCompra.astro';
     }
 
     .amalia-bio-text {
-      font-size: 1rem;
-      max-width: 90%;
+      font-size: 1.05rem;
+      line-height: 1.68;
+      max-width: 92%;
     }
 
     .polaroid-amalia-img {
       max-width: 290px;
     }
+
+    .sobre-amalia-title-wrapper {
+      max-width: 320px;
+    }
   }
 </style>
 
 <script>
-  function initAcercaCarousel() {
-    const track = document.getElementById('acercaCarouselTrack');
-    const container = track?.parentElement;
-    const prevBtn = document.getElementById('prevSlideBtn');
-    const nextBtn = document.getElementById('nextSlideBtn');
+  import { gsap } from 'gsap';
+  import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
 
-    if (!container || !prevBtn || !nextBtn) return;
+  gsap.registerPlugin(DrawSVGPlugin);
 
-    prevBtn.addEventListener('click', () => {
-      container.scrollBy({ left: -container.clientWidth * 0.85, behavior: 'smooth' });
-    });
+  function initSobreAmaliaTitle() {
+    const underline = document.getElementById('sobreAmaliaUnderline');
+    if (!underline) return;
 
-    nextBtn.addEventListener('click', () => {
-      container.scrollBy({ left: container.clientWidth * 0.85, behavior: 'smooth' });
+    gsap.set(underline, { drawSVG: '0%' });
+    gsap.to(underline, {
+      drawSVG: '100%',
+      duration: 1.2,
+      delay: 0.25,
+      ease: 'power2.out'
     });
   }
 
-  document.addEventListener('DOMContentLoaded', initAcercaCarousel);
-  document.addEventListener('astro:page-load', initAcercaCarousel);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSobreAmaliaTitle);
+  } else {
+    initSobreAmaliaTitle();
+  }
+  document.addEventListener('astro:page-load', initSobreAmaliaTitle);
 </script>

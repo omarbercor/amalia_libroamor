@@ -9,6 +9,7 @@
       "rendered": "Lo leí en la sala de espera del hospital donde estaba mi papá. No sé si me ayudó o si simplemente me acompañó, pero esas dos cosas se parecen bastante."
     },
     "acf": {
+      "tipo": "otra-vida",
       "categoria": "DUELO",
       "autor": "Vale",
       "edad": "34",
@@ -26,7 +27,8 @@
       "rendered": "Me lo llevé a Madrid en una maleta donde no cabía nada más. Dejé zapatos por meterlo. No me arrepiento de los zapatos."
     },
     "acf": {
-      "categoria": "MUDANZAS",
+      "tipo": "otra-vida",
+      "categoria": "MUDANZA",
       "autor": "Juanito",
       "edad": "27",
       "ciudad": "Madrid",
@@ -36,120 +38,127 @@
   {
     "id": 3,
     "date": "2026-02-21T20:10:00",
-    "slug": "terapia-sin-licencia",
+    "slug": "un-cafe-diez-anos-despues",
     "status": "publish",
-    "title": { "rendered": "Terapia sin licencia" },
+    "title": { "rendered": "Un café diez años después" },
     "content": {
-      "rendered": "Lo compramos cuatro amigas y armamos un club de lectura que en realidad era terapia grupal sin licencia."
+      "rendered": "Diez años después nos encontramos en la misma esquina. Ya no dolía; pudimos reírnos de cómo nos rompimos el corazón y agradecer lo vivido. Diez años después nos encontramos en la misma esquina. Ya no dolía; pudimos reírnos de cómo nos rompimos el corazón y agradecer lo vivido. Diez años después nos encontramos en la misma esquina. Ya no dolía; pudimos reírnos de cómo nos rompimos el corazón y agradecer lo vivido."
     },
     "acf": {
-      "categoria": "AMISTAD",
-      "autor": "Las de los jueves",
-      "edad": "",
+      "tipo": "otro-amor",
+      "categoria": "REENCUENTRO",
+      "autor": "Clara & Tom",
+      "edad": "32",
       "ciudad": "Cali",
-      "firma": "-Las de los jueves, Cali"
+      "firma": "-Clara & Tom, Cali"
     }
   },
   {
     "id": 4,
     "date": "2026-02-23T12:00:00",
-    "slug": "un-club-de-lectura-improvisado",
+    "slug": "la-verdad-que-salio-a-la-luz",
     "status": "publish",
-    "title": { "rendered": "Un club de lectura improvisado" },
+    "title": { "rendered": "La verdad que dolió pero liberó" },
     "content": {
-      "rendered": "Lo compramos cuatro amigas y armamos un club de lectura que en realidad era terapia grupal sin licencia."
+      "rendered": "Descubrí los mensajes un domingo por la tarde. Se me cayó el mundo, pero ese libro me recordó que mi dignidad vale mil veces más que una mentira."
     },
     "acf": {
-      "categoria": "AMISTAD",
-      "autor": "Las de los jueves",
-      "edad": "",
-      "ciudad": "Cali",
-      "firma": "-Las de los jueves, Cali"
+      "tipo": "otro-amor",
+      "categoria": "INFIDELIDAD",
+      "autor": "Lucía",
+      "edad": "28",
+      "ciudad": "Bogotá",
+      "firma": "-Lucía, 28, Bogotá"
     }
   },
   {
     "id": 5,
-    "date": "2026-02-25T01:30:00",
-    "slug": "sobrevivir-al-naufragio",
+    "date": "2026-02-26T08:30:00",
+    "slug": "la-mejor-venganza",
     "status": "publish",
-    "title": { "rendered": "Sobrevivir al naufragio" },
+    "title": { "rendered": "Mi mejor venganza" },
     "content": {
-      "rendered": "Lo leí en la sala de espera del hospital donde estaba mi papá. No sé si me ayudó o si simplemente me acompañó, pero esas dos cosas se parecen bastante."
+      "rendered": "Quería que pagara por cada lágrima. Luego leí que la mejor venganza no era pagar con la misma moneda, sino ser ridículamente feliz sin él."
     },
     "acf": {
-      "categoria": "DUELO",
-      "autor": "Vale",
-      "edad": "34",
-      "ciudad": "Medellín",
-      "firma": "-Vale, 34, Medellín"
+      "tipo": "otro-amor",
+      "categoria": "VENGANZA",
+      "autor": "Estefanía",
+      "edad": "25",
+      "ciudad": "Lima",
+      "firma": "-Estefanía, 25, Lima"
     }
   },
   {
     "id": 6,
-    "date": "2026-02-27T15:00:00",
-    "slug": "dejar-zapatos-por-libros",
+    "date": "2026-02-28T22:15:00",
+    "slug": "despedida-en-silencio",
     "status": "publish",
-    "title": { "rendered": "Dejar zapatos por libros" },
+    "title": { "rendered": "Despedida en silencio" },
     "content": {
-      "rendered": "Me lo llevé a Madrid en una maleta donde no cabía nada más. Dejé zapatos por meterlo. No me arrepiento de los zapatos."
+      "rendered": "Esa noche entendí que quien te traiciona una vez no se equivoca: toma una decisión. Agarré mis cosas en silencio y nunca miré atrás."
     },
     "acf": {
-      "categoria": "MUDANZAS",
-      "autor": "Juanito",
-      "edad": "27",
-      "ciudad": "Madrid",
-      "firma": "-Juanito, 27"
+      "tipo": "otro-amor",
+      "categoria": "TRAICIÓN",
+      "autor": "Andrés",
+      "edad": "30",
+      "ciudad": "Santiago",
+      "firma": "-Andrés, 30, Santiago"
     }
   },
   {
     "id": 7,
-    "date": "2026-03-01T23:45:00",
-    "slug": "la-maleta-otra-vez",
+    "date": "2026-03-02T11:45:00",
+    "slug": "firmar-el-divorcio",
     "status": "publish",
-    "title": { "rendered": "La maleta otra vez" },
+    "title": { "rendered": "La firma del divorcio" },
     "content": {
-      "rendered": "Me lo llevé a Madrid en una maleta donde no cabía nada más. Dejé zapatos por meterlo. No me arrepiento de los zapatos."
+      "rendered": "Firmar ese papel me temblaban las manos. Sentí que fracasaba. Hoy, tres años después, veo esa firma como el acto de valentía más hermoso de mi vida."
     },
     "acf": {
-      "categoria": "MUDANZAS",
-      "autor": "Juanito",
-      "edad": "27",
-      "ciudad": "Madrid",
-      "firma": "-Juanito, 27"
+      "tipo": "otra-vida",
+      "categoria": "DIVORCIO",
+      "autor": "Mariana",
+      "edad": "41",
+      "ciudad": "Buenos Aires",
+      "firma": "-Mariana, 41, BA"
     }
   },
   {
     "id": 8,
     "date": "2026-03-04T16:20:00",
-    "slug": "amigas-y-terapia",
+    "slug": "aprender-a-estar-sola",
     "status": "publish",
-    "title": { "rendered": "Amigas y terapia" },
+    "title": { "rendered": "Aprender a estar sola" },
     "content": {
-      "rendered": "Lo compramos cuatro amigas y armamos un club de lectura que en realidad era terapia grupal sin licencia."
+      "rendered": "El mayor aprendizaje no fue dejar de extrañar, sino darme cuenta de que el silencio de mi casa ya no daba miedo, daba paz."
     },
     "acf": {
-      "categoria": "AMISTAD",
-      "autor": "Las de los jueves",
-      "edad": "",
-      "ciudad": "Cali",
-      "firma": "-Las de los jueves, Cali"
+      "tipo": "otra-vida",
+      "categoria": "APRENDIZAJE",
+      "autor": "Camila R.",
+      "edad": "29",
+      "ciudad": "Quito",
+      "firma": "-Camila, 29, Quito"
     }
   },
   {
     "id": 9,
-    "date": "2026-03-06T11:15:00",
-    "slug": "acompanamiento-en-silencio",
+    "date": "2026-03-06T09:05:00",
+    "slug": "cajas-y-paredes-vacias",
     "status": "publish",
-    "title": { "rendered": "Acompañamiento en silencio" },
+    "title": { "rendered": "Cajas y paredes vacías" },
     "content": {
-      "rendered": "Lo leí en la sala de espera del hospital donde estaba mi papá. No sé si me ayudó o si simplemente me acompañó, pero esas dos cosas se parecen bastante."
+      "rendered": "Empacar 8 años de vida en 12 cajas de cartón. Despedirme del apartamento que compartimos me destrozó, pero el nuevo balcón tenía el sol que tanto necesitaba."
     },
     "acf": {
-      "categoria": "DUELO",
-      "autor": "Vale",
-      "edad": "34",
-      "ciudad": "Medellín",
-      "firma": "-Vale, 34, Medellín"
+      "tipo": "otra-vida",
+      "categoria": "MUDANZA",
+      "autor": "Patricia",
+      "edad": "36",
+      "ciudad": "Bogotá",
+      "firma": "-Patricia, 36, Bogotá"
     }
   },
   {
@@ -162,7 +171,8 @@
       "rendered": "Pasé años buscando al amor de mi vida en otras miradas. Al cerrar la última página entendí que siempre fui yo, reconstruyéndome con paciencia y plumón en mano."
     },
     "acf": {
-      "categoria": "CRECIMIENTO",
+      "tipo": "otra-vida",
+      "categoria": "SUPERACIÓN",
       "autor": "Sofía",
       "edad": "31",
       "ciudad": "Ciudad de México",
@@ -172,14 +182,15 @@
   {
     "id": 11,
     "date": "2026-03-10T14:10:00",
-    "slug": "copias-subrayadas",
+    "slug": "un-cierre-sin-respuestas",
     "status": "publish",
-    "title": { "rendered": "Copias subrayadas" },
+    "title": { "rendered": "Cerrar sin respuestas" },
     "content": {
-      "rendered": "Nos separamos y cada uno conservó su copia subrayada en páginas distintas. Diez años después nos encontramos a tomar café y descubrimos que nos amábamos mejor desde otra vida."
+      "rendered": "Nunca me explicó por qué se fue de un día para otro. Tuve que fabricar mi propio cierre y aceptar que su silencio ya era una respuesta."
     },
     "acf": {
-      "categoria": "MUDANZAS",
+      "tipo": "otro-amor",
+      "categoria": "DESAMOR",
       "autor": "Mateo",
       "edad": "35",
       "ciudad": "Buenos Aires",
@@ -196,11 +207,336 @@
       "rendered": "Creí que me iba a morir el día que se fue. Diez años después me río con ternura, pero ese libro fue mi chaleco salvavidas cuando el mundo se me vino encima."
     },
     "acf": {
+      "tipo": "otro-amor",
       "categoria": "DESAMOR",
       "autor": "Camila",
       "edad": "29",
       "ciudad": "Bogotá",
       "firma": "-Camila, 29, Bogotá"
+    }
+  },
+  {
+    "id": 13,
+    "date": "2026-03-13T10:15:00",
+    "slug": "playlist-borrada",
+    "status": "publish",
+    "title": { "rendered": "La playlist compartida" },
+    "content": {
+      "rendered": "Borrar esa lista de reproducción que creamos durante 4 años dolió más que cualquier despedida. Hoy tengo mis propias canciones y no le pertenecen a nadie más."
+    },
+    "acf": {
+      "tipo": "otro-amor",
+      "categoria": "DESAMOR",
+      "autor": "Felipe",
+      "edad": "26",
+      "ciudad": "Cali",
+      "firma": "-Felipe, 26, Cali"
+    }
+  },
+  {
+    "id": 14,
+    "date": "2026-03-14T11:20:00",
+    "slug": "segunda-oportunidad-no-dada",
+    "status": "publish",
+    "title": { "rendered": "La segunda oportunidad" },
+    "content": {
+      "rendered": "Volvió prometiendo el cielo entero. Le agradecí con una sonrisa pero le dije que no. Mi paz mental ya no estaba en oferta."
+    },
+    "acf": {
+      "tipo": "otro-amor",
+      "categoria": "REENCUENTRO",
+      "autor": "Daniela",
+      "edad": "33",
+      "ciudad": "Guadalajara",
+      "firma": "-Daniela, 33, GDL"
+    }
+  },
+  {
+    "id": 15,
+    "date": "2026-03-15T15:45:00",
+    "slug": "la-amiga-traidora",
+    "status": "publish",
+    "title": { "rendered": "Quien decía ser mi hermana" },
+    "content": {
+      "rendered": "La traición no vino de él, vino de quien consideraba mi mejor amiga. Perder a ambos de golpe me enseñó a elegir con lupa a quién le abro mi corazón."
+    },
+    "acf": {
+      "tipo": "otro-amor",
+      "categoria": "TRAICIÓN",
+      "autor": "Paula",
+      "edad": "27",
+      "ciudad": "Monterrey",
+      "firma": "-Paula, 27, Monterrey"
+    }
+  },
+  {
+    "id": 16,
+    "date": "2026-03-16T09:10:00",
+    "slug": "el-mensaje-a-las-3am",
+    "status": "publish",
+    "title": { "rendered": "El mensaje de las 3 a.m." },
+    "content": {
+      "rendered": "Escribió un 'te extraño' después de dos años de silencio. Lo leí, sentí una pequeña punzada nostálgica, apagué el celular y me volví a dormir en calma."
+    },
+    "acf": {
+      "tipo": "otro-amor",
+      "categoria": "REENCUENTRO",
+      "autor": "Javier",
+      "edad": "31",
+      "ciudad": "Montevideo",
+      "firma": "-Javier, 31, Montevideo"
+    }
+  },
+  {
+    "id": 17,
+    "date": "2026-03-17T18:00:00",
+    "slug": "doble-vida-descubierta",
+    "status": "publish",
+    "title": { "rendered": "Doble vida" },
+    "content": {
+      "rendered": "Tenía otra familia paralela. Parecía sacado de una telenovela barata. Lloré tres meses seguidos hasta que entendí que quien perdió fue él."
+    },
+    "acf": {
+      "tipo": "otro-amor",
+      "categoria": "INFIDELIDAD",
+      "autor": "Carolina",
+      "edad": "38",
+      "ciudad": "Bogotá",
+      "firma": "-Carolina, 38, Bogotá"
+    }
+  },
+  {
+    "id": 18,
+    "date": "2026-03-18T20:30:00",
+    "slug": "exito-como-respuesta",
+    "status": "publish",
+    "title": { "rendered": "Florecer donde intentaron quemarte" },
+    "content": {
+      "rendered": "Me dijo que sin él nunca lograría nada. Ayer inauguré mi propio estudio de diseño. Si eso no es justicia poética, no sé qué lo sea."
+    },
+    "acf": {
+      "tipo": "otro-amor",
+      "categoria": "VENGANZA",
+      "autor": "Renata",
+      "edad": "29",
+      "ciudad": "Puebla",
+      "firma": "-Renata, 29, Puebla"
+    }
+  },
+  {
+    "id": 19,
+    "date": "2026-03-19T13:40:00",
+    "slug": "el-anillo-en-el-cajon",
+    "status": "publish",
+    "title": { "rendered": "El anillo en el cajón" },
+    "content": {
+      "rendered": "Iba a pedirle matrimonio en diciembre. Dos semanas antes descubrí que salía con alguien de su trabajo. Vendí el anillo y me fui de viaje solo por primera vez."
+    },
+    "acf": {
+      "tipo": "otro-amor",
+      "categoria": "INFIDELIDAD",
+      "autor": "Sebastián",
+      "edad": "34",
+      "ciudad": "Cartagena",
+      "firma": "-Sebastián, 34, Cartagena"
+    }
+  },
+  {
+    "id": 20,
+    "date": "2026-03-20T17:15:00",
+    "slug": "el-abrazo-sin-rencor",
+    "status": "publish",
+    "title": { "rendered": "Un abrazo sin rencor" },
+    "content": {
+      "rendered": "Coincidimos en la boda de unos amigos en común. Nos abrazamos de verdad, nos deseamos felicidad mutua y supe que el ciclo estaba finalmente cerrado."
+    },
+    "acf": {
+      "tipo": "otro-amor",
+      "categoria": "REENCUENTRO",
+      "autor": "Ana Sofía",
+      "edad": "30",
+      "ciudad": "Medellín",
+      "firma": "-Ana Sofía, 30, Medellín"
+    }
+  },
+  {
+    "id": 21,
+    "date": "2026-03-21T07:50:00",
+    "slug": "despedir-a-mama",
+    "status": "publish",
+    "title": { "rendered": "El té de las mañanas" },
+    "content": {
+      "rendered": "El duelo no es un evento, es un idioma nuevo. Cada mañana preparo el té con la taza que ella me dejó y siento que todavía me cuida."
+    },
+    "acf": {
+      "tipo": "otra-vida",
+      "categoria": "DUELO",
+      "autor": "Lorena",
+      "edad": "40",
+      "ciudad": "Lima",
+      "firma": "-Lorena, 40, Lima"
+    }
+  },
+  {
+    "id": 22,
+    "date": "2026-03-22T12:00:00",
+    "slug": "cambio-de-carrera-a-los-35",
+    "status": "publish",
+    "title": { "rendered": "Renunciar a lo seguro" },
+    "content": {
+      "rendered": "Dejé un trabajo corporativo de 12 años para estudiar ilustración. Todos me dijeron que estaba loca; hoy es la primera vez que me despierto con ganas de vivir."
+    },
+    "acf": {
+      "tipo": "otra-vida",
+      "categoria": "SUPERACIÓN",
+      "autor": "Valeria M.",
+      "edad": "35",
+      "ciudad": "Bogotá",
+      "firma": "-Valeria, 35, Bogotá"
+    }
+  },
+  {
+    "id": 23,
+    "date": "2026-03-23T19:25:00",
+    "slug": "pais-nuevo-idioma-nuevo",
+    "status": "publish",
+    "title": { "rendered": "Aprender a hablar de nuevo" },
+    "content": {
+      "rendered": "Llegar a Berlín sin hablar alemán y con dos maletas. Lloré en el supermercado tres veces por no entender una etiqueta. Hoy tengo mi hogar aquí."
+    },
+    "acf": {
+      "tipo": "otra-vida",
+      "categoria": "MUDANZA",
+      "autor": "Diego",
+      "edad": "32",
+      "ciudad": "Berlín",
+      "firma": "-Diego, 32, Berlín"
+    }
+  },
+  {
+    "id": 24,
+    "date": "2026-03-24T14:10:00",
+    "slug": "casa-propia-sola",
+    "status": "publish",
+    "title": { "rendered": "Mis propias llaves" },
+    "content": {
+      "rendered": "Pensé que comprar casa solo tenía sentido en pareja. La semana pasada recibí las llaves de mi departamento pequeño. Pinté una pared de rojo con este libro de fondo."
+    },
+    "acf": {
+      "tipo": "otra-vida",
+      "categoria": "APRENDIZAJE",
+      "autor": "Gabriela",
+      "edad": "37",
+      "ciudad": "San José",
+      "firma": "-Gabriela, 37, San José"
+    }
+  },
+  {
+    "id": 25,
+    "date": "2026-03-25T11:00:00",
+    "slug": "divorcio-con-hijos",
+    "status": "publish",
+    "title": { "rendered": "Dos casas felices" },
+    "content": {
+      "rendered": "Separarme me daba terror por mis hijos. Hoy tienen dos casas donde se respira amor y respeto en lugar de tensión constante."
+    },
+    "acf": {
+      "tipo": "otra-vida",
+      "categoria": "DIVORCIO",
+      "autor": "Hernán",
+      "edad": "45",
+      "ciudad": "Rosario",
+      "firma": "-Hernán, 45, Rosario"
+    }
+  },
+  {
+    "id": 26,
+    "date": "2026-03-26T16:40:00",
+    "slug": "soltar-la-culpa",
+    "status": "publish",
+    "title": { "rendered": "Soltar la culpa" },
+    "content": {
+      "rendered": "Cargar con la culpa de lo que no funcionó me pesó por años. Un día decidí perdonarme por no haber sabido más en ese momento."
+    },
+    "acf": {
+      "tipo": "otra-vida",
+      "categoria": "SUPERACIÓN",
+      "autor": "Alejandra",
+      "edad": "29",
+      "ciudad": "Barranquilla",
+      "firma": "-Alejandra, 29, Barranquilla"
+    }
+  },
+  {
+    "id": 27,
+    "date": "2026-03-27T08:15:00",
+    "slug": "el-duelo-del-perro",
+    "status": "publish",
+    "title": { "rendered": "El guardián de mis días tristes" },
+    "content": {
+      "rendered": "Cuando nadie entendía mi dolor, mi perro ponía su cabeza en mis rodillas. Perderlo me quebró, pero me dejó el corazón lleno de amor puro."
+    },
+    "acf": {
+      "tipo": "otra-vida",
+      "categoria": "DUELO",
+      "autor": "Santiago",
+      "edad": "33",
+      "ciudad": "Cochabamba",
+      "firma": "-Santiago, 33, Cochabamba"
+    }
+  },
+  {
+    "id": 28,
+    "date": "2026-03-28T21:05:00",
+    "slug": "volver-a-la-ciudad-natal",
+    "status": "publish",
+    "title": { "rendered": "Volver a empezar" },
+    "content": {
+      "rendered": "Regresar a vivir a la casa de mis padres a los 31 se sintió como una derrota. Fue en realidad el nido cálido que me permitió sanar y salir más fuerte."
+    },
+    "acf": {
+      "tipo": "otra-vida",
+      "categoria": "MUDANZA",
+      "autor": "Elena",
+      "edad": "31",
+      "ciudad": "Cuenca",
+      "firma": "-Elena, 31, Cuenca"
+    }
+  },
+  {
+    "id": 29,
+    "date": "2026-03-29T10:50:00",
+    "slug": "aprender-a-decir-no",
+    "status": "publish",
+    "title": { "rendered": "El poder del no" },
+    "content": {
+      "rendered": "Mi vida cambió el día que dejé de decir que sí a todo por miedo al rechazo. Decir 'no' a los demás fue decirme 'sí' a mí misma."
+    },
+    "acf": {
+      "tipo": "otra-vida",
+      "categoria": "APRENDIZAJE",
+      "autor": "Jimena",
+      "edad": "36",
+      "ciudad": "Montevideo",
+      "firma": "-Jimena, 36, Montevideo"
+    }
+  },
+  {
+    "id": 30,
+    "date": "2026-03-30T15:20:00",
+    "slug": "celebrar-estar-viva",
+    "status": "publish",
+    "title": { "rendered": "Diez años después" },
+    "content": {
+      "rendered": "Compré la primera edición con el corazón roto. Hoy celebro estos 10 años enamorada de mi vida, de mis errores y de todo lo que aún me falta por descubrir."
+    },
+    "acf": {
+      "tipo": "otra-vida",
+      "categoria": "SUPERACIÓN",
+      "autor": "Amalia de corazón",
+      "edad": "34",
+      "ciudad": "Medellín",
+      "firma": "-Amalia de corazón, 34"
     }
   }
 ]

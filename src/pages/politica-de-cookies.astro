@@ -1,0 +1,181 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout 
+  title="Política de cookies — 10 Años | Amalia Andrade"
+  description="Información sobre la política y uso de cookies en el sitio web de Amalia Andrade - 10 Años."
+>
+  <div class="legal-page">
+    <Header showBack={true} backUrl="/" />
+
+    <main class="legal-main">
+      <article class="legal-card">
+        <h1 class="legal-title">Política de uso de cookies</h1>
+
+        <div class="legal-content">
+          <p>
+            Se advierte al Usuario que la página Web de la Compañía, utiliza cookies. Las cookies son pequeños ficheros de datos que se generan en el ordenador del Usuario y que permiten que sea el propio Usuario el que almacene la información que genera su actividad en la red. Las cookies permiten a una página web, entre otras cosas, almacenar y recuperar información sobre los hábitos de navegación de un usuario o de su equipo y, dependiendo de la información que contengan y de la forma en que utilice su equipo, pueden utilizarse para reconocer al usuario.
+          </p>
+
+          <p>
+            Este sitio web puede utilizar las siguientes cookies:
+          </p>
+
+          <h2>Cookies de sesión</h2>
+          <p>
+            Las cookies de sesión son memorizadas y únicamente tienen validez temporal, es decir, hasta que el usuario finaliza la navegación por la página web. Estas cookies no graban de forma permanente ninguna información en el disco duro de su ordenador.
+          </p>
+
+          <h2>Cookies de navegación</h2>
+          <p>
+            El objetivo principal de las cookies de navegación es evitar ofrecerles recomendaciones no afines a sus intereses / y ofrecerles propuestas comerciales dirigidas y personalizadas.
+          </p>
+          <p>
+            Estas cookies de navegación basan su utilidad en el seguimiento temporal de la navegación por Internet. El Usuario tiene la posibilidad de eliminar este tipo de cookies antes de iniciar la navegación por otras páginas del sitio web.
+          </p>
+
+          <h2>Cookies estadísticas</h2>
+          <p>
+            Las cookies estadísticas permiten conocer la siguiente información:
+          </p>
+          <ul>
+            <li>La fecha y la hora de la última vez que el Usuario visitó nuestro sitio web.</li>
+            <li>El acceso a los contenidos que el Usuario escogió en su última visita a nuestro sitio web.</li>
+          </ul>
+          <p>
+            Para realizar las estadísticas de uso de nuestro sitio web utilizamos herramientas estadísticas con un alcance limitado a las funciones descritas en el párrafo anterior y con la finalidad de conocer el nivel de recurrencia de nuestros visitantes y los contenidos que resultan más interesantes. De esta manera podemos concentrar nuestros esfuerzos en mejorar las áreas más visitadas y hacer que el usuario encuentre más fácilmente lo que busca.
+          </p>
+          <p>
+            El sitio Web puede utilizar la información de su visita para realizar evaluaciones y cálculos estadísticos sobre datos anónimos, así como para garantizar la continuidad del servicio o para realizar mejoras en sus sitios Web. Dicha información no será utilizada para ninguna otra finalidad.
+          </p>
+
+          <h2>Cookies de terceros</h2>
+          <p>
+            Este sitio web utiliza la función de remarketing por la que recabaremos información sobre su navegación para poder ofrecerle publicidad sobre nuestros productos y/o servicios por los que se ha interesado.
+          </p>
+          <p>
+            Asimismo, podremos hacerle llegar publicidad sobre nuestros productos y/o servicios cuando visite otros sitios de la Red de Display de Google.
+          </p>
+          <p>
+            Por otro lado, en determinadas ocasiones podemos ofrecer a través de nuestra página Web contenidos de terceros, por ejemplo, vídeos de YouTube. Éstos terceros pueden instalar cookies que escapan de nuestro control.
+          </p>
+
+          <h2>Gestión de cookies</h2>
+          <p>
+            Sin perjuicio de lo anterior, el Usuario tiene la posibilidad de configurar su navegador para ser avisado de la recepción de cookies y para impedir su instalación en su equipo. No obstante, la desactivación de las cookies puede afectar al correcto funcionamiento de determinadas secciones de la página web.
+          </p>
+          <p>
+            Por favor, consulte las instrucciones y manuales de su navegador para ampliar esta información:
+          </p>
+          <ul>
+            <li>Si utiliza <strong>Microsoft Internet Explorer</strong>, en la opción de menú Herramientas seleccionando Opciones de Internet y accediendo a Privacidad.</li>
+            <li>Si utiliza <strong>Firefox</strong> para Mac en la opción de menú Preferencias, seleccionando Privacidad, accediendo al apartado Mostrar Cookies, y para Windows en la opción de menú Herramientas, seleccionando Opciones, accediendo a Privacidad y luego a Usar una configuración personalizada para el historial.</li>
+            <li>Si utiliza <strong>Safari</strong>, en la opción de menú Preferencias, seleccionando Privacidad.</li>
+            <li>Si utiliza <strong>Google Chrome</strong>, en la opción de menú Herramientas, seleccionando Opciones (Preferencias en Mac), accediendo a Avanzadas y luego en la opción Configuración Contenido de la sección Privacidad, y finalmente marcando Cookies en el diálogo Configuración de contenido.</li>
+          </ul>
+          <p>
+            La información que pueda ser obtenida por La Compañía a través de las cookies, es utilizada por La Compañía y por terceros recomendadores a los que La Compañía ha contratado con la finalidad de mostrarle publicidad relacionada con sus preferencias.
+          </p>
+          <p>
+            Por último, le informamos de que tiene la posibilidad de revocar en cualquier momento el consentimiento prestado para la utilización de cookies por parte de LA COMPAÑÍA, configurando para ello su navegador en los términos previstos en el punto anterior.
+          </p>
+        </div>
+      </article>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
+
+<style>
+  .legal-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 1.5rem 3rem 1.8rem 3rem;
+  }
+
+  .legal-main {
+    flex: 1;
+    max-width: 860px;
+    width: 100%;
+    margin: 2rem auto 3.5rem auto;
+  }
+
+  .legal-card {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1.5px solid #E2D7C8;
+    border-radius: 8px;
+    padding: 3rem 3.5rem;
+    box-shadow: 0 8px 24px rgba(60, 45, 30, 0.06);
+  }
+
+  .legal-title {
+    font-family: 'Amaliafont_altas-Regular', 'Amaliafont_altas', sans-serif;
+    color: var(--color-primary-red, #EE2A22);
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    margin-bottom: 2rem;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+  }
+
+  .legal-content {
+    font-family: var(--font-regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-ink-black, #1E1A18);
+  }
+
+  .legal-content p {
+    margin-bottom: 1.25rem;
+  }
+
+  .legal-content h2 {
+    font-family: 'Amaliafont_altas-Regular', 'Amaliafont_altas', sans-serif;
+    font-size: 1.45rem;
+    color: var(--color-primary-red, #EE2A22);
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.02em;
+  }
+
+  .legal-content ul {
+    margin: 0 0 1.5rem 1.8rem;
+    padding: 0;
+  }
+
+  .legal-content li {
+    margin-bottom: 0.6rem;
+    line-height: 1.6;
+  }
+
+  .legal-content strong {
+    color: #000000;
+  }
+
+  @media (max-width: 768px) {
+    .legal-page {
+      padding: 1.2rem 1.4rem 1.4rem 1.4rem;
+    }
+
+    .legal-card {
+      padding: 2rem 1.5rem;
+    }
+
+    .legal-title {
+      font-size: 1.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .legal-content h2 {
+      font-size: 1.25rem;
+      margin-top: 1.6rem;
+    }
+  }
+</style>

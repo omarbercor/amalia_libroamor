@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ToastNotification from '../components/ToastNotification.astro';
 
 interface Props {
   title?: string;
@@ -26,7 +27,7 @@ const {
 
     <!-- Google Fonts: Open Sans (textos regulares) y Mynerve (títulos secundarios) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link 
       href="https://fonts.googleapis.com/css2?family=Mynerve&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" 
       rel="stylesheet" 
@@ -34,5 +35,6 @@ const {
   </head>
   <body>
     <slot />
+    <ToastNotification />
   </body>
 </html>
