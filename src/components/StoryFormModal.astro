@@ -421,13 +421,12 @@ const dynamicOptGroups = finalParents.map((parent) => {
       statusMsg.textContent = 'Guardando tu pedacito de historia con amor... ✨';
 
       const formData = new FormData(form);
-      const payload = {
-        historia: (formData.get('historia') || '').toString().trim(),
-        categoria: (formData.get('categoria') || '').toString(),
-        autor: (formData.get('autor') || '').toString().trim(),
-        edad: (formData.get('edad') || '').toString().trim(),
-        ciudad: (formData.get('ciudad') || '').toString().trim(),
-      };
+      const params = new URLSearchParams();
+      params.append('historia', (formData.get('historia') || '').toString().trim());
+      params.append('categoria', (formData.get('categoria') || '').toString());
+      params.append('autor', (formData.get('autor') || '').toString().trim());
+      params.append('edad', (formData.get('edad') || '').toString().trim());
+      params.append('ciudad', (formData.get('ciudad') || '').toString().trim());
 
       const endpoint = window.location.hostname === 'localhost'
         ? '/api-cms/?rest_route=/amalia/v1/enviar-historia'
@@ -436,8 +435,8 @@ const dynamicOptGroups = finalParents.map((parent) => {
       try {
         const response = await fetch(endpoint, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params.toString()
         });
 
         const data = await response.json();

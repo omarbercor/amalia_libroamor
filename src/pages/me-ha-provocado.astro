@@ -1954,14 +1954,13 @@ const enrichedStories = stories.map((item, idx) => {
       heroStatusMsg.textContent = 'Guardando tu historia con amor... ✨';
       
       const formData = new FormData(heroForm);
-      const payload = {
-        historia: (formData.get('historia') || '').toString().trim(),
-        tipo: (formData.get('tipo') || '').toString(),
-        categoria: (formData.get('categoria') || '').toString(),
-        autor: (formData.get('autor') || '').toString().trim(),
-        edad: (formData.get('edad') || '').toString().trim(),
-        ciudad: (formData.get('ciudad') || '').toString().trim(),
-      };
+      const params = new URLSearchParams();
+      params.append('historia', (formData.get('historia') || '').toString().trim());
+      params.append('tipo', (formData.get('tipo') || '').toString());
+      params.append('categoria', (formData.get('categoria') || '').toString());
+      params.append('autor', (formData.get('autor') || '').toString().trim());
+      params.append('edad', (formData.get('edad') || '').toString().trim());
+      params.append('ciudad', (formData.get('ciudad') || '').toString().trim());
 
       const endpoint = window.location.hostname === 'localhost'
         ? '/api-cms/?rest_route=/amalia/v1/enviar-historia'
@@ -1970,8 +1969,8 @@ const enrichedStories = stories.map((item, idx) => {
       try {
         const response = await fetch(endpoint, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params.toString()
         });
 
         // Éxito: limpiar formulario y mensaje inline, notificar exclusivamente con el Toast limpio
