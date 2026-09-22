@@ -234,7 +234,7 @@ const enrichedStories = stories.map((item, idx) => {
                 </div>
               </div>
 
-              <!-- 5. Más abajo: Ciudad con Autocomplete / datalist -->
+              <!-- 5. Más abajo: Ciudad con Autocomplete inteligente (después de 3 letras) -->
               <div class="sheet-inline-row city-row">
                 <label for="sheetStoryCity" class="sheet-label-inline">Ciudad:</label>
                 <div class="autocomplete-city-wrapper">
@@ -243,16 +243,14 @@ const enrichedStories = stories.map((item, idx) => {
                     id="sheetStoryCity" 
                     name="ciudad" 
                     required 
-                    list="citiesList"
                     placeholder="" 
                     class="sheet-input" 
                     autocomplete="off"
+                    aria-autocomplete="list"
+                    aria-expanded="false"
                   />
-                  <datalist id="citiesList">
-                    {cities.map((city) => (
-                      <option value={city} />
-                    ))}
-                  </datalist>
+                  <!-- Dropdown compacto personalizado (máx 5 sugerencias, no tapa la pantalla) -->
+                  <ul class="city-suggestions-dropdown" id="citySuggestionsDropdown" role="listbox" style="display: none;"></ul>
                 </div>
               </div>
 
@@ -320,8 +318,9 @@ const enrichedStories = stories.map((item, idx) => {
           </div>
         </div>
 
-        <!-- Datos Dinámicos de Taxonomías inyectados para el cliente -->
+        <!-- Datos Dinámicos de Taxonomías y Ciudades inyectados para el cliente -->
         <script id="wpCategoriesData" type="application/json" set:html={JSON.stringify(dynamicCategoriesMap)} />
+        <script id="citiesData" type="application/json" set:html={JSON.stringify(cities)} />
 
         <!-- Cuadrícula de Tarjetas de Historias -->
         <div class="stories-grid" id="storiesGrid">
@@ -748,6 +747,47 @@ const enrichedStories = stories.map((item, idx) => {
     position: relative;
     flex: 1;
     width: 100%;
+  }
+
+  /* Dropdown compacto y limpio: no tapa la pantalla en mobile */
+  .city-suggestions-dropdown {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    max-height: 140px;
+    overflow-y: auto;
+    background: #FFFFFF;
+    border: 1.5px solid #D5C8B4;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(35, 20, 15, 0.15);
+    padding: 0.3rem 0;
+    margin: 0;
+    list-style: none;
+    z-index: 50;
+    box-sizing: border-box;
+  }
+
+  .city-suggestion-item {
+    padding: 0.4rem 0.75rem;
+    font-family: var(--font-secondary-title, 'Mynerve', cursive);
+    font-size: 1rem;
+    color: #3D352F;
+    cursor: pointer;
+    line-height: 1.25;
+    transition: background 0.15s ease, color 0.15s ease;
+    user-select: none;
+  }
+
+  .city-suggestion-item:hover,
+  .city-suggestion-item.highlighted {
+    background: rgba(238, 42, 34, 0.08);
+    color: var(--color-marker-red, #EE2A22);
+  }
+
+  .city-suggestion-item strong {
+    color: var(--color-marker-red, #EE2A22);
+    font-weight: 700;
   }
 
   /* Estado de envío */
@@ -1669,6 +1709,106 @@ const enrichedStories = stories.map((item, idx) => {
     // Validación estricta para el campo Edad: solo caracteres numéricos
     ageInput?.addEventListener('input', () => {
       ageInput.value = ageInput.value.replace(/\D/g, '');
+    });
+
+    // =========================================================================
+    // AUTOCOMPLETE ELEGANTE DE CIUDADES (Se activa solo a partir de 3 letras)
+    // No secuestra la pantalla en mobile y muestra máximo 5 opciones compactas
+    // =========================================================================
+    const cityInput = document.getElementById('sheetStoryCity') as HTMLInputElement | null;
+    const cityDropdown = document.getElementById('citySuggestionsDropdown') as HTMLUListElement | null;
+    const allCitiesList: string[] = JSON.parse(
+      document.getElementById('citiesData')?.textContent || '[]'
+    );
+
+    let highlightedCityIdx = -1;
+
+    const closeCityDropdown = () => {
+      if (!cityDropdown) return;
+      cityDropdown.style.display = 'none';
+      cityDropdown.innerHTML = '';
+      highlightedCityIdx = -1;
+      cityInput?.setAttribute('aria-expanded', 'false');
+    };
+
+    const renderCitySuggestions = (query: string) => {
+      if (!cityInput || !cityDropdown) return;
+      const cleanQuery = query.trim().toLowerCase();
+
+      // REGLA: Solo buscar y mostrar si el usuario ha escrito AL MENOS 3 LETRAS
+      if (cleanQuery.length < 3) {
+        closeCityDropdown();
+        return;
+      }
+
+      // Filtrar ciudades que contengan el texto ingresado
+      const matches = allCitiesList.filter((city) =>
+        city.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(
+          cleanQuery.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        )
+      ).slice(0, 5); // Máximo 5 sugerencias para no saturar la pantalla
+
+      if (matches.length === 0) {
+        closeCityDropdown();
+        return;
+      }
+
+      cityDropdown.innerHTML = '';
+      matches.forEach((city, idx) => {
+        const li = document.createElement('li');
+        li.className = 'city-suggestion-item';
+        li.setAttribute('role', 'option');
+        li.textContent = city;
+
+        li.addEventListener('click', (e) => {
+          e.stopPropagation();
+          cityInput.value = city;
+          closeCityDropdown();
+          cityInput.focus();
+        });
+
+        cityDropdown.appendChild(li);
+      });
+
+      cityDropdown.style.display = 'block';
+      cityInput.setAttribute('aria-expanded', 'true');
+      highlightedCityIdx = -1;
+    };
+
+    cityInput?.addEventListener('input', (e) => {
+      renderCitySuggestions((e.target as HTMLInputElement).value);
+    });
+
+    // Navegación por teclado (Flechas Arriba/Abajo y Enter)
+    cityInput?.addEventListener('keydown', (e) => {
+      if (!cityDropdown || cityDropdown.style.display === 'none') return;
+      const items = Array.from(cityDropdown.querySelectorAll('.city-suggestion-item')) as HTMLElement[];
+      if (items.length === 0) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        highlightedCityIdx = (highlightedCityIdx + 1) % items.length;
+        items.forEach((item, i) => item.classList.toggle('highlighted', i === highlightedCityIdx));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        highlightedCityIdx = (highlightedCityIdx - 1 + items.length) % items.length;
+        items.forEach((item, i) => item.classList.toggle('highlighted', i === highlightedCityIdx));
+      } else if (e.key === 'Enter') {
+        if (highlightedCityIdx >= 0 && items[highlightedCityIdx]) {
+          e.preventDefault();
+          cityInput.value = items[highlightedCityIdx].textContent || '';
+          closeCityDropdown();
+        }
+      } else if (e.key === 'Escape') {
+        closeCityDropdown();
+      }
+    });
+
+    // Cerrar el dropdown al hacer clic fuera del campo
+    document.addEventListener('click', (e) => {
+      if (cityInput && !cityInput.contains(e.target as Node) && cityDropdown && !cityDropdown.contains(e.target as Node)) {
+        closeCityDropdown();
+      }
     });
 
     // Contador de caracteres dinámico para la historia (hasta 500 caracteres)
