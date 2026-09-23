@@ -1733,20 +1733,39 @@ const enrichedStories = stories.map((item, idx) => {
 
     const renderCitySuggestions = (query: string) => {
       if (!cityInput || !cityDropdown) return;
-      const cleanQuery = query.trim().toLowerCase();
+      const cleanQuery = query.trim();
+      const normalizedQuery = cleanQuery.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
       // REGLA: Solo buscar y mostrar si el usuario ha escrito AL MENOS 3 LETRAS
-      if (cleanQuery.length < 3) {
+      if (normalizedQuery.length < 3) {
         closeCityDropdown();
         return;
       }
 
-      // Filtrar ciudades que contengan el texto ingresado
-      const matches = allCitiesList.filter((city) =>
-        city.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(
-          cleanQuery.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        )
-      ).slice(0, 5); // Máximo 5 sugerencias para no saturar la pantalla
+      const queryTokens = normalizedQuery.split(/\s+/).filter(Boolean);
+
+      // Filtrar y rankear ciudades
+      const scoredMatches = allCitiesList.map((city) => {
+        const normCity = city.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        
+        // Comprobar si todos los tokens del usuario están presentes en la ubicación
+        const matchesAllTokens = queryTokens.every(token => normCity.includes(token));
+        if (!matchesAllTokens) return null;
+
+        // Calcular puntaje de relevancia:
+        // - Si la ciudad o una de sus partes empieza exactamente con la búsqueda, mayor prioridad
+        let score = 0;
+        if (normCity.startsWith(normalizedQuery)) score += 100;
+        const parts = normCity.split(/[,\s]+/);
+        if (parts.some(p => p.startsWith(normalizedQuery))) score += 50;
+        if (parts.some(p => p === normalizedQuery)) score += 80;
+
+        return { city, score };
+      }).filter((item): item is { city: string; score: number } => item !== null);
+
+      // Ordenar por score descendente y tomar hasta 5
+      scoredMatches.sort((a, b) => b.score - a.score);
+      const matches = scoredMatches.slice(0, 5).map(m => m.city);
 
       if (matches.length === 0) {
         closeCityDropdown();
@@ -1754,11 +1773,18 @@ const enrichedStories = stories.map((item, idx) => {
       }
 
       cityDropdown.innerHTML = '';
-      matches.forEach((city, idx) => {
+      matches.forEach((city) => {
         const li = document.createElement('li');
         li.className = 'city-suggestion-item';
         li.setAttribute('role', 'option');
-        li.textContent = city;
+
+        // Resaltar visualmente la parte coincidente
+        try {
+          const regex = new RegExp(`(${cleanQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+          li.innerHTML = city.replace(regex, '<strong>$1</strong>');
+        } catch {
+          li.textContent = city;
+        }
 
         li.addEventListener('click', (e) => {
           e.stopPropagation();
