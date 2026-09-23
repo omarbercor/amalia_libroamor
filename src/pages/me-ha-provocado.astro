@@ -749,39 +749,61 @@ const enrichedStories = stories.map((item, idx) => {
     width: 100%;
   }
 
-  /* Dropdown compacto y limpio: no tapa la pantalla en mobile */
+  /* Dropdown con padding espacioso, scroll suave y diseño de libreta */
   .city-suggestions-dropdown {
     position: absolute;
-    bottom: calc(100% + 4px);
-    left: 0;
-    width: 100%;
-    max-height: 140px;
+    bottom: calc(100% + 10px);
+    right: 0;
+    min-width: 100%;
+    width: max(100%, 320px);
+    max-width: min(370px, 92vw);
+    max-height: 210px;
     overflow-y: auto;
     background: #FFFFFF;
     border: 1.5px solid #D5C8B4;
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(35, 20, 15, 0.15);
-    padding: 0.3rem 0;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(35, 20, 15, 0.22), 0 3px 8px rgba(35, 20, 15, 0.08);
+    padding: 0.65rem 0.5rem;
     margin: 0;
     list-style: none;
     z-index: 50;
     box-sizing: border-box;
   }
 
+  .city-suggestions-dropdown::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .city-suggestions-dropdown::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 6px 0;
+  }
+
+  .city-suggestions-dropdown::-webkit-scrollbar-thumb {
+    background: #D8CCC0;
+    border-radius: 4px;
+  }
+
   .city-suggestion-item {
-    padding: 0.4rem 0.75rem;
+    padding: 0.65rem 1rem;
     font-family: var(--font-secondary-title, 'Mynerve', cursive);
-    font-size: 1rem;
+    font-size: 1.05rem;
     color: #3D352F;
     cursor: pointer;
-    line-height: 1.25;
+    line-height: 1.35;
+    border-radius: 8px;
+    margin-bottom: 4px;
     transition: background 0.15s ease, color 0.15s ease;
     user-select: none;
   }
 
+  .city-suggestion-item:last-child {
+    margin-bottom: 0;
+  }
+
   .city-suggestion-item:hover,
   .city-suggestion-item.highlighted {
-    background: rgba(238, 42, 34, 0.08);
+    background: rgba(238, 42, 34, 0.09);
     color: var(--color-marker-red, #EE2A22);
   }
 
@@ -1749,28 +1771,97 @@ const enrichedStories = stories.map((item, idx) => {
         const normCity = city.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         
         // Comprobar si todos los tokens del usuario están presentes en la ubicación
-        const matchesAllTokens = queryTokens.every(token => normCity.includes(token));
+        // También soportar alias común "cdmx" -> "ciudad de mexico"
+        const matchesAllTokens = queryTokens.every(token => {
+          if (token === 'cdmx') {
+            return normCity.includes('cdmx') || normCity.includes('ciudad de mexico');
+          }
+          return normCity.includes(token);
+        });
         if (!matchesAllTokens) return null;
 
-        // Calcular puntaje de relevancia:
-        // - Si la ciudad o una de sus partes empieza exactamente con la búsqueda, mayor prioridad
+        // Calcular puntaje de relevancia por segmentos:
+        // [0] = Ciudad/Municipio/Entidad, [1] = Estado/Departamento, [2] = País
+        const segments = normCity.split(',').map(s => s.trim());
+        const mainName = segments[0] || '';
         let score = 0;
-        if (normCity.startsWith(normalizedQuery)) score += 100;
+
+        // 1. Coincidencia en el nombre principal de la ciudad/entidad (ej. "Ciudad de México", "Bogotá")
+        if (mainName === normalizedQuery || (normalizedQuery === 'cdmx' && mainName.includes('ciudad de mexico'))) {
+          score += 300;
+        } else if (mainName.startsWith(normalizedQuery)) {
+          score += 200;
+        } else if (mainName.includes(normalizedQuery)) {
+          score += 150;
+        }
+
+        // 2. Coincidencia en el estado/departamento (ej. "Sinaloa", "Antioquia")
+        if (segments.length > 1) {
+          const stateName = segments[1];
+          if (stateName === normalizedQuery) {
+            score += 120;
+          } else if (stateName.startsWith(normalizedQuery)) {
+            score += 80;
+          } else if (stateName.includes(normalizedQuery)) {
+            score += 50;
+          }
+        }
+
+        // 3. Coincidencia en el país (ej. "México", "Colombia")
+        if (segments.length > 1) {
+          const countryName = segments[segments.length - 1];
+          if (countryName === normalizedQuery) {
+            score += 30;
+          }
+        }
+
+        // 4. Coincidencia exacta o inicio de palabra individual
         const parts = normCity.split(/[,\s]+/);
-        if (parts.some(p => p.startsWith(normalizedQuery))) score += 50;
-        if (parts.some(p => p === normalizedQuery)) score += 80;
+        if (parts.some(p => p === normalizedQuery)) score += 40;
+        if (parts.some(p => p.startsWith(normalizedQuery))) score += 20;
+
+        // Priorizar Ciudad de México para búsquedas como "mexico" o "cdmx"
+        if (mainName.includes('ciudad de mexico')) {
+          score += 35;
+        }
+
+        // Bonificación sutil a nombres más concisos para desempatar ordenadamente
+        score -= normCity.length * 0.05;
 
         return { city, score };
       }).filter((item): item is { city: string; score: number } => item !== null);
 
-      // Ordenar por score descendente y tomar hasta 5
+      // Ordenar por score descendente; sin límite artificial de 5 (el dropdown tiene scroll y max-height cómodos)
       scoredMatches.sort((a, b) => b.score - a.score);
-      const matches = scoredMatches.slice(0, 5).map(m => m.city);
+      const matches = scoredMatches.map(m => m.city);
 
       if (matches.length === 0) {
         closeCityDropdown();
         return;
       }
+
+      // Función de resaltado insensible a acentos
+      const highlightMatch = (text: string, queryText: string) => {
+        if (!queryText) return text;
+        const normQ = queryText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const pattern = normQ.split('').map(char => {
+          switch (char) {
+            case 'a': return '[aáàäâAÁÀÄÂ]';
+            case 'e': return '[eéèëêEÉÈËÊ]';
+            case 'i': return '[iíìïîIÍÌÏÎ]';
+            case 'o': return '[oóòöôOÓÒÖÔ]';
+            case 'u': return '[uúùüûUÚÙÜÛ]';
+            case 'n': return '[nñNÑ]';
+            default: return char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          }
+        }).join('');
+        try {
+          const rx = new RegExp(`(${pattern})`, 'gi');
+          return text.replace(rx, '<strong>$1</strong>');
+        } catch {
+          return text;
+        }
+      };
 
       cityDropdown.innerHTML = '';
       matches.forEach((city) => {
@@ -1778,13 +1869,8 @@ const enrichedStories = stories.map((item, idx) => {
         li.className = 'city-suggestion-item';
         li.setAttribute('role', 'option');
 
-        // Resaltar visualmente la parte coincidente
-        try {
-          const regex = new RegExp(`(${cleanQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-          li.innerHTML = city.replace(regex, '<strong>$1</strong>');
-        } catch {
-          li.textContent = city;
-        }
+        // Resaltar visualmente la parte coincidente de forma flexible
+        li.innerHTML = highlightMatch(city, cleanQuery);
 
         li.addEventListener('click', (e) => {
           e.stopPropagation();
