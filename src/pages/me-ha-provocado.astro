@@ -7,13 +7,12 @@ import FeedTitleAnimated from '../components/FeedTitleAnimated.astro';
 import ButtonEnviarHistoria from '../components/ButtonEnviarHistoria.astro';
 import ButtonOpcionesCompra from '../components/ButtonOpcionesCompra.astro';
 import SeparadorSmall from '../components/SeparadorSmall.astro';
-import storiesLocal from '../data/stories.json';
 import cities from '../data/cities.json';
 
-// Cargar historias desde WordPress REST API con fallback y combinación de pruebas
+// Cargar historias reales desde WordPress REST API (única fuente oficial)
 let fetchedStories: any[] = [];
 try {
-  const wpRes = await fetch('https://cmsamalia.stagings.website/?rest_route=/amalia/v1/historias&per_page=100', {
+  const wpRes = await fetch('https://cms.unosiemprecambia.com/?rest_route=/amalia/v1/historias&per_page=100', {
     headers: { 'Accept': 'application/json' }
   });
   if (wpRes.ok) {
@@ -46,9 +45,8 @@ try {
   // Silencioso
 }
 
-// Combinar historias de WP con las historias de prueba locales evitando duplicar id
-const wpIds = new Set(fetchedStories.map(s => s.id));
-const stories = [...fetchedStories, ...storiesLocal.filter(s => !wpIds.has(s.id))];
+// Exclusivamente las notas cargadas de WordPress (sin notas de muestra)
+const stories = fetchedStories;
 
 // Cargar Taxonomía (Categorías principales y Subcategorías) directamente de WordPress
 interface CategoryTerm {
@@ -60,7 +58,7 @@ interface CategoryTerm {
 
 let allTerms: CategoryTerm[] = [];
 try {
-  const catRes = await fetch('https://cmsamalia.stagings.website/?rest_route=/wp/v2/categoria_historia&per_page=100', {
+  const catRes = await fetch('https://cms.unosiemprecambia.com/?rest_route=/wp/v2/categoria_historia&per_page=100', {
     headers: { 'Accept': 'application/json' }
   });
   if (catRes.ok) {
@@ -1260,7 +1258,7 @@ const enrichedStories = stories.map((item, idx) => {
 
   .story-detail-dialog-card {
     position: relative;
-    background: #FAF6EE url('/assets/por-otro-amor/textura-papel.png');
+    background: #FAF6EE url('/assets/home/paper-texture.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     border: 2px solid rgba(220, 205, 185, 0.7);
@@ -2060,7 +2058,7 @@ const enrichedStories = stories.map((item, idx) => {
       if (!storiesGrid) return;
       const endpoint = window.location.hostname === 'localhost'
         ? '/api-cms/?rest_route=/amalia/v1/historias&per_page=100'
-        : 'https://cmsamalia.stagings.website/?rest_route=/amalia/v1/historias&per_page=100';
+        : 'https://cms.unosiemprecambia.com/?rest_route=/amalia/v1/historias&per_page=100';
 
       try {
         const res = await fetch(endpoint, {
@@ -2216,7 +2214,7 @@ const enrichedStories = stories.map((item, idx) => {
 
       const endpoint = window.location.hostname === 'localhost'
         ? '/api-cms/?rest_route=/amalia/v1/enviar-historia'
-        : 'https://cmsamalia.stagings.website/?rest_route=/amalia/v1/enviar-historia';
+        : 'https://cms.unosiemprecambia.com/?rest_route=/amalia/v1/enviar-historia';
 
       try {
         const response = await fetch(endpoint, {

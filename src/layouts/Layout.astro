@@ -5,35 +5,74 @@ import ToastNotification from '../components/ToastNotification.astro';
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  canonicalUrl?: string;
 }
 
 const {
   title = "Uno siempre cambia al amor de su vida — 10 Años | Amalia Andrade",
-  description = "Edición conmemorativa de los 10 años de 'Uno siempre cambia al amor de su vida (por otro amor o por otra vida)' de Amalia Andrade."
+  description = "Edición conmemorativa de los 10 años de 'Uno siempre cambia al amor de su vida (por otro amor o por otra vida)' de Amalia Andrade.",
+  image = "/assets/screenshot.png",
+  canonicalUrl
 } = Astro.props;
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://unosiemprecambia.com';
+const fullCanonicalUrl = canonicalUrl || new URL(Astro.url.pathname, siteUrl).toString();
+const fullImageUrl = new URL(image, siteUrl).toString();
 ---
 
 <!doctype html>
 <html lang="es">
   <head>
+    <!-- Google Tag Manager -->
+    <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WPWS6WK3');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/assets/icon.png" />
+    <link rel="apple-touch-icon" href="/assets/icon.png" />
     <meta name="generator" content={Astro.generator} />
     
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={fullCanonicalUrl} />
     <meta name="theme-color" content="#EE2A22" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={fullCanonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={fullImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={fullCanonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullImageUrl} />
 
     <!-- Google Fonts: Open Sans (textos regulares) y Mynerve (títulos secundarios) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link 
       href="https://fonts.googleapis.com/css2?family=Mynerve&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" 
       rel="stylesheet" 
     />
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPWS6WK3"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <slot />
     <ToastNotification />
   </body>

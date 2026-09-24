@@ -9,7 +9,7 @@ interface CategoryTerm {
 
 let allTerms: CategoryTerm[] = [];
 try {
-  const catRes = await fetch('https://cmsamalia.stagings.website/?rest_route=/wp/v2/categoria_historia&per_page=100', {
+  const catRes = await fetch('https://cms.unosiemprecambia.com/?rest_route=/wp/v2/categoria_historia&per_page=100', {
     headers: { 'Accept': 'application/json' }
   });
   if (catRes.ok) {
@@ -430,7 +430,7 @@ const dynamicOptGroups = finalParents.map((parent) => {
 
       const endpoint = window.location.hostname === 'localhost'
         ? '/api-cms/?rest_route=/amalia/v1/enviar-historia'
-        : 'https://cmsamalia.stagings.website/?rest_route=/amalia/v1/enviar-historia';
+        : 'https://cms.unosiemprecambia.com/?rest_route=/amalia/v1/enviar-historia';
 
       try {
         const response = await fetch(endpoint, {

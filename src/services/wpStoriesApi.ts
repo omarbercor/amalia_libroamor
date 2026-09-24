@@ -1,6 +1,6 @@
 /**
  * Servicio de conexión con WordPress REST API para Historias
- * CMS: https://cmsamalia.stagings.website
+ * CMS: https://cms.unosiemprecambia.com
  */
 
 export interface StoryPayload {
@@ -23,7 +23,7 @@ const getSubmitEndpoint = () => {
   if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
     return '/api-cms/?rest_route=/amalia/v1/enviar-historia';
   }
-  return 'https://cmsamalia.stagings.website/?rest_route=/amalia/v1/enviar-historia';
+  return 'https://cms.unosiemprecambia.com/?rest_route=/amalia/v1/enviar-historia';
 };
 
 /**
