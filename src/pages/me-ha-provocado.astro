@@ -111,8 +111,8 @@ const enrichedStories = stories.map((item, idx) => {
 ---
 
 <Layout 
-  title="Lo que este libro me ha provocado — Historias | Amalia Andrade"
-  description="Historias, anécdotas y pedazos de vida compartidos por lectores de 'Uno siempre cambia al amor de su vida'."
+  title="Lo que este libro me ha provocado | Uno siempre cambia al amor de su vida (edición 10 años)"
+  description="Historias, reflexiones y testimonios compartidos por lectoras y lectores a 10 años de la publicación de Uno siempre cambia al amor de su vida de Amalia Andrade."
 >
   <div class="stories-page">
     <!-- Header idéntico al home, con la flecha roja en la columna izquierda -->
@@ -252,6 +252,11 @@ const enrichedStories = stories.map((item, idx) => {
                 </div>
               </div>
 
+              <!-- Cloudflare Turnstile Container (Silencioso sin romper ejecución del iframe) -->
+              <div class="turnstile-wrapper" style="position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; overflow: hidden;">
+                <div id="heroTurnstileWidget" class="cf-turnstile-container"></div>
+              </div>
+
               <!-- Mensaje de estado -->
               <div class="sheet-form-status" id="sheetFormStatusMsg" aria-live="polite"></div>
             </form>
@@ -375,9 +380,10 @@ const enrichedStories = stories.map((item, idx) => {
 
         <!-- Frase insignia en rojo y con subrayado animado -->
         <div class="quote-signature-banner">
+          <!-- Versión Desktop/Tablet (2 líneas en viewBox panorámico 980x130) -->
           <svg 
             viewBox="0 0 980 130" 
-            class="quote-banner-svg" 
+            class="quote-banner-svg quote-banner-desktop" 
             aria-label="UNO SIEMPRE CAMBIA EL AMOR DE SU VIDA POR OTRO AMOR O POR OTRA VIDA"
           >
             <!-- Línea 1 de texto en Amaliafont_altas en rojo -->
@@ -391,8 +397,39 @@ const enrichedStories = stories.map((item, idx) => {
             <!-- Subrayado animado estilo plumón rojo -->
             <path 
               id="quoteBannerUnderline" 
-              class="banner-underline-path" 
+              class="banner-underline-path quote-underline-animated" 
               d="M 60,118 Q 490,110 920,122" 
+              fill="none" 
+              stroke="#EE2A22" 
+              stroke-width="6.5" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+            />
+          </svg>
+
+          <!-- Versión Mobile (4 líneas grandes y legibles con Amaliafont_altas en viewBox compacto 480x205) -->
+          <svg 
+            viewBox="0 0 480 205" 
+            class="quote-banner-svg quote-banner-mobile" 
+            aria-hidden="true"
+          >
+            <text class="banner-title-line-mobile" x="240" y="40" text-anchor="middle">
+              UNO SIEMPRE CAMBIA
+            </text>
+            <text class="banner-title-line-mobile" x="240" y="82" text-anchor="middle">
+              EL AMOR DE SU VIDA
+            </text>
+            <text class="banner-title-line-mobile" x="240" y="124" text-anchor="middle">
+              POR OTRO AMOR
+            </text>
+            <text class="banner-title-line-mobile" x="240" y="166" text-anchor="middle">
+              O POR OTRA VIDA
+            </text>
+            <!-- Subrayado animado mobile adaptado -->
+            <path 
+              id="quoteBannerUnderlineMobile" 
+              class="banner-underline-path quote-underline-animated" 
+              d="M 28,188 Q 240,180 452,190" 
               fill="none" 
               stroke="#EE2A22" 
               stroke-width="6.5" 
@@ -965,13 +1002,14 @@ const enrichedStories = stories.map((item, idx) => {
     font-size: 0.8rem;
   }
 
-  /* Grilla 3 columnas desktop */
+  /* Grilla responsiva fluida (3 en monitores anchos, 2 si no cabe la 3ra, 1 en móviles) */
   .stories-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.2rem 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 2.2rem 1.8rem;
     width: 100%;
     margin-bottom: 2.8rem;
+    justify-content: center;
   }
 
   .no-stories-msg {
@@ -1177,11 +1215,6 @@ const enrichedStories = stories.map((item, idx) => {
       display: none;
     }
 
-    .stories-grid {
-      grid-template-columns: 1fr;
-      gap: 1.8rem;
-    }
-
     .sheet-form-content {
       padding: 6.4rem 2rem 1.8rem 2rem;
     }
@@ -1219,9 +1252,39 @@ const enrichedStories = stories.map((item, idx) => {
     .quote-signature-banner {
       max-width: 95%;
     }
+  }
 
-    .banner-title-line {
-      font-size: 28px;
+  /* Control responsivo de versiones de la Frase Insignia */
+  .quote-banner-desktop {
+    display: block;
+  }
+
+  .quote-banner-mobile {
+    display: none;
+  }
+
+  .banner-title-line-mobile {
+    fill: var(--color-marker-red, #EE2A22);
+    font-family: 'Amaliafont_altas-Regular', 'Amaliafont_altas', sans-serif;
+    font-size: 36px;
+    font-weight: normal;
+    letter-spacing: 0.025em;
+  }
+
+  @media (max-width: 640px) {
+    .quote-banner-desktop {
+      display: none;
+    }
+
+    .quote-banner-mobile {
+      display: block;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .quote-signature-banner {
+      margin-top: 1.2rem;
+      padding: 0 0.5rem;
     }
   }
 
@@ -1397,14 +1460,16 @@ const enrichedStories = stories.map((item, idx) => {
   gsap.registerPlugin(DrawSVGPlugin);
 
   const initQuoteBanner = () => {
-    const underline = document.getElementById('quoteBannerUnderline');
-    if (!underline) return;
-    gsap.set(underline, { drawSVG: '0%' });
-    gsap.to(underline, {
-      drawSVG: '100%',
-      duration: 1.3,
-      delay: 0.3,
-      ease: 'power2.out'
+    const underlines = document.querySelectorAll('.quote-underline-animated');
+    if (!underlines.length) return;
+    underlines.forEach((underline) => {
+      gsap.set(underline, { drawSVG: '0%' });
+      gsap.to(underline, {
+        drawSVG: '100%',
+        duration: 1.3,
+        delay: 0.3,
+        ease: 'power2.out'
+      });
     });
   };
 
@@ -2113,7 +2178,6 @@ const enrichedStories = stories.map((item, idx) => {
               <p class="card-body-text">${plainContent || item.title?.rendered || ''}</p>
               <div class="card-footer-row">
                 <span class="card-signature">${storyFirma}</span>
-                <span class="card-expand-hint" aria-hidden="true">leer +</span>
               </div>
             </div>
           `;
@@ -2186,6 +2250,53 @@ const enrichedStories = stories.map((item, idx) => {
 
     checkAndOpenStoryFromUrl();
 
+    // =========================================================================
+    // INICIALIZACIÓN DE CLOUDFLARE TURNSTILE (CAPTCHA)
+    // =========================================================================
+    const TURNSTILE_SITE_KEY = '0x4AAAAAAFM_lzoYOxuX5xbs';
+    let heroTurnstileWidgetId: string | null = null;
+    let heroTurnstileToken = '';
+
+    const setupHeroTurnstile = () => {
+      const widgetContainer = document.getElementById('heroTurnstileWidget');
+      if (!widgetContainer) return;
+      
+      const renderWidget = () => {
+        if ((window as any).turnstile && heroTurnstileWidgetId === null) {
+          try {
+            heroTurnstileWidgetId = (window as any).turnstile.render('#heroTurnstileWidget', {
+              sitekey: TURNSTILE_SITE_KEY,
+              size: 'flexible',
+              callback: (token: string) => {
+                heroTurnstileToken = token;
+              },
+              'expired-callback': () => {
+                heroTurnstileToken = '';
+              },
+              'error-callback': () => {
+                heroTurnstileToken = '';
+              }
+            });
+          } catch (e) {
+            // Ya inicializado
+          }
+        }
+      };
+
+      if ((window as any).turnstile) {
+        renderWidget();
+      } else {
+        const checkTurnstile = setInterval(() => {
+          if ((window as any).turnstile) {
+            clearInterval(checkTurnstile);
+            renderWidget();
+          }
+        }, 300);
+      }
+    };
+
+    setupHeroTurnstile();
+
     // Conectar botón exterior con el submit del formulario
     heroSubmitBtn?.addEventListener('click', (e) => {
       if (!heroForm) return;
@@ -2201,9 +2312,24 @@ const enrichedStories = stories.map((item, idx) => {
     heroForm?.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!heroStatusMsg) return;
+
+      const formData = new FormData(heroForm);
+      const token = (formData.get('cf-turnstile-response') || '').toString() || heroTurnstileToken;
+
+      if (!token) {
+        if (typeof (window as any).showToast === 'function') {
+          (window as any).showToast({
+            title: 'Verificación requerida',
+            message: 'Por favor espera la verificación de seguridad antes de enviar.',
+            type: 'error',
+            duration: 4000
+          });
+        }
+        return;
+      }
+
       heroStatusMsg.textContent = 'Guardando tu historia con amor... ✨';
       
-      const formData = new FormData(heroForm);
       const params = new URLSearchParams();
       params.append('historia', (formData.get('historia') || '').toString().trim());
       params.append('tipo', (formData.get('tipo') || '').toString());
@@ -2211,6 +2337,7 @@ const enrichedStories = stories.map((item, idx) => {
       params.append('autor', (formData.get('autor') || '').toString().trim());
       params.append('edad', (formData.get('edad') || '').toString().trim());
       params.append('ciudad', (formData.get('ciudad') || '').toString().trim());
+      params.append('cf-turnstile-response', token);
 
       const endpoint = window.location.hostname === 'localhost'
         ? '/api-cms/?rest_route=/amalia/v1/enviar-historia'
@@ -2223,16 +2350,27 @@ const enrichedStories = stories.map((item, idx) => {
           body: params.toString()
         });
 
+        const data = await response.json().catch(() => null);
+
+        if (!response.ok) {
+          throw new Error(data?.message || 'Error al enviar historia');
+        }
+
         // Éxito: limpiar formulario y mensaje inline, notificar exclusivamente con el Toast limpio
         heroForm.reset();
         updateCharCounter();
         heroStatusMsg.textContent = '';
         updateFormCategories(typeSelect ? typeSelect.value : 'otro-amor');
 
+        if ((window as any).turnstile && heroTurnstileWidgetId !== null) {
+          (window as any).turnstile.reset(heroTurnstileWidgetId);
+          heroTurnstileToken = '';
+        }
+
         if (typeof (window as any).showToast === 'function') {
           (window as any).showToast({
             title: 'Historia recibida',
-            message: 'Tu historia fue enviada. Pasara al muro una vez moderada.',
+            message: 'Tu historia fue enviada. Pasará al muro una vez moderada.',
             type: 'success',
             duration: 5000
           });
@@ -2242,10 +2380,15 @@ const enrichedStories = stories.map((item, idx) => {
         console.error('Error al enviar historia:', err);
         heroStatusMsg.textContent = '';
         
+        if ((window as any).turnstile && heroTurnstileWidgetId !== null) {
+          (window as any).turnstile.reset(heroTurnstileWidgetId);
+          heroTurnstileToken = '';
+        }
+
         if (typeof (window as any).showToast === 'function') {
           (window as any).showToast({
             title: 'No se pudo enviar',
-            message: err.message || 'Ocurrio un problema de conexion con el servidor.',
+            message: err.message || 'Ocurrió un problema de conexión con el servidor.',
             type: 'error',
             duration: 5000
           });

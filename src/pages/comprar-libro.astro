@@ -14,12 +14,12 @@ const activeCountries = countries.filter(c => c.activo && c.url);
 // Asignación explícita y balanceada a las 3 columnas de la maqueta
 const col1 = activeCountries.filter(c => ['mx', 'ar'].includes(c.id));
 const col2 = activeCountries.filter(c => ['co', 'cl'].includes(c.id));
-const col3 = activeCountries.filter(c => ['pe'].includes(c.id));
+const col3 = activeCountries.filter(c => ['pe', 'us'].includes(c.id));
 ---
 
 <Layout 
-  title="Opciones de Compra Internacional — 10 Años | Amalia Andrade"
-  description="Consigue la edición conmemorativa de los 10 años de 'Uno siempre cambia al amor de su vida (por otro amor o por otra vida)' en tu país."
+  title="Dónde comprar | Uno siempre cambia al amor de su vida (edición 10 años)"
+  description="Encuentra las librerías y puntos de venta disponibles para adquirir la edición 10 años de 'Uno siempre cambia al amor de su vida' de Amalia Andrade en tu país."
 >
   <div class="compra-page">
     <!-- Header idéntico al resto del sitio con botón volver al home -->

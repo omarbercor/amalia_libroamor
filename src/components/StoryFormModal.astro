@@ -134,6 +134,11 @@ const dynamicOptGroups = finalParents.map((parent) => {
         </div>
       </div>
 
+      <!-- Cloudflare Turnstile Container (Silencioso sin romper ejecución del iframe) -->
+      <div class="turnstile-modal-wrapper" style="position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; overflow: hidden;">
+        <div id="modalTurnstileWidget" class="cf-turnstile-container"></div>
+      </div>
+
       <div class="form-actions">
         <button type="submit" class="btn-marker-red" id="submitFormBtn">
           ENVIAR MI HISTORIA
@@ -408,6 +413,57 @@ const dynamicOptGroups = finalParents.map((parent) => {
       }
     });
 
+    // =========================================================================
+    // INICIALIZACIÓN DE CLOUDFLARE TURNSTILE (CAPTCHA)
+    // =========================================================================
+    const TURNSTILE_SITE_KEY = '0x4AAAAAAFM_lzoYOxuX5xbs';
+    let modalTurnstileWidgetId: string | null = null;
+    let modalTurnstileToken = '';
+
+    const setupModalTurnstile = () => {
+      const widgetContainer = document.getElementById('modalTurnstileWidget');
+      if (!widgetContainer) return;
+
+      const renderWidget = () => {
+        if ((window as any).turnstile && modalTurnstileWidgetId === null) {
+          try {
+            modalTurnstileWidgetId = (window as any).turnstile.render('#modalTurnstileWidget', {
+              sitekey: TURNSTILE_SITE_KEY,
+              size: 'flexible',
+              callback: (token: string) => {
+                modalTurnstileToken = token;
+              },
+              'expired-callback': () => {
+                modalTurnstileToken = '';
+              },
+              'error-callback': () => {
+                modalTurnstileToken = '';
+              }
+            });
+          } catch (e) {
+            // Ya inicializado
+          }
+        }
+      };
+
+      if ((window as any).turnstile) {
+        renderWidget();
+      } else {
+        const checkTurnstile = setInterval(() => {
+          if ((window as any).turnstile) {
+            clearInterval(checkTurnstile);
+            renderWidget();
+          }
+        }, 300);
+      }
+    };
+
+    const originalOpenModal = openModal;
+    openModal = () => {
+      originalOpenModal();
+      setupModalTurnstile();
+    };
+
     textarea?.addEventListener('input', () => {
       if (charCount) {
         charCount.textContent = `${textarea.value.length} / 500`;
@@ -418,15 +474,30 @@ const dynamicOptGroups = finalParents.map((parent) => {
       e.preventDefault();
       if (!statusMsg) return;
 
+      const formData = new FormData(form);
+      const token = (formData.get('cf-turnstile-response') || '').toString() || modalTurnstileToken;
+
+      if (!token) {
+        if (typeof (window as any).showToast === 'function') {
+          (window as any).showToast({
+            title: 'Verificación requerida',
+            message: 'Por favor espera la verificación de seguridad antes de enviar.',
+            type: 'error',
+            duration: 4000
+          });
+        }
+        return;
+      }
+
       statusMsg.textContent = 'Guardando tu pedacito de historia con amor... ✨';
 
-      const formData = new FormData(form);
       const params = new URLSearchParams();
       params.append('historia', (formData.get('historia') || '').toString().trim());
       params.append('categoria', (formData.get('categoria') || '').toString());
       params.append('autor', (formData.get('autor') || '').toString().trim());
       params.append('edad', (formData.get('edad') || '').toString().trim());
       params.append('ciudad', (formData.get('ciudad') || '').toString().trim());
+      params.append('cf-turnstile-response', token);
 
       const endpoint = window.location.hostname === 'localhost'
         ? '/api-cms/?rest_route=/amalia/v1/enviar-historia'
@@ -439,7 +510,11 @@ const dynamicOptGroups = finalParents.map((parent) => {
           body: params.toString()
         });
 
-        const data = await response.json();
+        const data = await response.json().catch(() => null);
+
+        if (!response.ok) {
+          throw new Error(data?.message || 'Error al enviar historia');
+        }
 
         // Éxito: limpiar formulario y mensaje inline, notificar exclusivamente con el Toast limpio
         form.reset();
@@ -447,10 +522,15 @@ const dynamicOptGroups = finalParents.map((parent) => {
         closeModal();
         statusMsg.textContent = '';
 
+        if ((window as any).turnstile && modalTurnstileWidgetId !== null) {
+          (window as any).turnstile.reset(modalTurnstileWidgetId);
+          modalTurnstileToken = '';
+        }
+
         if (typeof (window as any).showToast === 'function') {
           (window as any).showToast({
             title: 'Historia recibida',
-            message: 'Tu historia fue enviada. Pasara al muro una vez moderada.',
+            message: 'Tu historia fue enviada. Pasará al muro una vez moderada.',
             type: 'success',
             duration: 5000
           });
@@ -459,10 +539,15 @@ const dynamicOptGroups = finalParents.map((parent) => {
         console.error('Error al enviar historia:', err);
         statusMsg.textContent = '';
 
+        if ((window as any).turnstile && modalTurnstileWidgetId !== null) {
+          (window as any).turnstile.reset(modalTurnstileWidgetId);
+          modalTurnstileToken = '';
+        }
+
         if (typeof (window as any).showToast === 'function') {
           (window as any).showToast({
             title: 'No se pudo enviar',
-            message: err.message || 'Ocurrio un problema al comunicarse con el servidor.',
+            message: err.message || 'Ocurrió un problema al comunicarse con el servidor.',
             type: 'error',
             duration: 5000
           });

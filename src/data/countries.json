@@ -4,7 +4,7 @@
   { "id": "pe", "name": "PERÚ", "url": "https://www.buscalibre.pe/libro-uno-siempre-cambia-el-amor-de-su-vida-edicion-10-anos/9786287915510/p/68538464", "retailer": "Buscalibre", "activo": true },
   { "id": "cl", "name": "CHILE", "url": "https://www.buscalibre.cl/libro-uno-siempre-cambia-al-amor-de-su-vida-edicion-dec/9789564089959/p/68490209", "retailer": "Buscalibre", "activo": true },
   { "id": "ar", "name": "ARGENTINA", "url": "https://tienda.planetadelibros.com.ar/products/uno-siempre-cambia-al-amor-de-su-vida-edicion-decimo-aniversario?page=1", "retailer": "Tienda Planeta", "activo": true },
-  { "id": "us", "name": "USA", "url": "https://www.amazon.com", "retailer": "Amazon", "activo": false },
+  { "id": "us", "name": "USA", "url": "https://www.amazon.com/-/es/siempre-Edici%C3%B3n-aniversario-Changes-Anniversary/dp/607394845X/ref=sr_1_1?crid=3W1Z7FAMG3I3U&dib=eyJ2IjoiMSJ9.hkyAmWTQ3thZ55-sCDc-48z-PNKLSNqKuySX2ca-XPtHUttyXwNtYHC-BrPROS4hFJdqm3_SU3jw6_LxSO5YnxDuN5oDcLNtFo6lFN0WskxPrYGoWT4kkZ2TnQxLXuKw4Ffysy8vpkFc06gEq6OUy0ggUJ2U2FG1_r4vCj1Bo4HXzSJ8OXyxRbVgYIcV-S2SCVP8TPO5S6vm5o13vPlJiROgSCZLKYdC9j6_ZSu9jJM.O4e4chjvBrfXv_5_RyerRg0nXTruUGmHvWJfuBSVNJ0&dib_tag=se&keywords=amalia+andrade&qid=1790796570&sprefix=%2Caps%2C135&sr=8-1", "retailer": "Amazon", "activo": true },
   { "id": "pa", "name": "PANAMÁ", "url": "https://elhombredelamancha.com", "retailer": "Hombre de la Mancha", "activo": false },
   { "id": "gt", "name": "GUATEMALA", "url": "https://sophosenlinea.com", "retailer": "Sophos", "activo": false },
   { "id": "cr", "name": "COSTA RICA", "url": "https://libreriadcc.com", "retailer": "DCC", "activo": false },

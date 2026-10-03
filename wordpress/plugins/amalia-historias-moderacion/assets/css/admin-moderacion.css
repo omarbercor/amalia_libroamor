@@ -1,0 +1,541 @@
+/**
+ * Estilos para el Plugin de Moderación Rápida de Historias (Amalia 10 Años)
+ */
+
+/* Badges de Estado */
+.amalia-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 0 10px;
+    height: 26px;
+    min-width: 76px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.amalia-badge-publish {
+    background-color: #e7f7ed;
+    color: #18794e;
+    border: 1px solid #c6ebd4;
+}
+
+.amalia-badge-pending {
+    background-color: #fef3d6;
+    color: #946300;
+    border: 1px solid #f6e0a4;
+}
+
+.amalia-badge-draft {
+    background-color: #fef2ee;
+    color: #ea6347;
+    border: 1px solid #faccc2;
+}
+
+.amalia-badge-trash {
+    background-color: #fdf2f2;
+    color: #b32d2e;
+    border: 1px solid #f8cbcd;
+}
+
+/* Celda de Estado y Acciones en CPT */
+.amalia-status-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 120px;
+    padding: 2px 0;
+}
+
+.amalia-action-buttons {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+
+/* -------------------------------------------------------------
+   ESTÁNDAR HOMOGÉNEO PARA TODOS LOS BOTONES DE ACCIÓN
+   Mismo tamaño (30x30px), mismo formato con ícono y mismo peso visual.
+------------------------------------------------------------- */
+.amalia-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    line-height: 1;
+    transition: all 0.18s ease;
+    box-sizing: border-box;
+    text-decoration: none;
+    position: relative;
+}
+
+.amalia-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.4);
+}
+
+.amalia-btn .dashicons {
+    font-size: 17px;
+    width: 17px;
+    height: 17px;
+    line-height: 17px;
+    transition: transform 0.15s ease;
+}
+
+.amalia-btn:hover .dashicons {
+    transform: scale(1.1);
+}
+
+/* SVG Ícono de Goma */
+.amalia-icon-svg {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    min-height: 17px !important;
+    stroke: currentColor !important;
+    fill: none !important;
+    stroke-width: 2 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    transition: transform 0.15s ease;
+    overflow: visible;
+}
+
+.amalia-btn:hover .amalia-icon-svg {
+    transform: scale(1.1);
+}
+
+/* 1. Botón Aprobar (Verde Armónico) */
+.amalia-btn-approve {
+    background-color: #e7f7ed;
+    border-color: #c6ebd4;
+    color: #18794e !important;
+}
+
+.amalia-btn-approve:hover {
+    background-color: #18794e;
+    border-color: #18794e;
+    color: #ffffff !important;
+}
+
+/* 2. Botón Borrador (Rojo Tomate / Naranja Deslavado Bonito) */
+.amalia-btn-unpublish {
+    background-color: #fef2ee;
+    border-color: #faccc2;
+    color: #ea6347 !important;
+}
+
+.amalia-btn-unpublish:hover {
+    background-color: #ea6347;
+    border-color: #d75135;
+    color: #ffffff !important;
+}
+
+/* 3. Botón Leer (Azul Enfoque) */
+.amalia-btn-view {
+    background-color: #f0f6fc;
+    border-color: #c8d7e1;
+    color: #2271b1 !important;
+}
+
+.amalia-btn-view:hover {
+    background-color: #2271b1;
+    border-color: #2271b1;
+    color: #ffffff !important;
+}
+
+/* 4. Botón Borrar con GOMA (Rojo Vino / Destructivo Suave) */
+.amalia-btn-trash {
+    background-color: #fdf2f2 !important;
+    border-color: #f8cbcd !important;
+    color: #b32d2e !important;
+}
+
+.amalia-btn-trash .amalia-icon-svg {
+    stroke: #b32d2e !important;
+}
+
+.amalia-btn-trash:hover {
+    background-color: #b32d2e !important;
+    border-color: #962122 !important;
+    color: #ffffff !important;
+}
+
+.amalia-btn-trash:hover .amalia-icon-svg {
+    stroke: #ffffff !important;
+}
+
+/* Estado Loading en botones */
+.amalia-btn.is-loading {
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+.amalia-btn.is-loading .dashicons,
+.amalia-btn.is-loading .amalia-icon-svg {
+    display: none;
+}
+
+.amalia-btn.is-loading::after {
+    content: '';
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: amalia-spin 0.6s linear infinite;
+}
+
+@keyframes amalia-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* -------------------------------------------------------------
+   WIDGET DEL DASHBOARD
+------------------------------------------------------------- */
+.amalia-dashboard-widget {
+    font-size: 13px;
+}
+
+.amalia-dash-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.amalia-dash-badge-counter {
+    background-color: #fef3d6;
+    color: #946300;
+    border: 1px solid #f6e0a4;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.amalia-dash-bulk-wrap {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.amalia-dash-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.amalia-dash-table th {
+    text-align: left;
+    padding: 8px 6px;
+    font-size: 12px;
+    color: #646970;
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.amalia-dash-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #f0f0f1;
+    vertical-align: middle;
+}
+
+.amalia-dash-status {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.amalia-dash-actions {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.amalia-dash-actions .amalia-action-buttons {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.amalia-dash-table tr:hover td {
+    background-color: #f9f9f9;
+}
+
+.amalia-dash-story-title {
+    font-weight: 600;
+    color: #2271b1;
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+}
+
+.amalia-dash-story-title:hover {
+    color: #135e96;
+    text-decoration: underline;
+}
+
+.amalia-dash-story-excerpt {
+    font-size: 12px;
+    color: #646970;
+    margin-top: 2px;
+    line-height: 1.35;
+}
+
+.amalia-dash-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f1;
+}
+
+/* -------------------------------------------------------------
+   MODAL DE LECTURA Y MODERACIÓN RÁPIDA
+------------------------------------------------------------- */
+#amalia-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(18, 22, 28, 0.65);
+    backdrop-filter: blur(2px);
+    z-index: 100100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+#amalia-modal-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.amalia-modal-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 620px;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(12px) scale(0.98);
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#amalia-modal-overlay.is-open .amalia-modal-card {
+    transform: translateY(0) scale(1);
+}
+
+.amalia-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 22px;
+    border-bottom: 1px solid #e2e4e7;
+    background-color: #fafafa;
+}
+
+.amalia-modal-title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.amalia-modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    color: #787c82;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.amalia-modal-close-btn:hover {
+    color: #d63638;
+    background-color: #f0f0f1;
+}
+
+.amalia-modal-body {
+    padding: 22px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Grilla de Metadatos ACF */
+.amalia-modal-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 16px;
+    background-color: #f6f7f7;
+    border: 1px solid #e2e4e7;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    font-size: 13px;
+}
+
+.amalia-meta-field strong {
+    color: #50575e;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.amalia-meta-field span {
+    color: #1d2327;
+    font-weight: 600;
+}
+
+/* Texto Completo de la Historia */
+.amalia-modal-story-box {
+    background-color: #ffffff;
+    border: 1px solid #dcdcde;
+    border-radius: 6px;
+    padding: 18px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #2c3338;
+    white-space: pre-wrap;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.amalia-modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 22px;
+    border-top: 1px solid #e2e4e7;
+    background-color: #fafafa;
+}
+
+.amalia-modal-footer-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Botón Borrar en Modal (con goma de borrar) */
+.wp-core-ui .button#amaliaModalBtnTrash.button-link-delete,
+#amaliaModalBtnTrash.button-link-delete {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    color: #b32d2e !important;
+    border: 1px solid #f8c8cb !important;
+    background-color: #fdf2f2 !important;
+    padding: 6px 14px !important;
+    border-radius: 4px !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    height: auto !important;
+    transition: all 0.18s ease !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    cursor: pointer !important;
+}
+
+.wp-core-ui .button#amaliaModalBtnTrash.button-link-delete:hover,
+#amaliaModalBtnTrash.button-link-delete:hover {
+    color: #ffffff !important;
+    background-color: #b32d2e !important;
+    border-color: #962122 !important;
+}
+
+.wp-core-ui .button#amaliaModalBtnTrash.button-link-delete .amalia-icon-svg {
+    width: 15px;
+    height: 15px;
+    stroke: currentColor;
+    display: inline-block;
+}
+
+/* Botón Acción Principal en Modal: Aprobar (Verde Sólido con Texto Blanco) */
+.wp-core-ui .button#amaliaModalBtnApprove.amalia-modal-btn-approve,
+#amaliaModalBtnApprove.amalia-modal-btn-approve,
+.amalia-modal-btn-approve {
+    background-color: #18794e !important;
+    background: #18794e !important;
+    border: 1px solid #13603e !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 6px 16px !important;
+    font-size: 13px !important;
+    border-radius: 4px !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    line-height: 1.4 !important;
+    height: auto !important;
+    cursor: pointer !important;
+    transition: all 0.18s ease !important;
+}
+
+.wp-core-ui .button#amaliaModalBtnApprove.amalia-modal-btn-approve:hover,
+#amaliaModalBtnApprove.amalia-modal-btn-approve:hover,
+.amalia-modal-btn-approve:hover {
+    background-color: #13603e !important;
+    background: #13603e !important;
+    border-color: #0f4b30 !important;
+    color: #ffffff !important;
+}
+
+/* Botón Acción Principal en Modal: Pasar a Borrador (Rojo Tomate / Naranja Deslavado Bonito con TEXTO BLANCO 100% LEGIBLE) */
+.wp-core-ui .button#amaliaModalBtnApprove.amalia-modal-btn-draft,
+#amaliaModalBtnApprove.amalia-modal-btn-draft,
+.amalia-modal-btn-draft {
+    background-color: #ea6347 !important;
+    background: #ea6347 !important;
+    border: 1px solid #d75135 !important;
+    color: #ffffff !important; /* TEXTO BLANCO PURO 100% LEGIBLE */
+    font-weight: 600 !important;
+    padding: 6px 16px !important;
+    font-size: 13px !important;
+    border-radius: 4px !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    line-height: 1.4 !important;
+    height: auto !important;
+    cursor: pointer !important;
+    transition: all 0.18s ease !important;
+}
+
+.wp-core-ui .button#amaliaModalBtnApprove.amalia-modal-btn-draft:hover,
+#amaliaModalBtnApprove.amalia-modal-btn-draft:hover,
+.amalia-modal-btn-draft:hover {
+    background-color: #d75135 !important;
+    background: #d75135 !important;
+    border-color: #be4127 !important;
+    color: #ffffff !important;
+}
